@@ -1,0 +1,7 @@
+{
+  "name": "Masjid near me",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
