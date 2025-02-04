@@ -1,0 +1,9 @@
+<div id="timings" class="timings-container">
+  <div class="widgetContainer" *ngIf="!showLoader">
+    <div id="timesObject" style="display: none">18:01</div>
+    <div class="load">{{ hijriDate }}</div>
+    <div *ngFor="let item of stbArray" class="stb">
+      {{ item.name }}<br />{{ item.val }}
+    </div>
+  </div>
+</div>

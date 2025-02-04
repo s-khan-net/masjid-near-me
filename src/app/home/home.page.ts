@@ -1,4 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {
+  IonToast,
+  MenuController,
+  NavController,
+  Platform,
+  ToastController,
+} from '@ionic/angular';
+import { IMasjid } from '../models/masjids.model';
+import { LocationService } from '../services/location.service';
+import { PopupService } from '../services/popup.service';
+import { MnmConstants } from '../core/mnm-constants';
+import { Geolocation } from '@capacitor/geolocation';
+import * as _ from 'lodash';
+import { Share } from '@capacitor/share';
+import { App } from '@capacitor/app';
+import { AndroidSettings, NativeSettings } from 'capacitor-native-settings';
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-home',
@@ -6,8 +23,200 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
   standalone: false,
 })
-export class HomePage {
+export class HomePage implements OnInit {
+  private _exitArray = 1;
+  public connected: boolean = true;
+  public masjids!: IMasjid[];
+  public currentLocaton!: { latitude: number; longitude: number };
+  public mnuItems: any;
+  public showSplash: boolean = true;
+  public locationPermissionFailed: boolean = true;
+  public isLocationEnabled: boolean = true;
+  public splashText: string = 'Initializing...';
 
-  constructor() {}
+  private _toastElement!: HTMLIonToastElement;
+  constructor(
+    private _navCtrl: NavController,
+    private _locationService: LocationService,
+    private _mnuCtrl: MenuController,
+    private _popupService: PopupService,
+    private _platform: Platform,
+    private _toastCtrl: ToastController
+  ) {}
+  ngOnInit(): void {
+    if (this._platform.is('android')) {
+      this._checkLocation();
+      this._platform.backButton.subscribe(async (val) => {
+        if (this._popupService.hasOpenPopups()) {
+          alert('pop');
+          this._popupService.closePopups();
+        } else {
+          this._toastElement = await this._toastCtrl.create({
+            message: 'Press back again to exit',
+            duration: 3000,
+            position: 'bottom',
+          });
+          setTimeout(() => {
+            this._exitArray++;
+          }, 2000);
+          if (this._exitArray == 0) {
+            await this._toastElement.dismiss();
+            App.exitApp();
+          } else {
+            this._exitArray--;
+            await this._toastElement.present();
+          }
+        }
+      });
+    } else {
+      this._navigateToDashboard();
+    }
+  }
 
+  public menuWillOpen() {
+    this.setUserName();
+  }
+
+  private setUserName() {
+    const userProfile = sessionStorage.getItem('userProfile');
+    this.mnuItems = _.cloneDeep(MnmConstants.menuItems);
+    if (userProfile) {
+      const name = JSON.parse(atob(userProfile))?.firstName;
+      this.mnuItems.filter((x: any) => {
+        if (x.name == 'Users') {
+          x.name = name;
+        }
+      });
+    } else {
+      this.mnuItems = _.cloneDeep(MnmConstants.menuItems);
+    }
+  }
+
+  private async setCurrentLocation(): Promise<void> {
+    const position = await Geolocation.getCurrentPosition();
+    if (position) {
+      this._locationService.currentLocation = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+    } else {
+      throw new Error('Position could not be found');
+    }
+  }
+
+  public async menuClick(item: any): Promise<void> {
+    switch (item.name) {
+      case 'Settings':
+        this._popupService.showSettings();
+        break;
+      case 'Compass':
+        const toast = await this._toastCtrl.create({
+          duration: 500000,
+          message: 'Coming soon',
+          position: 'middle',
+          cssClass:'toastClass'
+        });
+
+        await toast.present();
+        break;
+      case 'Users':
+        this._popupService.showLogin();
+        break;
+      case 'Share':
+        await Share.share({
+          title: 'Sharing Masjid near me',
+          text: 'Find a Masjid near you. Locate all Masjids, get Salaah times, Find direction of Qiblah at your location.Download for Android:',
+          url: 'https://play.google.com/store/apps/details?id=me.masjidnear',
+          dialogTitle: 'Share with buddies',
+        });
+        break;
+      default:
+        this._popupService.showProfile();
+        break;
+    }
+    this.closeMenu();
+  }
+
+  public closeMenu(): void {
+    console.log('close menu');
+    this._mnuCtrl.close();
+  }
+
+  public onMenuOpen(): void {
+    console.log('opening');
+  }
+
+  //#region splashText
+  private _checkLocation() {
+    Geolocation.checkPermissions()
+      .then((res) => {
+        this.isLocationEnabled = true;
+        if (res.location == 'granted') {
+          this.splashText = 'Checking location... loading map';
+          this._navigateToDashboard();
+        } else {
+          this.splashText = 'This app needs permission to use your location';
+          this.requestLocationPermission();
+        }
+      })
+      .catch((ex) => {
+        this.splashText = 'Please start Location services on your device';
+        setTimeout(() => {
+          this.showLocationSettings();
+        }, 1900);
+      });
+  }
+  public requestLocationPermission() {
+    //request permissions
+    Geolocation.requestPermissions().then((res) => {
+      if (res.location == 'granted') {
+        this.locationPermissionFailed = true;
+        this.splashText = 'Checking location... loading map';
+        this._navigateToDashboard();
+      } else {
+        this.locationPermissionFailed = false;
+        if (res.coarseLocation == 'denied' && res.location == 'denied') {
+          NativeSettings.openAndroid({
+            option: AndroidSettings.ApplicationDetails,
+          }).then((val) => {
+            //
+          });
+        }
+      }
+    });
+  }
+
+  private _navigateToDashboard() {
+    this.setCurrentLocation();
+    //check if user is logged in
+    this.setUserName();
+    setTimeout(() => {
+      this.showSplash = false;
+      this._checkNetwork();
+    }, 2000);
+  }
+  private _checkNetwork() {
+    if (Network) {
+      Network.getStatus().then((status) => {
+        this.connected = status.connected;
+      });
+      Network.addListener('networkStatusChange', (status) => {
+        this.connected = status.connected;
+      });
+    }
+  }
+
+  public showLocationSettings() {
+    NativeSettings.openAndroid({ option: AndroidSettings.Location }).then(
+      (locSetting) => {
+        if (!locSetting.status) {
+          this.isLocationEnabled = false;
+        } else {
+          this.splashText = 'Checking location...';
+          this._checkLocation();
+        }
+      }
+    );
+  }
+  //#endregion
 }

@@ -1,0 +1,30 @@
+<div [@flmnu]=currentState class="flmnu" >
+  <div (click)=toggleFlmnu() class="flmuHeader">
+    <div *ngIf="currentState == 'initial'">
+      <ion-icon name="caret-back-sharp" style="float: left; padding-left: 4px;"></ion-icon>
+    </div>
+    <div *ngIf="currentState == 'final'">
+      <ion-icon name="caret-forward-sharp" style="float: left; padding-left: 4px;"></ion-icon>
+    </div>
+    Masjids near you
+  </div>
+  <ul id="flmnuNav" *ngIf="masjids && masjids.length > 0">
+    <ng-container *ngFor="let masjid of masjids">
+      <li [hidden]="masjid.notMasjid">
+        <div (click)="selectMasjid(masjid)">
+          <ion-icon name="arrow-back-circle" style="margin-left: -4px;" [ngStyle]="{'color': masjid.verified ? '#17603a': '#999'}" title="masjid.masjidName"></ion-icon>
+          {{masjid.masjidName}}
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+  <ul id="flmnuNav" *ngIf="!masjids || masjids.length == 0">
+    <li>
+      <div>
+        Could not find any masjids near you
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="back-drop" (click)="toggleFlmnu()" *ngIf="currentState == 'final'"></div>

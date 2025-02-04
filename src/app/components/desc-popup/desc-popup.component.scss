@@ -1,0 +1,104 @@
+.block {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-modal.stack-modal {
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+  --backdrop-opacity: var(--ion-backdrop-opacity, 0.32);
+}
+
+// ion-col {
+//   border-bottom: 1px solid #CCC;
+//   margin-bottom: 2px;
+// }
+
+ion-icon {
+  color: darkgreen
+}
+
+ion-toolbar {
+  --background: -moz-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+  --background: -webkit-gradient(linear,
+      left top,
+      right top,
+      color-stop(0%, #99ccbe),
+      color-stop(100%, #ffffff));
+  --background: -webkit-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+  --background: -o-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+  --background: -ms-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+  --background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+  --ion-color-base: transparent !important;
+}
+
+input,
+textarea {
+  width: 139%;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  resize: none;
+  border: 1px solid white;
+  user-select: none;
+  border-style: inherit;
+  border-radius: 5px;
+
+  &:focus-visible {
+    border: 1px solid #FFF;
+  }
+}
+
+.col-margin-negative {
+  margin-left: -4px;
+  margin-top: -4px;
+  margin-bottom: -4px;
+}
+
+.time-div {
+  display: flex;
+  padding: 4px;
+  justify-content: space-between;
+  user-select: none;
+  border-radius: 5px;
+
+  span {
+    padding-right: 15px;
+  }
+
+  &#maghrib {
+    background-color: #f4f5f8;
+  }
+}
+
+.btn-edit {
+  margin-top: 12px;
+  text-align: center;
+
+  .btn-masajid {
+    letter-spacing: 3px;
+    margin-left: 28px;
+  }
+}
+
+.btn-masajid {
+  background: -webkit-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;
+  background: -o-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;
+  background: -moz-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;
+  background: linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.77);
+  border-radius: 4px;
+  color: #17603A !important;
+  padding: 10px;
+
+  &.hover {
+    background: -webkit-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;
+    background: -o-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;
+    background: -moz-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;
+    background: linear-gradient(180deg, rgba(255, 245, 245, 1) 100%) rgba(180, 240, 223, 1) 0% !important;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.77);
+    border-radius: 4px;
+    color: #17603A;
+  }
+}

@@ -1,0 +1,39 @@
+.alert-masjid {
+    background: -webkit-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%);
+    background: -o-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%);
+    background: -moz-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%);
+    background: linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%);
+    cursor: default;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.77);
+}
+
+.alert-masjid>div {
+    color: #666666;
+}
+
+/*glyph spin*/
+.glyphicon-spin {
+    -webkit-animation: spin 1000ms infinite linear;
+    animation: spin 1000ms infinite linear;
+}
+
+/*animation*/
+.colorAnim {
+    -webkit-animation: color-change 1s infinite;
+    -moz-animation: color-change 1s infinite;
+    -o-animation: color-change 1s infinite;
+    -ms-animation: color-change 1s infinite;
+    animation: color-change 1s infinite;
+}
+
+.back {
+    background: none repeat scroll 0 0 black;
+    position: fixed;
+    display: block;
+    opacity: 0.5;
+    z-index: 1999;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}

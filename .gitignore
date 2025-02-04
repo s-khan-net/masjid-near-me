@@ -16,12 +16,14 @@ log.txt
 /.sourcemaps
 /.versions
 /coverage
+/.vscode
 
 # Ionic
 /.ionic
 /www
 /platforms
 /plugins
+/android
 
 # Compiled output
 /dist

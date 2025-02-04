@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="hide()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1em"
+          height="1em"
+          viewBox="0 0 512 512"
+        >
+          <path
+            d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
+            fill="currentColor"
+          />
+        </svg>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-item><ion-label>Search Radius:</ion-label></ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-item>
+          <ion-select
+            id="searchRadius"
+            [(ngModel)]="settings.radius"
+            placeholder="Select radius"
+          >
+            <ion-select-option *ngFor="let radius of radii" [value]="radius"
+              >{{ radius / 1000 }} Km</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-item><ion-label>Maslak</ion-label></ion-item>
+      </ion-col>
+      <ion-col size="6">
+        <ion-list>
+          <!-- 1 hanfi 0 shafi -->
+          <ion-radio-group
+            [(ngModel)]="settings.school"
+            (ionChange)="handleChange($event)"
+          >
+            <ion-item>
+              <ion-radio [value]="1">&nbsp;<b>Hanfi</b></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-radio [value]="0">&nbsp;<b>Shafi</b></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <ion-item
+          ><ion-label
+            >Set calculation method for salaah timings:</ion-label
+          ></ion-item
+        >
+      </ion-col>
+      <ion-col size="6">
+        <ion-item>
+          <ion-select
+            [(ngModel)]="settings.calcMethod"
+            id="calcMethod"
+            placeholder="Set calculation method"
+          >
+            <ion-select-option [value]="1"
+              >University of Islamic Sciences, Karachi</ion-select-option
+            >
+            <ion-select-option [value]="2"
+              >ISNA-Islamic Society of North America</ion-select-option
+            >
+            <ion-select-option [value]="3"
+              >MWL-Muslim World League</ion-select-option
+            >
+            <ion-select-option [value]="4"
+              >Umm al-Qura, Makkah</ion-select-option
+            >
+            <ion-select-option [value]="5"
+              >Egyptian General Authority of Survey</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: 32px">
+      <ion-col size="5"></ion-col>
+      <ion-col size="3">
+        <div class="btn-masajid" (click)="hide()">Cancel</div>
+      </ion-col>
+      <ion-col size="3">
+        <div class="btn-masajid" (click)="saveSettings()">Save</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

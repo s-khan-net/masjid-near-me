@@ -1,0 +1,264 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ masjidCopy.masjidName }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark" (click)="share()">
+        <ion-icon name="share-social-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="dark" (click)="navigate()">
+        <ion-icon name="navigate-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        style="border-right: 1px solid #ccc"
+        size="8"
+        size-md="6"
+        size-lg="4"
+      >
+        <ion-row>
+          <ion-icon name="reorder-four-outline"></ion-icon>
+          <textarea
+            placeholder="Short description of the masjid"
+            [readonly]="!editing"
+            [(ngModel)]="masjidCopy.masjidAddress.description"
+            autocomplete="off"
+            [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+          ></textarea>
+        </ion-row>
+        <ion-row>
+          <ion-icon name="swap-horizontal-outline"></ion-icon>
+          <input
+            type="text"
+            placeholder="Street"
+            [(ngModel)]="masjidCopy.masjidAddress.street"
+            [readonly]="!editing"
+            autocomplete="off"
+            [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+          />
+        </ion-row>
+        <ion-row>
+          <ion-icon name="swap-horizontal-outline"></ion-icon>
+          <input
+            type="text"
+            placeholder="Locality"
+            [(ngModel)]="masjidCopy.masjidAddress.locality"
+            [readonly]="!editing"
+            autocomplete="off"
+            [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+          />
+        </ion-row>
+        <ion-row>
+          <ion-icon name="code-working" style="margin-top: 5px"></ion-icon>
+          <ion-col size="5" class="col-margin-negative">
+            <input
+              type="text"
+              placeholder="Zip"
+              [(ngModel)]="masjidCopy.masjidAddress.zipcode"
+              [readonly]="!editing"
+              autocomplete="off"
+              [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+            />
+          </ion-col>
+          <ion-col size="5" class="col-margin-negative">
+            <input
+              type="text"
+              placeholder="City"
+              [(ngModel)]="masjidCopy.masjidAddress.city"
+              [readonly]="!editing"
+              autocomplete="off"
+              [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-icon name="arrow-forward" style="margin-top: 5px"></ion-icon>
+          <ion-col size="5" class="col-margin-negative">
+            <input
+              type="text"
+              placeholder="State"
+              [(ngModel)]="masjidCopy.masjidAddress.state"
+              [readonly]="!editing"
+              autocomplete="off"
+              [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+            />
+          </ion-col>
+          <ion-col size="5" class="col-margin-negative">
+            <input
+              type="text"
+              placeholder="Country"
+              [(ngModel)]="masjidCopy.masjidAddress.country"
+              [readonly]="!editing"
+              autocomplete="off"
+              [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+            />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-icon name="call"></ion-icon>
+          <input
+            type="text"
+            placeholder="Phone"
+            [(ngModel)]="masjidCopy.masjidAddress.phone"
+            [readonly]="!editing"
+            autocomplete="off"
+          />
+        </ion-row>
+      </ion-col>
+      <ion-col size="4" size-md="3" size-lg="2">
+        <ng-container *ngIf="masjidCopy.verified">
+          <table>
+            <tr>
+              <td>
+                <div
+                  id="fajr"
+                  class="time-div"
+                  [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+                >
+                  <span>Fajr</span>
+                  <span>{{ masjidCopy.masjidTimings?.fajr }}</span>
+                </div>
+                <ion-popover trigger="fajr" size="cover" *ngIf="editing">
+                  <ng-template>
+                    <ion-datetime
+                      presentation="time"
+                      [(ngModel)]="masjidCopy.masjidTimings.fajr"
+                      [showDefaultButtons]="true"
+                      (ionChange)="timeChanged($event, 'fajr')"
+                    ></ion-datetime>
+                  </ng-template>
+                </ion-popover>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  id="zuhr"
+                  class="time-div"
+                  [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+                >
+                  <span>Zuhr</span>
+                  <span>{{ masjidCopy.masjidTimings?.zuhr }}</span>
+                  <ion-popover trigger="zuhr" size="cover" *ngIf="editing">
+                    <ng-template>
+                      <ion-datetime
+                        presentation="time"
+                        [(ngModel)]="masjidCopy.masjidTimings.zuhr"
+                        [showDefaultButtons]="true"
+                        (ionChange)="timeChanged($event, 'zuhr')"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-popover>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  id="asr"
+                  class="time-div"
+                  [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+                >
+                  <span>Asr</span>
+                  <span>{{ masjidCopy.masjidTimings?.asr }}</span>
+                  <ion-popover trigger="asr" size="cover" *ngIf="editing">
+                    <ng-template>
+                      <ion-datetime
+                        presentation="time"
+                        [(ngModel)]="masjidCopy.masjidTimings.asr"
+                        [showDefaultButtons]="true"
+                        (ionChange)="timeChanged($event, 'asr')"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-popover>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div id="maghrib" class="time-div">
+                  <span>Maghrib</span>
+                  <span>{{ masjidCopy.masjidTimings?.maghrib }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  id="isha"
+                  class="time-div"
+                  [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+                >
+                  <span>Isha</span>
+                  <span>{{ masjidCopy.masjidTimings?.isha }}</span>
+                  <ion-popover trigger="isha" size="cover" *ngIf="editing">
+                    <ng-template>
+                      <ion-datetime
+                        presentation="time"
+                        [(ngModel)]="masjidCopy.masjidTimings.isha"
+                        [showDefaultButtons]="true"
+                        (ionChange)="timeChanged($event, 'isha')"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-popover>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div
+                  id="jumah"
+                  class="time-div"
+                  [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }"
+                >
+                  <span>Jumah</span>
+                  <span>{{ masjidCopy.masjidTimings?.jumah }}</span>
+                  <ion-popover trigger="jumah" size="cover" *ngIf="editing">
+                    <ng-template>
+                      <ion-datetime
+                        presentation="time"
+                        [(ngModel)]="masjidCopy.masjidTimings.jumah"
+                        [showDefaultButtons]="true"
+                        (ionChange)="timeChanged($event, 'jumah')"
+                      ></ion-datetime>
+                    </ng-template>
+                  </ion-popover>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </ng-container>
+        <ng-container *ngIf="!masjidCopy.verified">
+          <label style="text-align: center"> This masjid is not verified</label>
+        </ng-container>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div
+          class="btn-edit"
+          *ngIf="userRole?.roleName == 'edit'; else signin_view"
+        >
+          <button class="btn-masajid" *ngIf="!editing" (click)="editClick()">
+            Edit
+          </button>
+          <button class="btn-masajid" *ngIf="editing" (click)="editClick()">
+            Cancel
+          </button>
+          <button class="btn-masajid" *ngIf="editing" (click)="saveClick()">
+            Save
+          </button>
+        </div>
+        <ng-template #signin_view>
+          <div class="btn-edit">
+            <button class="btn-masajid" (click)="signIn()">Sign In</button>
+          </div>
+        </ng-template>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
