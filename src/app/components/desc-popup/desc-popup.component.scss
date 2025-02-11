@@ -11,11 +11,6 @@ ion-modal.stack-modal {
   --backdrop-opacity: var(--ion-backdrop-opacity, 0.32);
 }
 
-// ion-col {
-//   border-bottom: 1px solid #CCC;
-//   margin-bottom: 2px;
-// }
-
 ion-icon {
   color: darkgreen
 }
@@ -81,8 +76,9 @@ textarea {
   text-align: center;
 
   .btn-masajid {
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     margin-left: 28px;
+    cursor: default;
   }
 }
 

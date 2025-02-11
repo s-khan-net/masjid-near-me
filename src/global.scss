@@ -37,6 +37,14 @@
 @import "@ionic/angular/css/palettes/dark.system.css";
 
 a {
-    color: darkgreen;
-    text-decoration: none;
-  }
+  color: darkgreen;
+  text-decoration: none;
+}
+
+ion-title {
+  color: #17603a;
+}
+
+ion-menu-button {
+  color: #17603a;
+}
