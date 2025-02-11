@@ -1,10 +1,12 @@
 export interface IUser {
-    email: string;
-    password: string;
-    profile?:{
+    userId: string;
+    userEmail: string;
+    userPassword: string;
+    userPhone: string;
+    userprofile?:{
         firstName?: string;
         lastName?: string;
-        phone?: string;
+        userPic?: string;
     };
     settings?:{
         radius?:number;

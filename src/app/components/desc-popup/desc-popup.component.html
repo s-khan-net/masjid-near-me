@@ -243,15 +243,38 @@
           class="btn-edit"
           *ngIf="userRole?.roleName == 'edit'; else signin_view"
         >
-          <button class="btn-masajid" *ngIf="!editing" (click)="editClick()">
-            Edit
-          </button>
-          <button class="btn-masajid" *ngIf="editing" (click)="editClick()">
-            Cancel
-          </button>
-          <button class="btn-masajid" *ngIf="editing" (click)="saveClick()">
-            Save
-          </button>
+          <ng-container *ngIf="masjidCopy.verified">
+            <button class="btn-masajid" *ngIf="!editing" (click)="editClick()">
+              Edit
+            </button>
+            <button class="btn-masajid" *ngIf="editing" (click)="editClick()">
+              Cancel
+            </button>
+            <button class="btn-masajid" *ngIf="editing" (click)="saveClick()">
+              Save
+            </button>
+          </ng-container>
+          <ng-container *ngIf="!masjidCopy.verified">
+            <ion-row>
+              <ion-col size="12">
+                <div>Verify Masjid</div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="2"></ion-col>
+              <ion-col size="4">
+                <div class="btn-masajid" (click)="verifyMasjid(true)">
+                  this is a Masjid
+                </div>
+              </ion-col>
+              <ion-col size="4">
+                <div class="btn-masajid" (click)="verifyMasjid(false)">
+                  this is NOT a Masjid
+                </div>
+              </ion-col>
+              <ion-col size="2"></ion-col>
+            </ion-row>
+          </ng-container>
         </div>
         <ng-template #signin_view>
           <div class="btn-edit">
@@ -262,3 +285,4 @@
     </ion-row>
   </ion-grid>
 </ion-content>
+<app-loader></app-loader>

@@ -5,6 +5,9 @@ import { IMasjid } from 'src/app/models/masjids.model';
 import { PopupService } from 'src/app/services/popup.service';
 import { SalaahTimesService } from 'src/app/services/salaah-times.service';
 import { Share } from '@capacitor/share';
+import { LoaderService } from 'src/app/core/services/loader.service';
+import { MasjidService } from 'src/app/services/masjid.service';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'app-desc-popup',
@@ -18,7 +21,10 @@ export class DescPopupComponent implements OnInit {
   constructor(
     private _popupService: PopupService,
     private _platform: Platform,
-    private _salahTimesService: SalaahTimesService
+    private _salahTimesService: SalaahTimesService,
+    private _loaderService: LoaderService,
+    private _masjidService: MasjidService,
+    private _locationService: LocationService
   ) {}
 
   public salaahTimesAvailable: boolean = false;
@@ -95,5 +101,33 @@ export class DescPopupComponent implements OnInit {
 
   public saveClick() {
     console.log('save this- >', JSON.stringify(this.masjidCopy));
+  }
+
+  public verifyMasjid(res: boolean): void {
+    console.log('Masjid verified', this.masjidCopy);
+    this._loaderService.hideLoader();
+    this._loaderService.LoaderMessage = 'Loading';
+    this._loaderService.ShowSpinner = true;
+    this._loaderService.showLoader();
+    if (res) {
+      this.masjidCopy.verified = true;
+    } else {
+      this.masjidCopy.notMasjid = true;
+    }
+    this._masjidService.updateMasjid(this.masjidCopy).then((res: any) => {
+      if (res) {
+        this._loaderService.hideLoader();
+        this._loaderService.LoaderMessage = 'Masjid updated successfully';
+        this._loaderService.ShowSpinner = false;
+        this._loaderService.showLoader();
+        this.dismiss();
+        setTimeout(() => {
+          this._loaderService.hideLoader();
+          this._locationService.resetLocation();
+        }, 4500);
+      }
+    });
+    this.editing = false;
+    this.dismiss();
   }
 }

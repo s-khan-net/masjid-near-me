@@ -31,7 +31,11 @@ ion-toolbar {
   --background: -o-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
   --background: -ms-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
   --background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-  --ion-color-base: transparent !important;
+  --ion-color-base: !important;
+}
+
+.toolbar-title {
+  color: #17603a;
 }
 
 input,

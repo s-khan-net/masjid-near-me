@@ -8,6 +8,26 @@ import { MnmConstants } from '../core/mnm-constants';
   providedIn: 'root'
 })
 export class MasjidService {
+  updateMasjid(masjid: IMasjid):Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      const url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}`;
+      this._dataService.putService(url, { masjid }).subscribe((data) => {
+        if (JSON.stringify(data)) {
+          if (JSON.parse(JSON.stringify(data)).body.updated) {
+            console.log('Masjid updated successfully');
+            resolve(true);
+          }
+          else {
+            console.log('Masjid update failed');
+            reject(false);
+          }
+        } else {
+          console.log('Masjid update failed');
+          reject(false);
+        }
+      });
+    });
+  }
 
   constructor(private _dataService: DataService) { }
 

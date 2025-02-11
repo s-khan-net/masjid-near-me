@@ -22,9 +22,23 @@ export class LoginComponent implements OnInit {
   public regemail: string = '';
   public regpassword: string = '';
   public regconfirmpassword: string = '';
+  public regfirstname: string = '';
+  public reglastname: string = '';
 
   public registeration: boolean = false;
 
+  public isValid(): boolean {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordPattern = /^(?=.*\d).{6,}$/;
+    if (this.registeration) {
+      return (
+        emailPattern.test(this.regemail) &&
+        passwordPattern.test(this.regpassword) &&
+        this.regpassword == this.regconfirmpassword
+      );
+    }
+    return emailPattern.test(this.email) && passwordPattern.test(this.password);
+  }
   public hide() {
     this._popupService.closePopups();
   }
@@ -32,6 +46,9 @@ export class LoginComponent implements OnInit {
     this.registeration = !this.registeration;
   }
   public async login() {
+    if (!this.isValid()) {
+      return;
+    }
     this._loaderService.LoaderMessage = 'Loading';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
@@ -56,9 +73,67 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         console.error(err);
+        this._loaderService.hideLoader();
+        this._loaderService.LoaderMessage = getMessage(err.error);
+        this._loaderService.ShowSpinner = false;
+        this._loaderService.showLoader();
+        setTimeout(() => {
+          this._loaderService.hideLoader();
+        }, 4500);
       }
     );
   }
 
-  public async signUp() {}
+  public async signUp() {
+    if (!this.isValid()) return;
+    this._loaderService.LoaderMessage = 'Loading';
+    this._loaderService.ShowSpinner = true;
+    this._loaderService.showLoader();
+    let id = Math.floor(Math.random() * 100000000000000000 + 1);
+    let user = {
+      user: {
+        userId: id.toString(),
+        userEmail: this.regemail,
+        userPassword: this.regconfirmpassword,
+        userprofile: {
+          firstName: this.regfirstname,
+          lastName: this.reglastname,
+        },
+      },
+    };
+    this._authService.signUp(user).subscribe(
+      (res) => {
+        this._loaderService.hideLoader();
+        console.log(res);
+        this._loaderService.LoaderMessage = JSON.parse(res.body).message;
+        this._loaderService.ShowSpinner = false;
+        this._loaderService.showLoader();
+        setTimeout(() => {
+          this._loaderService.hideLoader();
+        }, 4500);
+      },
+      (err) => {
+        this._loaderService.hideLoader();
+        console.error(err);
+        this._loaderService.LoaderMessage = JSON.parse(err.error).message;
+        this._loaderService.ShowSpinner = false;
+        this._loaderService.showLoader();
+        setTimeout(() => {
+          this._loaderService.hideLoader();
+        }, 4500);
+      }
+    );
+  }
 }
+function getMessage(msg: any) {
+  let message = '';
+  const jmsg = JSON.parse(JSON.stringify(msg))
+  if (jmsg.error) {
+    message = jmsg.error.message;
+  } else {
+    message = jmsg.message;
+  }
+
+  return message;
+}
+

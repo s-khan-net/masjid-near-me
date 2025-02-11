@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { LoaderService } from 'src/app/core/services/loader.service';
 import { LocationService } from 'src/app/services/location.service';
 import { PopupService } from 'src/app/services/popup.service';
+import {
+  SettingsService,
+  SettingType,
+} from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -10,7 +15,9 @@ import { PopupService } from 'src/app/services/popup.service';
 export class SettingsComponent implements OnInit {
   constructor(
     private _popupService: PopupService,
-    private _locationService: LocationService
+    private _locationService: LocationService,
+    private _settingsService: SettingsService,
+    private _loaderService: LoaderService
   ) {}
   public radii = [1000, 2000];
   public settings = {
@@ -38,13 +45,30 @@ export class SettingsComponent implements OnInit {
 
   public saveSettings() {
     if (this.settings) {
+      this._loaderService.hideLoader();
+      this._loaderService.LoaderMessage = 'Loading';
+      this._loaderService.ShowSpinner = true;
+      this._loaderService.showLoader();
       sessionStorage.removeItem('userSettings');
       sessionStorage.setItem(
         'userSettings',
         btoa(JSON.stringify(this.settings))
       );
-      this._locationService.resetLocation();
-      this.hide();
+      this._settingsService
+        .updateSettings(this.settings, SettingType.SETTINGS)
+        .then((res) => {
+          if (res) {
+            this._loaderService.hideLoader();
+            this._loaderService.LoaderMessage = 'Settings updated successfully';
+            this._loaderService.ShowSpinner = false;
+            this._loaderService.showLoader();
+            this.hide();
+            setTimeout(() => {
+              this._loaderService.hideLoader();
+              this._locationService.resetLocation();
+            }, 4500);
+          }
+        });
     }
   }
 }

@@ -33,4 +33,9 @@ export class AuthService {
       })
     );
   }
+
+  public signUp(user: any): Observable<any> {
+    let url = `${MnmConstants.baseUrl}users`;
+    return this._dataService.postService(url, user);
+  }
 }

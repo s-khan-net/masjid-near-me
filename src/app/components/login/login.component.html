@@ -34,6 +34,7 @@
               type="email"
               [(ngModel)]="email"
               aria-autocomplete="none"
+              required
             ></ion-input>
           </ion-item>
         </ion-col>
@@ -110,6 +111,30 @@
         </ion-col>
       </ion-row>
       <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">First Name</ion-label>
+            <ion-input
+              type="text"
+              [(ngModel)]="regfirstname"
+              aria-autocomplete="none"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Last Name</ion-label>
+            <ion-input
+              type="text"
+              [(ngModel)]="reglastname"
+              aria-autocomplete="none"
+            ></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
         <ion-col size="12"></ion-col>
         <ion-col size="4"
           ><a id="btnlogin" style="cursor: default" (click)="toggleForms()"
@@ -122,10 +147,10 @@
         </ion-col>
       </ion-row>
     </ng-container>
-    <ion-row *ngIf="!registeration">
+    <!--<ion-row *ngIf="!registeration">
       <ion-col size="12" style="text-align: center"> Or </ion-col>
     </ion-row>
-    <!-- <ion-row>
+     <ion-row *ngIf="!registeration">
       <ion-col size="12"> Login using google </ion-col>
     </ion-row> -->
   </ion-grid>

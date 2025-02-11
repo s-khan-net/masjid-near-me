@@ -1,20 +1,23 @@
-
 <div
-  *ngIf="(loader$ | async) as loader"
+  *ngIf="loader$ | async as loader"
   id="loader"
   class="alert alert-masjid noselect"
   style="
     position: absolute;
     z-index: 2000;
-    left: 35%;
+    left: calc(50% - 50px);
     top: 30%;
     padding: 9px;
     letter-spacing: 2px;
     padding-top: 18px;
+    padding-bottom: 18px;
   "
 >
-
-  <div style="display: inline; vertical-align: top">{{_loaderService.LoaderMessage}}</div>
-  <div style="display: inline" *ngIf="_loaderService.ShowSpinner"><ion-spinner name="dots"></ion-spinner></div>
+  <div style="display: inline; vertical-align: top">
+    {{ _loaderService.LoaderMessage }}
+  </div>
+  <div style="display: inline" *ngIf="_loaderService.ShowSpinner">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
 </div>
 <div class="back" *ngIf="loader$ | async"></div>
