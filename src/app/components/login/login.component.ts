@@ -105,7 +105,7 @@ export class LoginComponent implements OnInit {
       (res) => {
         this._loaderService.hideLoader();
         console.log(res);
-        this._loaderService.LoaderMessage = JSON.parse(res.body).message;
+        this._loaderService.LoaderMessage = getMessage(res.body)
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {
@@ -115,7 +115,7 @@ export class LoginComponent implements OnInit {
       (err) => {
         this._loaderService.hideLoader();
         console.error(err);
-        this._loaderService.LoaderMessage = JSON.parse(err.error).message;
+        this._loaderService.LoaderMessage = getMessage(err.error)
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {

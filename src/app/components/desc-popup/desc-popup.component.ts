@@ -101,6 +101,26 @@ export class DescPopupComponent implements OnInit {
 
   public saveClick() {
     console.log('save this- >', JSON.stringify(this.masjidCopy));
+    this._loaderService.hideLoader();
+    this._loaderService.LoaderMessage = 'Loading';
+    this._loaderService.ShowSpinner = true;
+    this._loaderService.showLoader();
+    //update masjid
+    this._masjidService.updateMasjid(this.masjidCopy).then((res: any) => {
+      if (res) {
+        this._loaderService.hideLoader();
+        this._loaderService.LoaderMessage = 'Masjid updated successfully';
+        this._loaderService.ShowSpinner = false;
+        this._loaderService.showLoader();
+        this.dismiss();
+        setTimeout(() => {
+          this._loaderService.hideLoader();
+          this._locationService.resetLocation();
+        }, 4500);
+      }
+    });
+    this.editing = false;
+    this.dismiss();
   }
 
   public verifyMasjid(res: boolean): void {

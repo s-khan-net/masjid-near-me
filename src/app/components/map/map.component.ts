@@ -178,7 +178,7 @@ export class MapComponent implements OnInit {
     const cameraConfig = {
       animate: true,
       coordinate: markerLocation,
-      zoom: 18,
+      zoom: 15,
     };
     this._map.setCamera(cameraConfig);
   }
@@ -198,11 +198,16 @@ export class MapComponent implements OnInit {
       )
       .subscribe(
         async (masjids: IMasjid[]) => {
+          this.moveToMarker({
+            latitude: this.currentLocaton.latitude,
+            longitude: this.currentLocaton.longitude,
+          });
           if (masjids && masjids.length > 0) {
             this.masjids = masjids;
             await this._setMarkersForMasjids();
           } else {
             this.masjids = [];
+            this._loaderService.hideLoader();
             this._loaderService.LoaderMessage = 'No Masjids Found';
             this._loaderService.showLoader();
             setTimeout(() => {
@@ -219,34 +224,56 @@ export class MapComponent implements OnInit {
       );
   }
 
-  private getInfo(masjid: IMasjid){
-    var contentStr = masjid.masjidName +'\n'+parseFloat(masjid.Distance).toFixed(2) || '' + ' Km from you. \n';
+  private getInfo(masjid: IMasjid) {
+    var contentStr =
+      masjid.masjidName + '\n' + parseFloat(masjid.Distance).toFixed(2) ||
+      '' + ' Km from you. \n';
     if (masjid.masjidId == 'xoxoxo') {
-        // if(masjid.Distance<=0.4 && $('#hidUser').val().length>1)
-        // {
-        //     contentStr = contentStr + 'You are near this masjid, please verify. ';
-        // }
-        contentStr = contentStr + 'This masjid is not verified';
+      // if(masjid.Distance<=0.4 && $('#hidUser').val().length>1)
+      // {
+      //     contentStr = contentStr + 'You are near this masjid, please verify. ';
+      // }
+      contentStr = contentStr + 'This masjid is not verified';
+    } else {
+      // if(masjid.Distance<=0.4 && $('#hidUser').val().length>1)
+      // {
+      //     contentStr = contentStr + 'You are near this masjid, please update the salaah times. ';
+      // }
+      if (
+        !masjid.masjidTimings.fajr &&
+        !masjid.masjidTimings.zuhr &&
+        !masjid.masjidTimings.asr &&
+        !masjid.masjidTimings.maghrib &&
+        !masjid.masjidTimings.isha &&
+        !masjid.masjidTimings.jumah
+      ) {
+        contentStr = contentStr + 'Salaah timings are not available.';
+      } else {
+        let m = '-';
+        contentStr =
+          contentStr +
+          'FAJR: ' +
+          masjid.masjidTimings.fajr +
+          ', DHUHR: ' +
+          masjid.masjidTimings.zuhr +
+          '\n';
+        contentStr =
+          contentStr +
+          'ASR: ' +
+          masjid.masjidTimings.asr +
+          ', MAGHRIB: ' +
+          m +
+          '\n';
+        contentStr =
+          contentStr +
+          'ISHA: ' +
+          masjid.masjidTimings.isha +
+          ', JUMAH: ' +
+          masjid.masjidTimings.jumah +
+          '\n';
+      }
     }
-    else
-    {
-        // if(masjid.Distance<=0.4 && $('#hidUser').val().length>1)
-        // {
-        //     contentStr = contentStr + 'You are near this masjid, please update the salaah times. ';
-        // }
-        if(!masjid.masjidTimings.fajr && !masjid.masjidTimings.zuhr && !masjid.masjidTimings.asr && !masjid.masjidTimings.maghrib && !masjid.masjidTimings.isha && !masjid.masjidTimings.jumah)
-        {
-            contentStr = contentStr + 'Salaah timings are not available.'
-        }
-        else
-        {
-            let m = '-'
-            contentStr = contentStr + 'FAJR: ' + masjid.masjidTimings.fajr + ', DHUHR: ' + masjid.masjidTimings.zuhr + '\n';
-            contentStr = contentStr + 'ASR: ' + masjid.masjidTimings.asr + ', MAGHRIB: ' + m + '\n';
-            contentStr = contentStr +  'ISHA: ' + masjid.masjidTimings.isha + ', JUMAH: ' + masjid.masjidTimings.jumah + '\n'
-        }
-    }
-        
+
     return contentStr;
-}
+  }
 }

@@ -15,13 +15,13 @@
   <ion-grid>
     <ion-row>
       <ion-col
-        style="border-right: 1px solid #ccc"
+        style="border-right: 1px solid #ddd"
         size="8"
         size-md="6"
         size-lg="4"
       >
         <ion-row>
-          <ion-icon name="reorder-four-outline"></ion-icon>
+          <!-- <ion-icon name="reorder-four-outline"></ion-icon> -->
           <textarea
             placeholder="Short description of the masjid"
             [readonly]="!editing"
@@ -31,7 +31,7 @@
           ></textarea>
         </ion-row>
         <ion-row>
-          <ion-icon name="swap-horizontal-outline"></ion-icon>
+          <!-- <ion-icon name="swap-horizontal-outline"></ion-icon> -->
           <input
             type="text"
             placeholder="Street"
@@ -42,7 +42,7 @@
           />
         </ion-row>
         <ion-row>
-          <ion-icon name="swap-horizontal-outline"></ion-icon>
+          <!-- <ion-icon name="swap-horizontal-outline"></ion-icon> -->
           <input
             type="text"
             placeholder="Locality"
@@ -53,7 +53,7 @@
           />
         </ion-row>
         <ion-row>
-          <ion-icon name="code-working" style="margin-top: 5px"></ion-icon>
+          <!-- <ion-icon name="code-working" style="margin-top: 5px"></ion-icon> -->
           <ion-col size="5" class="col-margin-negative">
             <input
               type="text"
@@ -76,7 +76,7 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-icon name="arrow-forward" style="margin-top: 5px"></ion-icon>
+          <!-- <ion-icon name="arrow-forward" style="margin-top: 5px"></ion-icon> -->
           <ion-col size="5" class="col-margin-negative">
             <input
               type="text"
@@ -99,7 +99,7 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-icon name="call"></ion-icon>
+          <!-- <ion-icon name="call"></ion-icon> -->
           <input
             type="text"
             placeholder="Phone"
@@ -107,6 +107,34 @@
             [readonly]="!editing"
             autocomplete="off"
           />
+        </ion-row>
+        <ion-row>
+          <div
+            id="verifyMessage"
+            *ngIf="masjidCopy.notMasjid"
+            style="color: red; font-size: small; margin-top: 5px"
+          >
+            Please be very sure that this is not a place of Salaah. <br />this
+            place will be not be shown on the map after this update.
+          </div>
+        </ion-row>
+        <ion-row
+          *ngIf="
+            editing && !masjidCopy.verified && userRole?.roleName == 'admin'
+          "
+        >
+          <div style="margin-top: 5px">
+            <div style="display: inline-block; font-weight: bold">
+              This is not a masjid?
+            </div>
+            <div style="display: inline-block; margin-left: 5px">
+              <input
+                id="chkIsNotMasjid"
+                type="checkbox"
+                [(ngModel)]="masjidCopy.notMasjid"
+              />
+            </div>
+          </div>
         </ion-row>
       </ion-col>
       <ion-col size="4" size-md="3" size-lg="2">
@@ -241,7 +269,10 @@
       <ion-col>
         <div
           class="btn-edit"
-          *ngIf="userRole?.roleName == 'edit'; else signin_view"
+          *ngIf="
+            userRole?.roleName == 'edit' || userRole?.roleName == 'admin';
+            else signin_view
+          "
         >
           <ng-container *ngIf="masjidCopy.verified">
             <button class="btn-masajid" *ngIf="!editing" (click)="editClick()">
@@ -254,13 +285,23 @@
               Save
             </button>
           </ng-container>
-          <ng-container *ngIf="!masjidCopy.verified">
+          <ng-container
+            *ngIf="
+              !masjidCopy.verified &&
+              (userRole?.roleName == 'edit' || userRole?.roleName == 'admin')
+            "
+          >
             <ion-row>
               <ion-col size="12">
                 <div
                   style="color: #17603a; letter-spacing: 3px; font-size: large"
                 >
                   Verify Masjid
+                </div>
+                <div
+                  style="color: red; font-size: small; margin-top: 5px"
+                >
+                  Please be very sure that this is, or is not a place of Salaah.
                 </div>
               </ion-col>
             </ion-row>
@@ -280,7 +321,17 @@
         </div>
         <ng-template #signin_view>
           <div class="btn-edit">
-            <button class="btn-masajid" (click)="signIn()">Sign In</button>
+            <button
+              *ngIf="userRole?.roleName == ''"
+              class="btn-masajid"
+              (click)="signIn()"
+            >
+              Sign In
+            </button>
+            <div *ngIf="userRole?.roleName == 'default'">
+              You do not have the permission to edit the masjid.<br />Please
+              contact the administrator to aquire the relevant permission
+            </div>
           </div>
         </ng-template>
       </ion-col>

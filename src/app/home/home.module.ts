@@ -13,6 +13,7 @@ import { LoginComponent } from '../components/login/login.component';
 import { UserProfileComponent } from '../components/user-profile/user-profile.component';
 import { SettingsComponent } from '../components/settings/settings.component';
 import { TimingWidjetComponent } from '../components/timing-widjet/timing-widjet.component';
+import { MnmHelpComponent } from '../components/mnm-help/mnm-help.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
@@ -26,6 +27,7 @@ import { TimingWidjetComponent } from '../components/timing-widjet/timing-widjet
     UserProfileComponent,
     SettingsComponent,
     TimingWidjetComponent,
+    MnmHelpComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

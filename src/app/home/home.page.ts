@@ -111,7 +111,7 @@ export class HomePage implements OnInit {
         break;
       case 'Compass':
         const toast = await this._toastCtrl.create({
-          duration: 500000,
+          duration: 2000,
           message: 'Coming soon',
           position: 'middle',
           cssClass:'toastClass'
@@ -129,6 +129,9 @@ export class HomePage implements OnInit {
           url: 'https://play.google.com/store/apps/details?id=me.masjidnear',
           dialogTitle: 'Share with buddies',
         });
+        break;
+      case 'Help':
+        this._popupService.showHelp();
         break;
       default:
         this._popupService.showProfile();

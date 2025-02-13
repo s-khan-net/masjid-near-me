@@ -4,10 +4,7 @@ import { SettingsComponent } from '../components/settings/settings.component';
 import { UserProfileComponent } from '../components/user-profile/user-profile.component';
 import { LoginComponent } from '../components/login/login.component';
 import { DescPopupComponent } from '../components/desc-popup/desc-popup.component';
-// import { DescPopupComponent } from '../components/desc-popup/desc-popup.component';
-// import { LoginComponent } from '../components/login/login.component';
-// import { UserProfileComponent } from '../components/user-profile/user-profile.component';
-// import { SettingsComponent } from '../components/settings/settings.component';
+import { MnmHelpComponent } from '../components/mnm-help/mnm-help.component';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +29,13 @@ export class PopupService {
     }
     this.modal = await this._modalCtrl.create({
       component: LoginComponent,
+    });
+    await this.modal.present();
+  }
+
+  public async showHelp() {
+    this.modal = await this._modalCtrl.create({
+      component: MnmHelpComponent,
     });
     await this.modal.present();
   }
