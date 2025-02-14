@@ -1,2 +1,13 @@
-<app-flmnu [masjids]="masjidMarkers" (setCamera)="markerClick($event)"></app-flmnu>
+<app-flmnu
+  [masjids]="masjidMarkers"
+  (setCamera)="markerClick($event)"
+></app-flmnu>
 <capacitor-google-map #map></capacitor-google-map>
+<div
+  id="btnReset"
+  style="width: 32px; height: 32px;"
+  title="reset location"
+  (click)="resetLocation()"
+>
+  <div id="blRing"><div id="wRing" class="plus"></div></div>
+</div>

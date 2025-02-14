@@ -23,7 +23,7 @@ import { PopupService } from 'src/app/services/popup.service';
 // } from '@capacitor/google-maps/dist/typings/definitions';
 import { LoaderService } from 'src/app/core/services/loader.service';
 
-const apiKey = 'AIzaSyAB6Njiq1JlO93CzrFg901RY9fsRYW3mcE';
+const apiKey = '';
 
 @Component({
   selector: 'app-map',
@@ -75,10 +75,11 @@ export class MapComponent implements OnInit {
             },
             title: this.getInfo(masjid),
             iconSize: {
-              width: 25,
-              height: 41,
+              width: 32,
+              height: 32,
             },
-            tintColor: { r: 10, g: 46, b: 24, a: 0 },
+            // tintColor: { r: 10, g: 46, b: 24, a: 0 },
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
           });
         });
         this._map.addMarkers(this._markers).then((ids) => {
@@ -120,7 +121,8 @@ export class MapComponent implements OnInit {
         width: 25,
         height: 41,
       },
-      tintColor: { r: 69, g: 139, b: 214, a: 0 },
+      // tintColor: { r: 69, g: 139, b: 214, a: 0 },
+      iconUrl: 'assets/icon/pin.png',
     });
     await this._map.setOnMarkerClickListener(async (event) => {
       const masjid = this.masjidMarkers.filter((m: any) => {
@@ -275,5 +277,12 @@ export class MapComponent implements OnInit {
     }
 
     return contentStr;
+  }
+
+  public async resetLocation() {
+    await this._map.removeMarkers(this._markerIds);
+    this._markerIds = [];
+    this.masjids = [];
+    this._locationService.LocatonChangedEvent.emit(this.currentLocaton);
   }
 }

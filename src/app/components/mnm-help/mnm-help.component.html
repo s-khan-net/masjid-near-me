@@ -19,4 +19,184 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
+  <ion-accordion-group class="open-sans-font">
+    <ion-accordion value="first">
+      <ion-item slot="header">
+        <ion-label>Basic usage</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <div style="padding: 4px">
+          &nbsp;&nbsp;&nbsp;When you start this application, it locates you on
+          the map <img src="./assets/icon/pin.png" />, and gets the nearest
+          masjids
+          <img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png" />,
+          masjid names are listed on the menu. On touching the marker, or on a
+          name from the menu, the details of the masjid are shown. You can
+          navigate to the masjid by touching the
+          <i class="glyphicon glyphicon-send"></i> button in the description
+          window. (this will open google maps).<br />
+        </div>
+        <div style="display: inline-block">
+          &nbsp;Refresh the search by touching
+        </div>
+        <div
+          id="btnReset"
+          style="
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+            border-radius: 50%;
+            background: darkgreen;
+            cursor: default;
+            box-shadow: 0px 1px 3px #666;
+            bottom: inherit;
+            right: inherit;
+            position: inherit;
+          "
+        >
+          <div id="blRing">
+            <div id="wRing" class="plus"></div>
+          </div>
+        </div>
+        <div style="display: inline-block">on the bottom left.</div>
+        <div>
+          You can move the pin (long press the pin to activate) to reload the
+          masjids at the new location. Watch a demo here:
+          <a href="https://youtu.be/QTt8uqg2LtQ" target="_blank"
+            ><img src="./assets/images/y_24X24.png" alt="YouTube"
+          /></a>
+        </div>
+        <div>
+          &nbsp;&nbsp;&nbsp;The masjids loaded on the menu, can be verified (the
+          ones present in our database) or unverified (the ones on google maps).
+          <div style="padding: 2px; display: inline-block">
+            <img src="./assets/images/helpV_UV.png" style="padding-top: 10px" />
+          </div>
+          <div style="display: inline-block">
+            The verifed masjids have data about the Salaah times & more details
+          </div>
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="second">
+      <ion-item slot="header">
+        <ion-label>Settings &amp; Users</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <div>
+          The Search radius, Maslak (Hanafi or Shafi), Salaah times calculation
+          method can be set from the settings page.
+        </div>
+        <div>
+          Users can register/login using their email and password. When a new
+          user is registered, 'default' permissions are assigned. The user can
+          request for 'edit' permissionsby sending an email to
+          <a href="mailto:info@masjidnear.me?subject=Edit Permissions Request">
+            info&#64;masjidnear.me
+          </a>
+          with the email id used for registration.
+        </div>
+      </div>
+    </ion-accordion>
+    <ion-accordion value="third">
+      <ion-item slot="header">
+        <ion-label>Privacy Policy</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <div id="policy">
+          <h3>Privacy Policy for Masjid Near Me</h3>
+          <p><strong>Effective Date</strong>: [Insert Date]</p>
+
+          <h3>1. Introduction</h3>
+          <p>
+            Welcome to Masjid Near Me ("we", "our", "us"). We are committed to
+            protecting your privacy and ensuring your personal information is
+            handled in a safe and responsible manner. This Privacy Policy
+            explains how we collect, use, and share information about you when
+            you use our Android app.
+          </p>
+          <h4>- Google maps</h4>
+          <p>
+            We use Google Maps services to provide you with information about
+            masjids that are near your location. The masjids are displayed as
+            markers on a map and the data for each masjid is fetched from Google
+            Maps. We store this informatin in addition to extra information
+            about the masjid such as the prayer times.
+          </p>
+
+          <h3>2. Information We Collect</h3>
+          <p>
+            <strong>Location Data</strong>: To provide you with information
+            about nearby masjids, we collect your device's precise location
+            using location services on your device. This data is essential for
+            the core functionality of our app.
+          </p>
+          <p>
+            <strong>Usage Data</strong>: We may collect information about how
+            you use our app, including interactions with the app's features.
+            This helps us improve the app's performance and your user
+            experience.
+          </p>
+
+          <h3>3. How We Use Your Information</h3>
+          <p>
+            <strong>Location Data</strong>: Your location data is used to
+            identify and display masjids near you. The information about your
+            location is not stored on our servers or shared with third parties.
+          </p>
+          <p>
+            <strong>Usage Data</strong>: Usage data (stored as logs) helps us
+            understand app performance and identify areas for improvement. This
+            data is aggregated and anonymized, ensuring it cannot be used to
+            identify you.
+          </p>
+
+          <h3>4. Sharing Your Information</h3>
+          <p>
+            We do not share any information from this app with third parties.
+            Niether do we have any cookeis or trackers being saved.
+          </p>
+
+          <h3>5. Data Security</h3>
+          <p>
+            We take data security seriously and have implemented measures to
+            protect your information from unauthorized access. Out API is
+            located at https://api.masjidnear.me ad is SSL secured. However, no
+            method of transmission over the internet or electronic storage is
+            100% secure. Therefore, while we strive to use commercially
+            acceptable means to protect your information, we cannot guarantee
+            its absolute security.
+          </p>
+
+          <h3>6. Your Rights</h3>
+          <p>
+            <strong>Access and Update</strong>: You have the right to access and
+            update your personal information. If you need assistance, please
+            contact us.
+          </p>
+          <p>
+            <strong>Withdrawal of Consent</strong>: You can withdraw your
+            consent to the collection and use of your location data at any time
+            by adjusting your device settings. Note that disabling location data
+            will affect the app's core functionality.
+          </p>
+
+          <h3>7. Changes to This Privacy Policy</h3>
+          <p>
+            We may update this Privacy Policy from time to time. When we do, we
+            will notify you by updating the "Effective Date" at the top of this
+            policy. We encourage you to review this policy periodically to stay
+            informed about how we are protecting your information.
+          </p>
+
+          <h3>8. Contact Us</h3>
+          <p>
+            If you have any questions or concerns about this Privacy Policy,
+            please contact us at:<br />
+            <a href="mailto:info@masjidnear.me"> info&#64;masjidnear.me </a>
+          </p>
+        </div>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-content>

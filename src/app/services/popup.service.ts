@@ -14,8 +14,8 @@ export class PopupService {
   public modal!: HTMLIonModalElement;
   public async showMasjidDesc(masjid: any) {
     this.modal = await this._modalCtrl.create({
-      breakpoints: [0, 0.3, 0.5, 0.8],
-      initialBreakpoint: 0.5,
+      breakpoints: [0, 0.3, 0.4, 0.5, 0.8],
+      initialBreakpoint: 0.4,
 
       component: DescPopupComponent,
       componentProps: { masjid: masjid },

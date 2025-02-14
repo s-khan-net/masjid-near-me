@@ -21,85 +21,25 @@
 <ion-content class="ion-padding">
   <ion-grid>
     <ion-row>
-      <ion-col size="12">
-        <ion-item>
-          <ion-input
-            [(ngModel)]="email"
-            aria-readonly="true"
-            readonly
-          ></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="6">
-        <ion-item>
-          <ion-label>First name:</ion-label>
-        </ion-item>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item>
-          <ion-input
-            [(ngModel)]="userProfile.firstName"
-            aria-readonly="true"
-            readonly
-          ></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="6">
-        <ion-item>
-          <ion-label>Last name:</ion-label>
-        </ion-item>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item>
-          <ion-input
-            [(ngModel)]="userProfile.lastName"
-            aria-readonly="true"
-            readonly
-          ></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="6">
-        <ion-item>
-          <ion-label>Phone:</ion-label>
-        </ion-item>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item>
-          <ion-input
-            [(ngModel)]="userProfile.phone"
-            aria-readonly="true"
-            readonly
-          ></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="6">
-        <ion-item>
-          <ion-label>Role:</ion-label>
-        </ion-item>
-      </ion-col>
-      <ion-col size="6">
-        <ion-item>
-          <ion-input
-            [(ngModel)]="role.roleName"
-            aria-readonly="true"
-            readonly
-          ></ion-input>
-        </ion-item>
-      </ion-col>
+      <div class="well">
+        {{ userProfile.firstName }} {{ userProfile.lastName }}<br />
+        Your are signed in with: {{ userProfile.email }}<br />
+        with {{ role.roleName }} permissions
+      </div>
+      <div>
+        To change your role or to know more about anything related to masjid
+        near me,<br />
+        please contact us at:
+        <a href="mailto:info@masjidnear.me?subject=Edit Permissions Request">
+          info&#64;masjidnear.me </a
+        >.
+      </div>
     </ion-row>
     <ion-row>
       <ion-col size="6"></ion-col>
       <ion-col size="4">
         <!-- <ion-button>Log in</ion-button> -->
-        <div class="btn-masajid" (click)="logOut()">Log out</div>
+        <div class="btn-masajid" (click)="logOut()">Sign out</div>
       </ion-col>
     </ion-row>
   </ion-grid>

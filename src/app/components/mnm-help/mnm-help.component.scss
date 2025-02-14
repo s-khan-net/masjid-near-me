@@ -1,4 +1,17 @@
-ion-toolbar {
+ion-toolbar{
+    --background: -moz-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+    --background: -webkit-gradient(linear,
+            left top,
+            right top,
+            color-stop(0%, #99ccbe),
+            color-stop(100%, #ffffff));
+    --background: -webkit-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+    --background: -o-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+    --background: -ms-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+    --background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+    --ion-color-base: transparent !important;
+}
+ion-item {
     --background: -moz-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
     --background: -webkit-gradient(linear,
             left top,
@@ -31,4 +44,16 @@ ion-toolbar {
         border-radius: 4px;
         color: #17603A;
     }
+}
+
+#policy {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+}
+h3, h3 {
+    color: #2c3e50;
+}
+p {
+    margin: 10px 0;
 }

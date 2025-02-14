@@ -41,10 +41,72 @@ a {
   text-decoration: none;
 }
 
+@font-face {
+  font-family: 'Amiri';
+  src: url('./assets/fonts/Amiri/Amiri-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./assets/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+}
+
+
+.open-sans-font {
+  font-family: "Open Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: 'wght' 400;
+}
+
 ion-title {
   color: #17603a;
 }
 
 ion-menu-button {
   color: #17603a;
+}
+
+#btnReset {
+  position: fixed;
+  bottom: 30px;
+  right: 88%;
+  z-index: 2;
+  /*width: 28px;
+  height: 28px;*/
+  border-radius: 50%;
+  background: darkgreen;
+  position: absolute;
+  cursor: pointer;
+  box-shadow: 0px 1px 3px #666;
+}
+
+#btnReset #blRing {
+  top: 15%;
+  left: 15%;
+  width: 72%;
+  height: 72%;
+  position: relative;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+#btnReset #blRing #wRing {
+  top: 18%;
+  left: 18%;
+  width: 64%;
+  height: 64%;
+  position: relative;
+  border-radius: 50%;
+  background-color: darkgreen;
+
+}
+
+.plus {
+  color: #fff;
+  text-align: center;
+  font-family: 'Roboto';
+  font-weight: 300;
+  font-size: 25px;
+  line-height: 13px;
 }
