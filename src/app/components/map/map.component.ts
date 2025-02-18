@@ -44,7 +44,7 @@ export class MapComponent implements OnInit {
   @ViewChild('map') mapRef!: ElementRef<HTMLElement>;
 
   public masjidMarkers: any;
-  private _map!: GoogleMap;
+  public _map!: GoogleMap;
   private _markers: Marker[] = [];
   private _markerIds: string[] = [];
 
@@ -75,7 +75,7 @@ export class MapComponent implements OnInit {
             },
             title: this.getInfo(masjid),
             iconSize: {
-              width: 32,
+              width: 35,
               height: 32,
             },
             // tintColor: { r: 10, g: 46, b: 24, a: 0 },
@@ -151,28 +151,13 @@ export class MapComponent implements OnInit {
     const masjid = this.masjidMarkers.filter((m: any) => {
       return m.markerId == event.markerId;
     })[0];
-    // const  coordinate = {
-    //   lat: this.currentLocaton.latitude,
-    //   lng: this.currentLocaton.longitude,
-    // }
-    // const m: Marker = this._markers.filter(marker => {
-    //   return marker.coordinate == coordinate
-    // })[0]
-    // const click_event: MapClickCallbackData = {
-    //   mapId: 'mnm-map',
-    //   latitude: masjid.masjidLocation.coordinates[1],
-    //   longitude: masjid.masjidLocation.coordinates[0],
-    // }
-    // await this._map.setOnMapClickListener((event) => {
-    this.moveToMarker(event);
+    this.moveToMarker(event, 17);
     setTimeout(() => {
       this._popupService.showMasjidDesc(masjid);
     }, 300);
-
-    // })
   }
 
-  public moveToMarker(event: any) {
+  public moveToMarker(event: any, zoom = 15) {
     const markerLocation = {
       lat: event.latitude,
       lng: event.longitude,
@@ -180,7 +165,7 @@ export class MapComponent implements OnInit {
     const cameraConfig = {
       animate: true,
       coordinate: markerLocation,
-      zoom: 15,
+      zoom: zoom,
     };
     this._map.setCamera(cameraConfig);
   }

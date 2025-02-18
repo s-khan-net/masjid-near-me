@@ -23,8 +23,7 @@
     <ion-row>
       <div class="well">
         {{ userProfile.firstName }} {{ userProfile.lastName }}<br />
-        Your are signed in with: {{ userProfile.email }}<br />
-        with {{ role.roleName }} permissions
+        Your are signed in with: {{ userProfile.email }} with <b>{{ role.roleName }}</b> permissions
       </div>
       <div>
         To change your role or to know more about anything related to masjid
@@ -35,7 +34,7 @@
         >.
       </div>
     </ion-row>
-    <ion-row>
+    <ion-row style="padding-top:12px">
       <ion-col size="6"></ion-col>
       <ion-col size="4">
         <!-- <ion-button>Log in</ion-button> -->
