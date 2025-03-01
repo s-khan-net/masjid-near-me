@@ -16,7 +16,7 @@ export class Interceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if(request.method == 'GET' || request.url.includes('auth')) {
+    if(request.url.includes('aladhan') || request.url.includes('auth')) {
         return next.handle(request);
     }
     let token = sessionStorage.getItem('token');

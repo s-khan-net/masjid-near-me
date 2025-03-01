@@ -2,28 +2,21 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { IMasjid } from '../../models/masjids.model';
 import { MasjidService } from '../../services/masjid.service';
-import { GoogleMap, MapType, Marker } from '@capacitor/google-maps';
+import { GoogleMap, Marker } from '@capacitor/google-maps';
 import * as _ from 'lodash';
 import {
   ICurrentLocation,
   LocationService,
 } from 'src/app/services/location.service';
-import { ModalController } from '@ionic/angular';
 import { PopupService } from 'src/app/services/popup.service';
-// import {
-//   CameraConfig,
-//   MapClickCallbackData,
-// } from '@capacitor/google-maps/dist/typings/definitions';
 import { LoaderService } from 'src/app/core/services/loader.service';
 
-const apiKey = '';
+const apiKey = 'AIzaSyAB6Njiq1JlO93CzrFg901RY9fsRYW3mcE';
 
 @Component({
   selector: 'app-map',
@@ -34,7 +27,6 @@ export class MapComponent implements OnInit {
   constructor(
     private _masjidService: MasjidService,
     private _locationService: LocationService,
-    private _modalCtrl: ModalController,
     private _popupService: PopupService,
     private _loaderService: LoaderService
   ) {}
@@ -73,7 +65,8 @@ export class MapComponent implements OnInit {
               lat: masjid.masjidLocation.coordinates[1],
               lng: masjid.masjidLocation.coordinates[0],
             },
-            title: this.getInfo(masjid),
+            title: masjid.masjidName,
+            snippet: this.getInfo(masjid),
             iconSize: {
               width: 35,
               height: 32,
@@ -212,56 +205,7 @@ export class MapComponent implements OnInit {
   }
 
   private getInfo(masjid: IMasjid) {
-    var contentStr =
-      masjid.masjidName + '\n' + parseFloat(masjid.Distance).toFixed(2) ||
-      '' + ' Km from you. \n';
-    if (masjid.masjidId == 'xoxoxo') {
-      // if(masjid.Distance<=0.4 && $('#hidUser').val().length>1)
-      // {
-      //     contentStr = contentStr + 'You are near this masjid, please verify. ';
-      // }
-      contentStr = contentStr + 'This masjid is not verified';
-    } else {
-      // if(masjid.Distance<=0.4 && $('#hidUser').val().length>1)
-      // {
-      //     contentStr = contentStr + 'You are near this masjid, please update the salaah times. ';
-      // }
-      if (
-        !masjid.masjidTimings.fajr &&
-        !masjid.masjidTimings.zuhr &&
-        !masjid.masjidTimings.asr &&
-        !masjid.masjidTimings.maghrib &&
-        !masjid.masjidTimings.isha &&
-        !masjid.masjidTimings.jumah
-      ) {
-        contentStr = contentStr + 'Salaah timings are not available.';
-      } else {
-        let m = '-';
-        contentStr =
-          contentStr +
-          'FAJR: ' +
-          masjid.masjidTimings.fajr +
-          ', DHUHR: ' +
-          masjid.masjidTimings.zuhr +
-          '\n';
-        contentStr =
-          contentStr +
-          'ASR: ' +
-          masjid.masjidTimings.asr +
-          ', MAGHRIB: ' +
-          m +
-          '\n';
-        contentStr =
-          contentStr +
-          'ISHA: ' +
-          masjid.masjidTimings.isha +
-          ', JUMAH: ' +
-          masjid.masjidTimings.jumah +
-          '\n';
-      }
-    }
-
-    return contentStr;
+    return masjid.Distance ? `Distance: ${parseFloat(masjid.Distance).toFixed(2)} Km`:'';
   }
 
   public async resetLocation() {

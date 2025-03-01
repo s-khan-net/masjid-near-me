@@ -8,6 +8,10 @@ import { MnmConstants } from '../core/mnm-constants';
   providedIn: 'root'
 })
 export class MasjidService {
+  getMasjidDetails(googlePlaceId: string):Observable<any> {
+    const url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}details/${googlePlaceId}`;
+    return this._dataService.getData(url)
+  }
   updateMasjid(masjid: IMasjid):Promise<boolean> {
     return new Promise((resolve, reject) => {
       const url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}`;

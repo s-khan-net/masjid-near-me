@@ -102,7 +102,7 @@ export class DescPopupComponent implements OnInit {
   public saveClick() {
     console.log('save this- >', JSON.stringify(this.masjidCopy));
     this._loaderService.hideLoader();
-    this._loaderService.LoaderMessage = 'Loading';
+    this._loaderService.LoaderMessage = 'Saving masjid details';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
     //update masjid
@@ -126,7 +126,7 @@ export class DescPopupComponent implements OnInit {
   public verifyMasjid(res: boolean): void {
     console.log('Masjid verified', this.masjidCopy);
     this._loaderService.hideLoader();
-    this._loaderService.LoaderMessage = 'Loading';
+    this._loaderService.LoaderMessage = 'Getting masjid details';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
     if (res) {
@@ -134,6 +134,29 @@ export class DescPopupComponent implements OnInit {
     } else {
       this.masjidCopy.notMasjid = true;
     }
+    //get masjid details from placeId
+    this._masjidService
+      .getMasjidDetails(this.masjidCopy.masjidAddress.googlePlaceId)
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            const masjidWithDetails = JSON.parse(JSON.stringify(res));
+            this.masjidCopy.masjidAddress = masjidWithDetails.masjidAddress;
+          }
+          this._loaderService.hideLoader();
+          this._updateMasjid();
+        },
+        error: (err) => {
+          console.error('err', err);
+          this._updateMasjid();
+        },
+      });
+  }
+
+  private _updateMasjid() {
+    this._loaderService.LoaderMessage = 'Updating masjid details';
+    this._loaderService.ShowSpinner = true;
+    this._loaderService.showLoader();
     this._masjidService.updateMasjid(this.masjidCopy).then((res: any) => {
       if (res) {
         this._loaderService.hideLoader();

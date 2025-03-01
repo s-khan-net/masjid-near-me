@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
-  public email: string = 'saudkhan03@outlook.com';
-  public password: string = 'aaaaaa1';
+  public email: string = '';
+  public password: string = '';
 
   public regemail: string = '';
   public regpassword: string = '';
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
       (err) => {
         console.error(err);
         this._loaderService.hideLoader();
-        this._loaderService.LoaderMessage = getMessage(err.error);
+        this._loaderService.LoaderMessage = 'Could not sign in, please try again';
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {
@@ -115,7 +115,7 @@ export class LoginComponent implements OnInit {
       (err) => {
         this._loaderService.hideLoader();
         console.error(err);
-        this._loaderService.LoaderMessage = getMessage(err.error)
+        this._loaderService.LoaderMessage = 'Could not sign up, please try again';
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {

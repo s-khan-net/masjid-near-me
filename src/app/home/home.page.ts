@@ -96,8 +96,15 @@ export class HomePage implements OnInit {
     const position = await Geolocation.getCurrentPosition();
     if (position) {
       this._locationService.currentLocation = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
+        latitude: 12.929502, //position.coords.latitude,
+        longitude: 77.586098, // position.coords.longitude,
+        //to set the location on startup then declare as below
+        // lt = 21.16980812743961; // mysuru
+        // ln = 79.0795353478851;
+        // lt = 12.929502; //Bangalore,
+        // ln = 77.586098;
+        // var lt = 52.504859; //Birmingham UK
+        // var ln = -1.863434;
       };
     } else {
       throw new Error('Position could not be found');
@@ -114,7 +121,7 @@ export class HomePage implements OnInit {
           duration: 2000,
           message: 'Coming soon',
           position: 'middle',
-          cssClass:'toastClass'
+          cssClass: 'toastClass',
         });
 
         await toast.present();
