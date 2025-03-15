@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { IMasjid } from '../../models/masjids.model';
 import { MasjidService } from '../../services/masjid.service';
 import { GoogleMap, Marker } from '@capacitor/google-maps';
@@ -150,7 +144,7 @@ export class MapComponent implements OnInit {
     }, 300);
   }
 
-  public moveToMarker(event: any, zoom = 15) {
+  public moveToMarker(event: any, zoom = 17) {
     const markerLocation = {
       lat: event.latitude,
       lng: event.longitude,
@@ -205,7 +199,9 @@ export class MapComponent implements OnInit {
   }
 
   private getInfo(masjid: IMasjid) {
-    return masjid.Distance ? `Distance: ${parseFloat(masjid.Distance).toFixed(2)} Km`:'';
+    return masjid.Distance
+      ? `Distance: ${parseFloat(masjid.Distance).toFixed(2)} Km`
+      : '';
   }
 
   public async resetLocation() {

@@ -60,7 +60,10 @@ export class FlmnuComponent implements OnChanges {
     if (!this.masjids) {
       this.currentState = 'farin';
     } else {
-      this.currentState = 'initial';
+      this.currentState = 'final';
+      setTimeout(() => {
+        this.currentState = 'initial';
+      }, 1900);
     }
   }
 
