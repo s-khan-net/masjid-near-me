@@ -33,6 +33,7 @@ export class HomePage implements OnInit {
   public locationPermissionFailed: boolean = true;
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
+  public splashTextExtra: string = '';
 
   private _toastElement!: HTMLIonToastElement;
   constructor(
@@ -200,9 +201,30 @@ export class HomePage implements OnInit {
     this.setCurrentLocation();
     //check if user is logged in
     this.setUserName();
-    setTimeout(() => {
-      this.showSplash = false;
-      this._checkNetwork();
+    let intervalcounter = 0;
+    let interval = setInterval(() => {
+      intervalcounter++;
+      if (this._locationService.mapLoaded) {
+        clearInterval(interval);
+        this.showSplash = false;
+        this._checkNetwork();
+      }
+      else {
+        this.splashText = 'Loading map... Please wait';
+        if(intervalcounter>30){
+          clearInterval(interval);
+          this.splashText = 'Sorry, Unable to load map';
+        }
+        if(intervalcounter>3){
+          this.splashTextExtra = 'This is taking a while...';
+        }
+        if(intervalcounter>5){
+          this.splashTextExtra = 'Should be done soon...';
+        }
+        if(intervalcounter>10){
+          this.splashTextExtra = 'This is taking longer than expected...';
+        }
+      }
     }, 2000);
   }
   private _checkNetwork() {

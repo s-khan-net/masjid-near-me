@@ -7,6 +7,15 @@ import { Observable } from 'rxjs';
 export class LocationService {
   constructor() {}
 
+  private _mapLoaded: boolean = false;
+
+  public get mapLoaded(): boolean {
+    return this._mapLoaded;
+  }
+  public set mapLoaded(value: boolean) {
+    this._mapLoaded = value;  
+  }
+
   public LocatonChangedEvent: EventEmitter<ICurrentLocation> =
     new EventEmitter<ICurrentLocation>();
 

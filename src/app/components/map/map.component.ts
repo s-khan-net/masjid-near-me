@@ -37,14 +37,16 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this._locationService.LocatonChangedEvent.subscribe((res) => {
       if (res) {
-        this._loaderService.LoaderMessage = 'Searching';
-        this._loaderService.ShowSpinner = true;
-        this._loaderService.showLoader();
-        this.currentLocaton = res;
+        this._locationService.mapLoaded = true;
         if (!this._map) {
+          this._loaderService.LoaderMessage = 'Loading Map';
+          this._loaderService.ShowSpinner = true;
+          this._loaderService.showLoader();
+          this.currentLocaton = res;
           this._setLocationOnMap();
+        } else {
+          this.getMasjids();
         }
-        this.getMasjids();
       }
     });
   }
@@ -132,6 +134,8 @@ export class MapComponent implements OnInit {
     this._map.setOnInfoWindowClickListener((event) => {
       this.markerClick(event);
     });
+
+    this.getMasjids();
   }
 
   public async markerClick(event: any) {
@@ -158,6 +162,11 @@ export class MapComponent implements OnInit {
   }
 
   private getMasjids(): void {
+    this._loaderService.hideLoader();
+    this._loaderService.LoaderMessage = 'Searching';
+    this._loaderService.ShowSpinner = true;
+    this._loaderService.showLoader();
+    this.currentLocaton = this._locationService.currentLocation;
     const sessionSettings = sessionStorage.getItem('userSettings');
     let radius = 2000;
     if (sessionSettings) {
