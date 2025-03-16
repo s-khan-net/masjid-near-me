@@ -1,12 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {
   trigger,
   state,
@@ -14,11 +6,9 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { MenuController, ModalController } from '@ionic/angular';
 import { IMasjid } from '../../models/masjids.model';
-import { DescPopupComponent } from '../desc-popup/desc-popup.component';
-import { PopupService } from 'src/app/services/popup.service';
 import { LocationService } from 'src/app/services/location.service';
+import { MasjidService } from 'src/app/services/masjid.service';
 
 @Component({
   animations: [
@@ -50,27 +40,30 @@ import { LocationService } from 'src/app/services/location.service';
   templateUrl: './flmnu.component.html',
   styleUrls: ['./flmnu.component.scss'],
 })
-export class FlmnuComponent implements OnChanges {
+export class FlmnuComponent implements OnInit {
   public currentState: string = 'initial';
   @Input() public masjids!: IMasjid[];
   @Output() public setCamera = new EventEmitter();
-  constructor(private _popupService: PopupService, private _locationService: LocationService,) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!this.masjids) {
-      this.currentState = 'farin';
-    } else {
-      this.currentState = 'final';
-      setTimeout(() => {
-        this.currentState = 'initial';
-      }, 1900);
-    }
-  }
+  constructor(
+    private _masjidService: MasjidService,
+    private _locationService: LocationService
+  ) {}
 
   ngOnInit() {
     this._locationService.LocatonChangedEvent.subscribe((res) => {
-      if(res) this.masjids = []
-    })
+      if (res) this.masjids = [];
+    });
+    this._masjidService.masjidsLoaded$.subscribe((masjids) => {
+      this.masjids = masjids;
+      this._toggleFLmnuInOut();
+    });
+  }
+
+  private _toggleFLmnuInOut() {
+    this.currentState = 'final';
+    setTimeout(() => {
+      this.currentState = 'initial';
+    }, 1900);
   }
 
   public toggleFlmnu(): void {

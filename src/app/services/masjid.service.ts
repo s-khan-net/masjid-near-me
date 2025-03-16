@@ -1,13 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { DataService } from '../core/services/dataservice.service';
 import { IMasjid } from '../models/masjids.model';
 import { MnmConstants } from '../core/mnm-constants';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MasjidService {
+
+  private masjidsLoaded = new Subject<IMasjid[]>();
+  masjidsLoaded$ = this.masjidsLoaded.asObservable();
+
+  public getMasjids(lt: number, ln: number, radius: number, limit: number): Observable<IMasjid[]> {
+    if (!radius) radius = 2000;
+    if (!limit) limit = 20;
+    let url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}${lt}/${ln}/${radius}/${limit}`;
+    return this._dataService.getData(url).pipe(
+      tap((masjids: IMasjid[]) => this.masjidsLoaded.next(masjids))
+    );
+  }
+
   getMasjidDetails(googlePlaceId: string):Observable<any> {
     const url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}details/${googlePlaceId}`;
     return this._dataService.getData(url)
@@ -35,12 +49,12 @@ export class MasjidService {
 
   constructor(private _dataService: DataService) { }
 
-  public getMasjids(lt: number, ln: number, radius: number, limit: number): Observable<IMasjid[]> {
-    if (!radius)
-      radius = 2000;
-    if (!limit)
-      limit = 20;
-    let url= `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}${lt}/${ln}/${radius}/${limit}`
-    return this._dataService.getData(url)
-  }
+  // public getMasjids(lt: number, ln: number, radius: number, limit: number): Observable<IMasjid[]> {
+  //   if (!radius)
+  //     radius = 2000;
+  //   if (!limit)
+  //     limit = 20;
+  //   let url= `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}${lt}/${ln}/${radius}/${limit}`
+  //   return this._dataService.getData(url)
+  // }
 }

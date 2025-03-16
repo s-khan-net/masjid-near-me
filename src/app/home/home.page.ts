@@ -225,7 +225,7 @@ export class HomePage implements OnInit {
           this.splashTextExtra = 'This is taking longer than expected...';
         }
       }
-    }, 2000);
+    }, 1900);
   }
   private _checkNetwork() {
     if (Network) {
