@@ -45,7 +45,7 @@ export class MapComponent implements OnInit {
           this.currentLocaton = res;
           this._setLocationOnMap();
         } else {
-          this.getMasjids();
+          this.getMasjids(res.dragged);
         }
       }
     });
@@ -125,6 +125,7 @@ export class MapComponent implements OnInit {
         latitude: event.latitude,
         longitude: event.longitude,
         desc: event.title,
+        dragged: true,
       };
       await this._map.removeMarkers(this._markerIds);
       this._markerIds = [];
@@ -161,7 +162,7 @@ export class MapComponent implements OnInit {
     this._map.setCamera(cameraConfig);
   }
 
-  private getMasjids(): void {
+  private getMasjids(dragged?:boolean): void {
     this._loaderService.hideLoader();
     this._loaderService.LoaderMessage = 'Searching';
     this._loaderService.ShowSpinner = true;
@@ -172,33 +173,36 @@ export class MapComponent implements OnInit {
     if (sessionSettings) {
       radius = JSON.parse(atob(sessionSettings)).radius;
     }
+    let self = this;
     this._masjidService
       .getMasjids(
         this.currentLocaton.latitude,
         this.currentLocaton.longitude,
         radius,
-        12
+        12,
+        dragged
       )
       .subscribe(
         async (masjids: IMasjid[]) => {
-          this.moveToMarker({
-            latitude: this.currentLocaton.latitude,
-            longitude: this.currentLocaton.longitude,
+          self.moveToMarker({
+            latitude: self.currentLocaton.latitude,
+            longitude: self.currentLocaton.longitude,
           });
           if (masjids && masjids.length > 0) {
-            this.masjids = masjids;
-            await this._setMarkersForMasjids();
+            self.masjids = masjids;
+            await self._setMarkersForMasjids();
+            self._loaderService.hideLoader();
           } else {
-            this.masjids = [];
-            this._loaderService.hideLoader();
-            this._loaderService.LoaderMessage = 'No Masjids Found';
-            this._loaderService.showLoader();
+            self.masjids = [];
+            self._loaderService.hideLoader();
+            self._loaderService.LoaderMessage = 'No Masjids Found';
+            this._loaderService.ShowSpinner = false;
+            self._loaderService.showLoader();
             setTimeout(() => {
-              this._loaderService.hideLoader();
-            }, 1500);
+              self._loaderService.hideLoader();
+            }, 2500);
             // this._loaderService.messageUpdateEvent.emit({message:'No Masjids Found',hide:true})
           }
-          this._loaderService.hideLoader();
         },
         (err: any) => {
           console.error('err', err);

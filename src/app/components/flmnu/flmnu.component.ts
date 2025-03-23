@@ -53,9 +53,12 @@ export class FlmnuComponent implements OnInit {
     this._locationService.LocatonChangedEvent.subscribe((res) => {
       if (res) this.masjids = [];
     });
-    this._masjidService.masjidsLoaded$.subscribe((masjids) => {
-      this.masjids = masjids;
-      this._toggleFLmnuInOut();
+    this._masjidService.masjidsLoaded$.subscribe((obj) => {
+      this.masjids = obj.masjids;
+      const t = obj.dragged ? 1000 : 0;
+      setTimeout(() => {
+        this._toggleFLmnuInOut();
+      }, t);
     });
   }
 

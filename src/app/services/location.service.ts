@@ -70,4 +70,5 @@ export interface ICurrentLocation {
   latitude: number;
   longitude: number;
   desc?: string;
+  dragged?: boolean;
 }

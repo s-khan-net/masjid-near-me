@@ -65,7 +65,7 @@ export class DescPopupComponent implements OnInit {
     if (this._platform.is('ios')) {
       window.open('maps://?q=' + destination, '_system');
     } else {
-      let label = encodeURI('My Label');
+      let label = encodeURI(this.masjid.masjidName);
       window.open('geo:0,0?q=' + destination + '(' + label + ')', '_system');
     }
   }

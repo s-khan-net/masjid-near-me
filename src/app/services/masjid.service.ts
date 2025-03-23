@@ -10,15 +10,15 @@ import { Subject } from 'rxjs';
 })
 export class MasjidService {
 
-  private masjidsLoaded = new Subject<IMasjid[]>();
+  private masjidsLoaded = new Subject<{masjids:IMasjid[], dragged:boolean}>();
   masjidsLoaded$ = this.masjidsLoaded.asObservable();
 
-  public getMasjids(lt: number, ln: number, radius: number, limit: number): Observable<IMasjid[]> {
+  public getMasjids(lt: number, ln: number, radius: number, limit: number, dragged?:boolean): Observable<IMasjid[]> {
     if (!radius) radius = 2000;
     if (!limit) limit = 20;
     let url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}${lt}/${ln}/${radius}/${limit}`;
     return this._dataService.getData(url).pipe(
-      tap((masjids: IMasjid[]) => this.masjidsLoaded.next(masjids))
+      tap((masjids: IMasjid[]) => this.masjidsLoaded.next({masjids: masjids, dragged: !!dragged}))
     );
   }
 

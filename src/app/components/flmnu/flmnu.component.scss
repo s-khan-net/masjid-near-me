@@ -19,7 +19,7 @@
   border: 1px solid #99ccbe;
   text-shadow: 0 1px 0 rgb(255 255 255 / 30%);
   position: absolute;
-  margin-top: 12px;
+  margin-top: 13px;
   box-shadow: 0 0 10px #999;
   user-select: none;
 
@@ -32,6 +32,7 @@
     padding-bottom: 4px;
     background-color: inherit;
     cursor: pointer;
+    min-height: 38px;
   }
 
   #flmnuNav {
