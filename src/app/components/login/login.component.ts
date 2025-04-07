@@ -26,17 +26,26 @@ export class LoginComponent implements OnInit {
   public reglastname: string = '';
 
   public registeration: boolean = false;
-
+  public pwdError: boolean = true;
+  public emailError: boolean = true;
+  public pwdRegError: boolean = true;
+  public emailRegError: boolean = true;
+  public compareError: boolean = false;
   public isValid(): boolean {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordPattern = /^(?=.*\d).{6,}$/;
     if (this.registeration) {
+      this.emailRegError = emailPattern.test(this.regemail);
+      this.pwdRegError = passwordPattern.test(this.regpassword);
+      this.compareError = this.regpassword != this.regconfirmpassword;
       return (
         emailPattern.test(this.regemail) &&
         passwordPattern.test(this.regpassword) &&
         this.regpassword == this.regconfirmpassword
       );
     }
+    this.emailError = emailPattern.test(this.email);
+    this.pwdError = passwordPattern.test(this.password);
     return emailPattern.test(this.email) && passwordPattern.test(this.password);
   }
   public hide() {
@@ -74,12 +83,12 @@ export class LoginComponent implements OnInit {
       (err) => {
         console.error(err);
         this._loaderService.hideLoader();
-        this._loaderService.LoaderMessage = 'Could not sign in, please try again';
+        this._loaderService.LoaderMessage = getMessage(err);
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 4500);
+        }, 5000);
       }
     );
   }
@@ -105,17 +114,21 @@ export class LoginComponent implements OnInit {
       (res) => {
         this._loaderService.hideLoader();
         console.log(res);
-        this._loaderService.LoaderMessage = getMessage(res.body)
+        if (res.body?.status.toLowerCase() == 'ok') {
+          this.hide();
+        }
+        this._loaderService.LoaderMessage = getMessage(res.body);
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 4500);
+        }, 5000);
       },
       (err) => {
         this._loaderService.hideLoader();
         console.error(err);
-        this._loaderService.LoaderMessage = 'Could not sign up, please try again';
+        this.hide();
+        this._loaderService.LoaderMessage = getMessage(err.body);
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {
@@ -127,13 +140,15 @@ export class LoginComponent implements OnInit {
 }
 function getMessage(msg: any) {
   let message = '';
-  const jmsg = JSON.parse(JSON.stringify(msg))
-  if (jmsg.error) {
-    message = jmsg.error.message;
-  } else {
-    message = jmsg.message;
+  try {
+    const jmsg = JSON.parse(JSON.stringify(msg));
+    if (jmsg.error) {
+      message = jmsg.error.message;
+    } else {
+      message = jmsg.message;
+    }
+    return message;
+  } catch (e) {
+    return msg;
   }
-
-  return message;
 }
-

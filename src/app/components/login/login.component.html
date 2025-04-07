@@ -2,16 +2,10 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="hide()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="1em"
-          height="1em"
-          viewBox="0 0 512 512"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
           <path
             d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
-            fill="#17603A"
-          />
+            fill="#17603A" />
         </svg>
       </ion-button>
     </ion-buttons>
@@ -23,31 +17,25 @@
     <ng-container *ngIf="!registeration">
       <ion-row>
         <ion-col size="12">
-          <ion-title>Please enter your email and password</ion-title>
+          <!-- <ion-title>Please enter your email and password</ion-title> -->
+          <div style="text-align: center;font-weight: 600;">Please enter your email and password</div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
           <ion-item>
             <ion-label position="floating">Email</ion-label>
-            <ion-input
-              type="email"
-              [(ngModel)]="email"
-              aria-autocomplete="none"
-              required
-            ></ion-input>
+            <ion-input type="email" [(ngModel)]="email" (keyup)="emailError = true" aria-autocomplete="none"
+              [ngStyle]="{ 'border-bottom': emailError ? '' : '1px solid red' }" required></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
           <ion-item>
-            <ion-label position="floating">Password</ion-label>
-            <ion-input
-              type="password"
-              [(ngModel)]="password"
-              aria-autocomplete="none"
-            ></ion-input>
+            <ion-label position="floating">Password {{pwdError}}</ion-label>
+            <ion-input type="password" [(ngModel)]="password" (keyup)="pwdError = true"
+              [ngStyle]="{ 'border-bottom': pwdError ? '' : '1px solid red' }" aria-autocomplete="none"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -60,29 +48,25 @@
       </ion-row>
       <ion-row>
         <ion-col style="text-align: right; padding: 22px">
-          <a id="btnForgotPwd" style="cursor: default">Forgot password?</a
-          >&nbsp;&nbsp;&nbsp;&nbsp;
-          <a id="btnReg" style="cursor: default" (click)="toggleForms()"
-            >Sign up</a
-          >
+          <a id="btnForgotPwd" style="cursor: default">Forgot password?</a>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a id="btnReg" style="cursor: default" (click)="toggleForms()">Sign up</a>
         </ion-col>
       </ion-row>
     </ng-container>
     <ng-container *ngIf="registeration">
       <ion-row>
         <ion-col size="12">
-          <ion-title>Please enter your email and password</ion-title>
+          <!-- <ion-title>Please enter your email and password</ion-title> -->
+          <div style="text-align: center;font-weight: 600;">Please enter your email and password</div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size="12">
           <ion-item>
             <ion-label position="floating">Email</ion-label>
-            <ion-input
-              type="email"
-              [(ngModel)]="regemail"
-              aria-autocomplete="none"
-            ></ion-input>
+            <ion-input type="email" [(ngModel)]="regemail" (keyup)="emailRegError = true"
+              [ngStyle]="{ 'border-bottom': emailRegError ? '' : '1px solid red' }"
+              aria-autocomplete="none"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -90,11 +74,8 @@
         <ion-col size="12">
           <ion-item>
             <ion-label position="floating">Password</ion-label>
-            <ion-input
-              type="password"
-              [(ngModel)]="regpassword"
-              aria-autocomplete="none"
-            ></ion-input>
+            <ion-input type="password" [(ngModel)]="regpassword" (keyup)="pwdRegError = true"
+              [ngStyle]="{ 'border-bottom': pwdRegError ? '' : '1px solid red' }" aria-autocomplete="none"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -102,11 +83,8 @@
         <ion-col size="12">
           <ion-item>
             <ion-label position="floating">Re enter Password</ion-label>
-            <ion-input
-              type="password"
-              [(ngModel)]="regconfirmpassword"
-              aria-autocomplete="none"
-            ></ion-input>
+            <ion-input type="password" [(ngModel)]="regconfirmpassword" (keyup)="compareError = false"
+              [ngStyle]="{ 'border-bottom': compareError ? '1px solid red' : '' }" aria-autocomplete="none"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -114,11 +92,7 @@
         <ion-col size="12">
           <ion-item>
             <ion-label position="floating">First Name</ion-label>
-            <ion-input
-              type="text"
-              [(ngModel)]="regfirstname"
-              aria-autocomplete="none"
-            ></ion-input>
+            <ion-input type="text" [(ngModel)]="regfirstname" aria-autocomplete="none"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -126,21 +100,14 @@
         <ion-col size="12">
           <ion-item>
             <ion-label position="floating">Last Name</ion-label>
-            <ion-input
-              type="text"
-              [(ngModel)]="reglastname"
-              aria-autocomplete="none"
-            ></ion-input>
+            <ion-input type="text" [(ngModel)]="reglastname" aria-autocomplete="none"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row style="margin-top: 12px;">
         <ion-col size="12"></ion-col>
-        <ion-col size="4"
-          ><a id="btnlogin" style="cursor: default" (click)="toggleForms()"
-            >&lt;&lt;</a
-          >&nbsp;&nbsp;&nbsp;&nbsp;</ion-col
-        >
+        <ion-col size="4"><a id="btnlogin" style="cursor: default"
+            (click)="toggleForms()">&lt;&lt;</a>&nbsp;&nbsp;&nbsp;&nbsp;</ion-col>
         <ion-col size="4"></ion-col>
         <ion-col size="4">
           <div class="btn-masajid" (click)="signUp()">Sign up</div>
