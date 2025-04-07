@@ -18,4 +18,47 @@ export class UsersService {
       return of(null);
     }
   }
+
+  public deleteUserAccount(userEmail: string, reason: string) {
+    const url = `${MnmConstants.baseUrl}users`;
+    //make user object with email and reason
+    const user = {
+      user: {
+        userEmail: userEmail,
+        reason: reason,
+      },
+    };
+    return this._dataService.deleteService(url, user);
+  }
+
+  public sendFeedback(userEmail: string, feedback: string) {
+    const url = `${MnmConstants.baseUrl}feedback`;
+    //make user object with email and reason
+    const user = {
+      user: {
+        userEmail: userEmail,
+        feedbackType: 'app',
+        feedbackContent: feedback,
+      },
+    };
+    return this._dataService.postService(url, user);
+  }
+
+  public sendPermissionReq(userEmail: string) {
+    const url = `${MnmConstants.baseUrl}feedback`;
+    //make user object with email and reason
+    const user = {
+      user: {
+        userEmail: userEmail,
+        feedbackType: 'permission',
+        feedbackContent: 'Permission Request',
+      },
+    };
+    return this._dataService.postService(url, user);
+  }
+
+  public  checkFeedbackPermission(email: string) {
+    const url = `${MnmConstants.baseUrl}feedback/${email}`;
+    return this._dataService.getDataWithTextHeader(url);
+  }
 }

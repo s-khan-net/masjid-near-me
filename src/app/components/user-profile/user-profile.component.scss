@@ -33,13 +33,32 @@ ion-toolbar {
     }
 }
 
-.well {
-    min-height: 20px;
-    padding: 19px;
-    margin-bottom: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #e3e3e3;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+.email-text{
+    font-size: smaller;
+    letter-spacing: 1px;
 }
+.username-text{
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.user-img{
+    vertical-align: bottom;
+    padding-right: 5px;
+    ion-icon{
+        color: #17603a; 
+        font-size: 45px;
+    }
+}
+// ion-item {
+//     --background: -moz-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+//     --background: -webkit-gradient(linear,
+//             left top,
+//             right top,
+//             color-stop(0%, #99ccbe),
+//             color-stop(100%, #ffffff));
+//     --background: -webkit-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+//     --background: -o-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+//     --background: -ms-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+//     --background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+//     --ion-color-base: transparent !important;
+// }

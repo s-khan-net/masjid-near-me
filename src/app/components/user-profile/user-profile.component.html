@@ -1,45 +1,168 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="hide()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="1em"
-          height="1em"
-          viewBox="0 0 512 512"
-        >
-          <path
-            d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
-            fill="#17603A"
-          />
-        </svg>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>User profile</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content class="ion-padding">
-  <ion-grid>
-    <ion-row>
-      <div class="well">
-        {{ userProfile.firstName }} {{ userProfile.lastName }}<br />
-        Your are signed in with: {{ userProfile.email }} with <b>{{ role.roleName }}</b> permissions
-      </div>
-      <div>
-        To change your role or to know more about anything related to masjid
-        near me,<br />
-        please contact us at:
-        <a href="mailto:info@masjidnear.me?subject=Edit Permissions Request">
-          info&#64;masjidnear.me </a
-        >.
-      </div>
-    </ion-row>
-    <ion-row style="padding-top:12px">
-      <ion-col size="6"></ion-col>
-      <ion-col size="4">
-        <!-- <ion-button>Log in</ion-button> -->
-        <div class="btn-masajid" (click)="logOut()">Sign out</div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-content>
+<div class="ion-page">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="hide()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+            <path
+              d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
+              fill="#17603A" />
+          </svg>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-grid>
+      <ion-row>
+        <div class="well">
+          <table>
+            <tr>
+              <td rowspan="2" class="user-img">
+                <ion-icon name="person-circle-outline"></ion-icon>
+              </td>
+              <td class="username-text">
+                {{ userProfile.firstName }} {{ userProfile.lastName }}
+              </td>
+            </tr>
+            <tr>
+              <td class="email-text">{{ email }}</td>
+            </tr>
+          </table>
+        </div>
+      </ion-row>
+      <ion-row>
+        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Permissions</ion-label>
+        <div class="well">
+          Your are signed in with <b>{{ role.roleName }}</b> permissions<br />
+          <ng-template [ngIf]="role.roleName === 'default'">
+            <ion-icon name="information-circle-outline" style="color: #17603a; font-size: 20px;"></ion-icon>
+            <span style="font-size: 14px; color: #17603a; font-weight: bold;">&nbsp;&nbsp;You will be able to view
+              masjids on the map.</span><br />
+            To change your role and update your permissions,<br />
+            <div class="btn-masajid" style="margin-top:5px" id="open-modal-permissions" (click)="checkUserPermission()">Contact us<span
+                style="float: right;"><ion-icon name="chevron-forward-outline"></ion-icon></span></div>
+                
+          </ng-template>
+          <ng-template [ngIf]="role.roleName === 'edit'">
+            <span style="font-size: 14px; color: #17603a; font-weight: bold;">&nbsp;&nbsp;You will be able to verify and
+              update the details of a masjid.</span><br />
+          </ng-template>
+        </div>
+      </ion-row>
+      <ion-row>
+        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Account</ion-label>
+        <div class="well">
+          <div class="btn-masajid" style="margin-top:5px" id="open-modal-feedback">Give is your Feedback<span
+              style="float: right;"><ion-icon name="chevron-forward-outline"></ion-icon></span></div>
+          <div class="btn-masajid" style="margin-top:12px" id="open-modal-deletion">Delete your account<span
+              style="float: right;"><ion-icon name="chevron-forward-outline"></ion-icon></span></div>
+        </div>
+      </ion-row>
+      <ion-row style="padding-top: 12px">
+        <ion-col size="6"></ion-col>
+        <ion-col size="4">
+          <!-- <ion-button>Log in</ion-button> -->
+          <div class="btn-masajid" (click)="logOut()">Sign out</div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-modal #permissionmodal trigger="open-modal-permissions" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]"
+      [presentingElement]="presentingElement">
+      <ng-template>
+        <ion-toolbar>
+          <ion-title>Permissions update</ion-title>
+        </ion-toolbar>
+        <ion-content class="ion-padding">
+          <div style="padding: 3px; font-size: medium;letter-spacing: 1px;">&nbsp;&nbsp;&nbsp;&nbsp;With edit
+            permissions, you will be able to verify masjids and
+            update details, such as salaah times, therefore, please be very
+            mindful of your actions as the details you add/update will
+            available for all users.</div>
+          <div class="btn-masajid" style="margin-top: 12px; height: 32px; font-size: smaller" [hidden]="!showPermissionRequestButton"
+            (click)="sendPermissionEmail()">
+            Send email to update permissions
+          </div>
+          <div [hidden]="showPermissionRequestButton">You may have already requested for elevated permissions. We are working on it.</div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <ion-modal #feedbackmodal trigger="open-modal-feedback" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75, 0.8]"
+      [presentingElement]="presentingElement">
+      <ng-template>
+        <ion-toolbar>
+          <ion-title>Feedback/Report an issue</ion-title>
+        </ion-toolbar>
+        <ion-content class="ion-padding">
+          <div style="padding: 3px; font-size: medium;letter-spacing: 1px;">Please let us know what you think of this
+            app.</div>
+          <div style="text-align: center;">
+            <textarea rows="4" style="width: 85%;" [(ngModel)]="feedbackMessage"
+              placeholder="Please enter your feedback here or Report an issue">
+            </textarea>
+            <br>
+            <span style="font-size: smaller;color:darkgrey">{{feedbackMessage.length}}/500</span>
+          </div>
+          <div class="btn-masajid" style="margin-top: 12px; height: 32px; font-size: smaller" (click)="sendFeedback()">
+            Send feedack
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <ion-modal #deletemodal trigger="open-modal-deletion" [initialBreakpoint]="0.8" [breakpoints]="[0, 0.25, 0.5, 0.75, 0.9,1]"
+      [presentingElement]="presentingElement">
+      <ng-template>
+        <ion-toolbar>
+          <ion-title>Delete account</ion-title>
+        </ion-toolbar>
+        <ion-content class="ion-padding">
+          <div style="padding: 3px; font-size: medium; letter-spacing: 1px;">
+            Are you sure you want to delete your account? Please select a reason:
+          </div>
+          <div style="margin-top: 12px;">
+            <ion-list>
+              <ion-radio-group [(ngModel)]="deletionReason">
+                <ion-item>
+                  <ion-label>Privacy concerns</ion-label>
+                  <ion-radio slot="start" value="privacy"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Not useful for me</ion-label>
+                  <ion-radio slot="start" value="not_useful"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Do not have time to use this</ion-label>
+                  <ion-radio slot="start" value="no_time"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Found a better app</ion-label>
+                  <ion-radio slot="start" value="better_app"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Having technical difficulties</ion-label>
+                  <ion-radio slot="start" value="tech_diffculties"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Other</ion-label>
+                  <ion-radio slot="start" value="other"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </ion-list>
+          </div>
+          <div style="margin-top: 12px;">
+            <textarea rows="4" style="width: 100%;" [(ngModel)]="additionalFeedback"
+              placeholder="Please provide additional details (optional)"></textarea>
+          </div>
+          <div class="btn-masajid" style="margin-top: 12px; height: 32px; font-size: smaller"
+            (click)="confirmAccountDeletion()">
+            Confirm Account Deletion
+          </div>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </ion-content>
+</div>
