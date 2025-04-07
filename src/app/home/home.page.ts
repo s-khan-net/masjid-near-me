@@ -49,13 +49,14 @@ export class HomePage implements OnInit {
       this._checkLocation();
       this._platform.backButton.subscribe(async (val) => {
         if (this._popupService.hasOpenPopups()) {
-          alert('pop');
           this._popupService.closePopups();
         } else {
           this._toastElement = await this._toastCtrl.create({
             message: 'Press back again to exit',
-            duration: 3000,
+            duration: 2000,
             position: 'bottom',
+            cssClass: 'toastClass',
+            color: 'light',
           });
           setTimeout(() => {
             this._exitArray++;
@@ -123,6 +124,7 @@ export class HomePage implements OnInit {
           message: 'Coming soon',
           position: 'middle',
           cssClass: 'toastClass',
+          color: 'light',
         });
 
         await toast.present();

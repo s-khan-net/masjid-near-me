@@ -106,21 +106,7 @@ export class DescPopupComponent implements OnInit {
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
     //update masjid
-    this._masjidService.updateMasjid(this.masjidCopy).then((res: any) => {
-      if (res) {
-        this._loaderService.hideLoader();
-        this._loaderService.LoaderMessage = 'Masjid updated successfully';
-        this._loaderService.ShowSpinner = false;
-        this._loaderService.showLoader();
-        this.dismiss();
-        setTimeout(() => {
-          this._loaderService.hideLoader();
-          this._locationService.resetLocation();
-        }, 4500);
-      }
-    });
-    this.editing = false;
-    this.dismiss();
+    this._updateMasjid();
   }
 
   public verifyMasjid(res: boolean): void {
@@ -147,8 +133,14 @@ export class DescPopupComponent implements OnInit {
           this._updateMasjid();
         },
         error: (err) => {
-          console.error('err', err);
-          this._updateMasjid();
+          if (this._accessdeniedError(err)) return;
+          this._loaderService.hideLoader();
+          this._loaderService.LoaderMessage = 'Masjid update failed';
+          this._loaderService.ShowSpinner = false;
+          this._loaderService.showLoader();
+          setTimeout(() => {
+            this._loaderService.hideLoader();
+          }, 4500);
         },
       });
   }
@@ -157,20 +149,52 @@ export class DescPopupComponent implements OnInit {
     this._loaderService.LoaderMessage = 'Updating masjid details';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
-    this._masjidService.updateMasjid(this.masjidCopy).then((res: any) => {
-      if (res) {
+    this._masjidService.updateMasjid(this.masjidCopy).then(
+      (res: any) => {
+        if (res) {
+          this._loaderService.hideLoader();
+          this._loaderService.LoaderMessage = 'Masjid updated successfully';
+          this._loaderService.ShowSpinner = false;
+          this._loaderService.showLoader();
+          this.dismiss();
+          setTimeout(() => {
+            this._loaderService.hideLoader();
+            this._locationService.resetLocation();
+          }, 4500);
+        }
+      },
+      (err) => {
+        if (this._accessdeniedError(err)) return;
         this._loaderService.hideLoader();
-        this._loaderService.LoaderMessage = 'Masjid updated successfully';
+        this._loaderService.LoaderMessage = 'Masjid update failed';
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
-        this.dismiss();
         setTimeout(() => {
           this._loaderService.hideLoader();
-          this._locationService.resetLocation();
         }, 4500);
       }
-    });
+    );
     this.editing = false;
     this.dismiss();
+  }
+
+  private _accessdeniedError(err: any): boolean {
+    if (
+      err.status === 401 ||
+      (typeof err.error == 'string' &&
+        err.error?.toLowerCase().indexOf('access denied') > -1)
+    ) {
+      this._loaderService.hideLoader();
+      this._popupService.closePopups();
+      this._loaderService.LoaderMessage =
+        'it has been a while since you have logged in. Please log in again.';
+      this._loaderService.ShowSpinner = false;
+      this._loaderService.showLoader();
+      setTimeout(() => {
+        this._loaderService.hideLoader();
+      }, 5000);
+      return true;
+    }
+    return false;
   }
 }
