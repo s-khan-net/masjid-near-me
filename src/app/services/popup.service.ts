@@ -30,6 +30,7 @@ export class PopupService {
     this.modal = await this._modalCtrl.create({
       component: LoginComponent,
     });
+    this.modal.isOpen = true;
     await this.modal.present();
   }
 
@@ -37,6 +38,7 @@ export class PopupService {
     this.modal = await this._modalCtrl.create({
       component: MnmHelpComponent,
     });
+    this.modal.isOpen = true;
     await this.modal.present();
   }
 
@@ -44,6 +46,7 @@ export class PopupService {
     this.modal = await this._modalCtrl.create({
       component: UserProfileComponent,
     });
+    this.modal.isOpen = true;
     await this.modal.present();
   }
 
@@ -51,6 +54,7 @@ export class PopupService {
     this.modal = await this._modalCtrl.create({
       component: SettingsComponent,
     });
+    this.modal.isOpen = true;
     await this.modal.present();
   }
 
