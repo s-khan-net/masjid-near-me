@@ -9,6 +9,8 @@ import {
 } from 'src/app/services/location.service';
 import { PopupService } from 'src/app/services/popup.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { UsersService } from 'src/app/services/users.service';
 
 const apiKey = 'AIzaSyAB6Njiq1JlO93CzrFg901RY9fsRYW3mcE';
 
@@ -22,7 +24,9 @@ export class MapComponent implements OnInit {
     private _masjidService: MasjidService,
     private _locationService: LocationService,
     private _popupService: PopupService,
-    private _loaderService: LoaderService
+    private _loaderService: LoaderService,
+    private _storage: StorageService,
+    private _userService: UsersService
   ) {}
 
   @Input() public masjids: IMasjid[] = [];
@@ -162,13 +166,13 @@ export class MapComponent implements OnInit {
     this._map.setCamera(cameraConfig);
   }
 
-  private getMasjids(dragged?:boolean): void {
+  private async getMasjids(dragged?: boolean): Promise<void> {
     this._loaderService.hideLoader();
     this._loaderService.LoaderMessage = 'Searching';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
     this.currentLocaton = this._locationService.currentLocation;
-    const sessionSettings = sessionStorage.getItem('userSettings');
+    const sessionSettings = await this._storage.get('userSettings');
     let radius = 2000;
     if (sessionSettings) {
       radius = JSON.parse(atob(sessionSettings)).radius;
@@ -192,6 +196,7 @@ export class MapComponent implements OnInit {
             self.masjids = masjids;
             await self._setMarkersForMasjids();
             self._loaderService.hideLoader();
+            self._checkUserTokenValidity();
           } else {
             self.masjids = [];
             self._loaderService.hideLoader();
@@ -200,6 +205,7 @@ export class MapComponent implements OnInit {
             self._loaderService.showLoader();
             setTimeout(() => {
               self._loaderService.hideLoader();
+              self._checkUserTokenValidity();
             }, 2500);
             // this._loaderService.messageUpdateEvent.emit({message:'No Masjids Found',hide:true})
           }
@@ -209,6 +215,40 @@ export class MapComponent implements OnInit {
           this._loaderService.hideLoader();
         }
       );
+  }
+  private async _checkUserTokenValidity() {
+    (await this._userService.getUserByToken()).subscribe({
+      next: (data: any) => {
+        if (!data || !data.body.user) {
+          console.log('No user found');
+          this._accessdeniedError();
+        }
+      },
+      error: (err: any) => {
+        console.log('No user found');
+        this._accessdeniedError();
+      },
+    });
+  }
+  private async _accessdeniedError(): Promise<void> {
+    const profile = await this._storage.get('userProfile');
+    this._loaderService.hideLoader();
+    //clear user data
+    this._storage.clear();
+    sessionStorage.clear();
+
+    if (profile) {
+      const name = JSON.parse(atob(profile))?.firstName;
+      this._loaderService.LoaderMessage = `Hi ${name}, it has been a while since you have logged in. Please log in again.`;
+    } else {
+      this._loaderService.LoaderMessage =
+        'it has been a while since you have logged in. Please log in again.';
+    }
+    this._loaderService.ShowSpinner = false;
+    this._loaderService.showLoader();
+    setTimeout(() => {
+      this._loaderService.hideLoader();
+    }, 5000);
   }
 
   private getInfo(masjid: IMasjid) {

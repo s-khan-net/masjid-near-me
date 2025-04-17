@@ -8,6 +8,7 @@ import { Share } from '@capacitor/share';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { MasjidService } from 'src/app/services/masjid.service';
 import { LocationService } from 'src/app/services/location.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 
 @Component({
   selector: 'app-desc-popup',
@@ -24,19 +25,20 @@ export class DescPopupComponent implements OnInit {
     private _salahTimesService: SalaahTimesService,
     private _loaderService: LoaderService,
     private _masjidService: MasjidService,
-    private _locationService: LocationService
+    private _locationService: LocationService,
+    private _storage: StorageService
   ) {}
 
   public salaahTimesAvailable: boolean = false;
   public editing: boolean = false;
   public userRole: any;
-  ngOnInit() {
+  async ngOnInit() {
     this.masjidCopy = _.cloneDeep(this.masjid);
     this.masjidCopy.masjidTimings.maghrib =
       this._salahTimesService.salaahTimes['Maghrib'];
 
     this.salaahTimesAvailable = this._checkAlltimesAvailable();
-    const role = sessionStorage.getItem('userRole');
+    const role = await this._storage.get('userRole');// sessionStorage.getItem('userRole');
     if (role) this.userRole = JSON.parse(atob(role));
     else this.userRole = { roleName: '' };
   }
@@ -186,6 +188,7 @@ export class DescPopupComponent implements OnInit {
     ) {
       this._loaderService.hideLoader();
       this._popupService.closePopups();
+      this._logOut();
       this._loaderService.LoaderMessage =
         'it has been a while since you have logged in. Please log in again.';
       this._loaderService.ShowSpinner = false;
@@ -196,5 +199,10 @@ export class DescPopupComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  private _logOut() {
+    this._storage.clear();
+    sessionStorage.clear();
   }
 }

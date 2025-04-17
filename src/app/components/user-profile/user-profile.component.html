@@ -23,7 +23,7 @@
                 <ion-icon name="person-circle-outline"></ion-icon>
               </td>
               <td class="username-text">
-                {{ userProfile.firstName }} {{ userProfile.lastName }}
+                {{ userProfile?.firstName }} {{ userProfile?.lastName }}
               </td>
             </tr>
             <tr>
@@ -35,19 +35,28 @@
       <ion-row>
         <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Permissions</ion-label>
         <div class="well">
-          Your are signed in with <b>{{ role.roleName }}</b> permissions<br />
-          <ng-template [ngIf]="role.roleName === 'default'">
-            <ion-icon name="information-circle-outline" style="color: #17603a; font-size: 20px;"></ion-icon>
+          Your are signed in with <b>{{ role?.roleName }}</b> permissions<br />
+          <ng-template [ngIf]="role?.roleName === 'default'">
+            <ion-icon name="information-circle-outline"
+              style="color: #17603a; font-size: 20px; vertical-align: middle;"></ion-icon>
             <span style="font-size: 14px; color: #17603a; font-weight: bold;">&nbsp;&nbsp;You will be able to view
               masjids on the map.</span><br />
             To change your role and update your permissions,<br />
-            <div class="btn-masajid" style="margin-top:5px" id="open-modal-permissions" (click)="checkUserPermission()">Contact us<span
-                style="float: right;"><ion-icon name="chevron-forward-outline"></ion-icon></span></div>
-                
+            <div class="btn-masajid" style="margin-top:5px" (click)="checkUserPermission()">
+              Contact us<span style="float: right;"><ion-icon name="chevron-forward-outline"></ion-icon></span></div>
+
           </ng-template>
-          <ng-template [ngIf]="role.roleName === 'edit'">
+          <ng-template [ngIf]="role?.roleName === 'edit'">
+            <ion-icon name="information-circle-outline"
+              style="color: #17603a; font-size: 20px; vertical-align: middle;"></ion-icon>
             <span style="font-size: 14px; color: #17603a; font-weight: bold;">&nbsp;&nbsp;You will be able to verify and
               update the details of a masjid.</span><br />
+          </ng-template>
+          <ng-template [ngIf]="role?.roleName === 'admin'">
+            <ion-icon name="information-circle-outline"
+              style="color: #17603a; font-size: 20px; vertical-align: middle;"></ion-icon>
+            <span style="font-size: 14px; color: #17603a; font-weight: bold;">&nbsp;&nbsp;You are an AAdministrator. Use
+              your permissions wisely.</span><br />
           </ng-template>
         </div>
       </ion-row>
@@ -69,8 +78,9 @@
       </ion-row>
     </ion-grid>
 
-    <ion-modal #permissionmodal trigger="open-modal-permissions" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75]"
-      [presentingElement]="presentingElement">
+    <ion-modal #permissionmodal [isOpen]="isPermissionModalOpen" [initialBreakpoint]="0.5"
+      [breakpoints]="[0, 0.25, 0.5, 0.75]" [presentingElement]="presentingElement"
+      (willDismiss)="isPermissionModalOpen = false">
       <ng-template>
         <ion-toolbar>
           <ion-title>Permissions update</ion-title>
@@ -81,17 +91,18 @@
             update details, such as salaah times, therefore, please be very
             mindful of your actions as the details you add/update will
             available for all users.</div>
-          <div class="btn-masajid" style="margin-top: 12px; height: 32px; font-size: smaller" [hidden]="!showPermissionRequestButton"
-            (click)="sendPermissionEmail()">
+          <div class="btn-masajid" style="margin-top: 12px; height: 32px; font-size: smaller"
+            [hidden]="!showPermissionRequestButton" (click)="sendPermissionEmail()">
             Send email to update permissions
           </div>
-          <div [hidden]="showPermissionRequestButton">You may have already requested for elevated permissions. We are working on it.</div>
+          <div [hidden]="showPermissionRequestButton">You may have already requested for elevated permissions. We are
+            working on it.</div>
         </ion-content>
       </ng-template>
     </ion-modal>
 
-    <ion-modal #feedbackmodal trigger="open-modal-feedback" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.25, 0.5, 0.75, 0.8]"
-      [presentingElement]="presentingElement">
+    <ion-modal #feedbackmodal trigger="open-modal-feedback" [initialBreakpoint]="0.5"
+      [breakpoints]="[0, 0.25, 0.5, 0.75, 0.8]" [presentingElement]="presentingElement">
       <ng-template>
         <ion-toolbar>
           <ion-title>Feedback/Report an issue</ion-title>
@@ -113,8 +124,8 @@
       </ng-template>
     </ion-modal>
 
-    <ion-modal #deletemodal trigger="open-modal-deletion" [initialBreakpoint]="0.8" [breakpoints]="[0, 0.25, 0.5, 0.75, 0.9,1]"
-      [presentingElement]="presentingElement">
+    <ion-modal #deletemodal trigger="open-modal-deletion" [initialBreakpoint]="0.8"
+      [breakpoints]="[0, 0.25, 0.5, 0.75, 0.9,1]" [presentingElement]="presentingElement">
       <ng-template>
         <ion-toolbar>
           <ion-title>Delete account</ion-title>

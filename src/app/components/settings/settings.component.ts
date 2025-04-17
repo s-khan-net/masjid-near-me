@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { StorageService } from 'src/app/core/services/storage.service';
 import { LocationService } from 'src/app/services/location.service';
 import { PopupService } from 'src/app/services/popup.service';
 import {
@@ -17,7 +19,8 @@ export class SettingsComponent implements OnInit {
     private _popupService: PopupService,
     private _locationService: LocationService,
     private _settingsService: SettingsService,
-    private _loaderService: LoaderService
+    private _loaderService: LoaderService,
+    private _storage: StorageService
   ) {}
   public radii = [1000, 2000];
   public settings = {
@@ -25,8 +28,8 @@ export class SettingsComponent implements OnInit {
     calcMethod: 2,
     school: 0,
   };
-  ngOnInit() {
-    let sessionSettings = sessionStorage.getItem('userSettings');
+  async ngOnInit() {
+    let sessionSettings = await this._storage.get('userSettings'); //sessionStorage.getItem('userSettings');
     if (sessionSettings) {
       this.settings = JSON.parse(atob(sessionSettings));
     }
@@ -43,17 +46,14 @@ export class SettingsComponent implements OnInit {
     this._popupService.closePopups();
   }
 
-  public saveSettings() {
+  public async saveSettings() {
     if (this.settings) {
       this._loaderService.hideLoader();
       this._loaderService.LoaderMessage = 'Loading';
       this._loaderService.ShowSpinner = true;
       this._loaderService.showLoader();
-      sessionStorage.removeItem('userSettings');
-      sessionStorage.setItem(
-        'userSettings',
-        btoa(JSON.stringify(this.settings))
-      );
+      await this._storage.remove('userSettings')
+      await this._storage.set('userSettings',btoa(JSON.stringify(this.settings)))
       this._settingsService
         .updateSettings(this.settings, SettingType.SETTINGS)
         .then(
@@ -86,6 +86,7 @@ export class SettingsComponent implements OnInit {
     ) {
       this._loaderService.hideLoader();
       this._popupService.closePopups();
+      this._logOut();
       this._loaderService.LoaderMessage =
         'it has been a while since you have logged in. Please log in again.';
       this._loaderService.ShowSpinner = false;
@@ -96,5 +97,9 @@ export class SettingsComponent implements OnInit {
       return true;
     }
     return false;
+  }
+  private _logOut() {
+    this._storage.clear();
+    sessionStorage.clear();
   }
 }

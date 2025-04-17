@@ -16,6 +16,9 @@ import { Share } from '@capacitor/share';
 import { App } from '@capacitor/app';
 import { AndroidSettings, NativeSettings } from 'capacitor-native-settings';
 import { Network } from '@capacitor/network';
+import { StorageService } from '../core/services/storage.service';
+import { UsersService } from '../services/users.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -42,9 +45,11 @@ export class HomePage implements OnInit {
     private _mnuCtrl: MenuController,
     private _popupService: PopupService,
     private _platform: Platform,
-    private _toastCtrl: ToastController
+    private _toastCtrl: ToastController,
+    private _storage: StorageService,
+    private _userService: UsersService
   ) {}
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if (this._platform.is('android')) {
       this._checkLocation();
       this._platform.backButton.subscribe(async (val) => {
@@ -76,21 +81,29 @@ export class HomePage implements OnInit {
   }
 
   public menuWillOpen() {
-    this.setUserName();
+    this.setUserName(true);
   }
 
-  private setUserName() {
-    const userProfile = sessionStorage.getItem('userProfile');
+  private async setUserName(mnuOpened?: boolean) {
+    const userProfile = await this._storage.get('userProfile'); //sessionStorage.getItem('userProfile');
+    /** here the token is taken from the storage and saved inn the sessionstorage
+     * so user login is maintained in the app
+     */
+    const token = await this._storage.get('token');
+    sessionStorage.removeItem('token');
+    sessionStorage.setItem('token', token);
     this.mnuItems = _.cloneDeep(MnmConstants.menuItems);
-    if (userProfile) {
-      const name = JSON.parse(atob(userProfile))?.firstName;
-      this.mnuItems.filter((x: any) => {
-        if (x.name == 'Users') {
-          x.name = name;
-        }
-      });
-    } else {
-      this.mnuItems = _.cloneDeep(MnmConstants.menuItems);
+    if (mnuOpened) {
+      if (userProfile) {
+        const name = JSON.parse(atob(userProfile))?.firstName;
+        this.mnuItems.filter((x: any) => {
+          if (x.name == 'Users') {
+            x.name = name;
+          }
+        });
+      } else {
+        this.mnuItems = _.cloneDeep(MnmConstants.menuItems);
+      }
     }
   }
 
@@ -201,8 +214,6 @@ export class HomePage implements OnInit {
 
   private _navigateToDashboard() {
     this.setCurrentLocation();
-    //check if user is logged in
-    this.setUserName();
     let intervalcounter = 0;
     let interval = setInterval(() => {
       intervalcounter++;
@@ -210,20 +221,19 @@ export class HomePage implements OnInit {
         clearInterval(interval);
         this.showSplash = false;
         this._checkNetwork();
-      }
-      else {
+      } else {
         this.splashText = 'Loading map... Please wait';
-        if(intervalcounter>30){
+        if (intervalcounter > 30) {
           clearInterval(interval);
           this.splashText = 'Sorry, Unable to load map';
         }
-        if(intervalcounter>3){
+        if (intervalcounter > 3) {
           this.splashTextExtra = 'This is taking a while...';
         }
-        if(intervalcounter>5){
+        if (intervalcounter > 5) {
           this.splashTextExtra = 'Should be done soon...';
         }
-        if(intervalcounter>10){
+        if (intervalcounter > 10) {
           this.splashTextExtra = 'This is taking longer than expected...';
         }
       }

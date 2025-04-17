@@ -16,8 +16,8 @@ export class SettingsService {
 
   updateSettings(userSettings: any, type: SettingType): Promise<boolean> {
     let res: boolean = false;
-    return new Promise((resolve, reject) => {
-      this._userService.getUserByToken().subscribe(async (data) => {
+    return new Promise(async (resolve, reject) => {
+      (await this._userService.getUserByToken()).subscribe(async (data) => {
         if (data && data.body.user) {
           let userObj = {
             user: data.body.user,
@@ -27,11 +27,11 @@ export class SettingsService {
           if (res) {
             resolve(true);
           } else {
-            reject(false);
+            resolve(false);
           }
         } else {
           console.log('No user found');
-          reject(false);
+          resolve(false);
         }
       });
     });

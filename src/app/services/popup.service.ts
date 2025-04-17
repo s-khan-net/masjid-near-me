@@ -5,12 +5,13 @@ import { UserProfileComponent } from '../components/user-profile/user-profile.co
 import { LoginComponent } from '../components/login/login.component';
 import { DescPopupComponent } from '../components/desc-popup/desc-popup.component';
 import { MnmHelpComponent } from '../components/mnm-help/mnm-help.component';
+import { StorageService } from '../core/services/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PopupService {
-  constructor(private _modalCtrl: ModalController) {}
+  constructor(private _modalCtrl: ModalController, private _storage: StorageService) {}
   public modal!: HTMLIonModalElement;
   public async showMasjidDesc(masjid: any) {
     this.modal = await this._modalCtrl.create({
@@ -23,7 +24,7 @@ export class PopupService {
     await this.modal.present();
   }
   public async showLogin() {
-    const userProfile = sessionStorage.getItem('userProfile');
+    const userProfile = await this._storage.get('userProfile');
     if (userProfile) {
       this.showProfile();
     }

@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { DataService } from '../core/services/dataservice.service';
 import { MnmConstants } from '../core/mnm-constants';
 import { of } from 'rxjs';
+import { StorageService } from '../core/services/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  constructor(private _dataService: DataService) {}
+  constructor(private _dataService: DataService, private _storage: StorageService) {}
 
-  public getUserByToken() {
+  public async getUserByToken() {
     let url = `${MnmConstants.baseUrl}auth/verify`;
-    const token = sessionStorage.getItem('token');
+    const token = await this._storage.get('token');
     if (token) {
       return this._dataService.postService(url, { token });
     } else {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from 'src/app/core/services/storage.service';
 import { LocationService } from 'src/app/services/location.service';
 import {
   SalaahTimesService,
@@ -13,7 +14,8 @@ import {
 export class TimingWidjetComponent implements OnInit {
   constructor(
     private _salaahTimesService: SalaahTimesService,
-    private _locationService: LocationService
+    private _locationService: LocationService,
+    private _storage: StorageService
   ) {}
 
   public showLoader: boolean = true;
@@ -28,9 +30,9 @@ export class TimingWidjetComponent implements OnInit {
       }
     });
   }
-  getSalaahTimes() {
+  async getSalaahTimes() {
     let d = new Date();
-    const sessionSettings = sessionStorage.getItem('userSettings');
+    const sessionSettings = await this._storage.get('userSettings');
     let school = 1;
     let method = 1;
     if (sessionSettings) {

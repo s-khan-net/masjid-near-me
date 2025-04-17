@@ -12,7 +12,7 @@ export class MnmConstants {
     { name: 'Help', icon: 'help-circle', fun: 'showHelp()' },
     { name: 'Share', icon: 'share-social', fun: 'shareApp()' },
   ];
-  public static baseUrl = 'https://api.masjidnear.me/v1/';
+  public static baseUrl = 'http://localhost:8300/v1/';
   public static masjidMidPath = 'masjids/';
   public static usersMidPath = 'users/';
   public static alAdhanTimingsPath = 'https://api.aladhan.com/v1/timings/';

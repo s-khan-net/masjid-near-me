@@ -5,7 +5,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs'
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
@@ -16,9 +16,12 @@ export class Interceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if(request.url.includes('aladhan') || request.url.includes('auth')) {
-        return next.handle(request);
+    if (request.url.includes('aladhan') || request.url.includes('auth')) {
+      return next.handle(request);
     }
+    /**using sessionstorage to store the token as the interceptor does not work as an async method
+     * if StorageService is used in the interceptor, then storge.get has to be an async method
+     */
     let token = sessionStorage.getItem('token');
     if (token) {
       const modifiedRequest = this.addToken(request, token);
@@ -36,7 +39,7 @@ export class Interceptor implements HttpInterceptor {
         setHeaders: {
           Accept: `application/json`,
           'Content-Type': `application/json`,
-          "x-auth-token": `Bearer ${token}`,
+          'x-auth-token': `Bearer ${token}`,
         },
       });
       return clone;
