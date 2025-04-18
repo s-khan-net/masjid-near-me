@@ -90,8 +90,7 @@ export class HomePage implements OnInit {
      * so user login is maintained in the app
      */
     const token = await this._storage.get('token');
-    sessionStorage.removeItem('token');
-    sessionStorage.setItem('token', token);
+
     this.mnuItems = _.cloneDeep(MnmConstants.menuItems);
     if (mnuOpened) {
       if (userProfile) {
@@ -111,8 +110,8 @@ export class HomePage implements OnInit {
     const position = await Geolocation.getCurrentPosition();
     if (position) {
       this._locationService.currentLocation = {
-        latitude: 12.929502, //position.coords.latitude,
-        longitude: 77.586098, // position.coords.longitude,
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
         //to set the location on startup then declare as below
         // lt = 21.16980812743961; // mysuru
         // ln = 79.0795353478851;

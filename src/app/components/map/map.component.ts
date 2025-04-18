@@ -217,11 +217,18 @@ export class MapComponent implements OnInit {
       );
   }
   private async _checkUserTokenValidity() {
+    const token = await this._storage.get('token');
+    if (!token) {
+      return;
+    }
     (await this._userService.getUserByToken()).subscribe({
       next: (data: any) => {
         if (!data || !data.body.user) {
           console.log('No user found');
           this._accessdeniedError();
+        } else {
+          sessionStorage.removeItem('token');
+          sessionStorage.setItem('token', token);
         }
       },
       error: (err: any) => {

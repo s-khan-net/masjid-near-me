@@ -27,6 +27,8 @@ export class UserProfileComponent implements OnInit {
   public showPermissionRequestButton: boolean = false;
 
   public isPermissionModalOpen: boolean = false;
+  public isFeedbackModalOpen: boolean = false;
+  public isDeleteModalOpen: boolean = false;
 
   @ViewChild('deletemodal') deletemodal: ElementRef | undefined;
   @ViewChild('feedbackmodal') feedbackmodal: ElementRef | undefined;
@@ -56,8 +58,10 @@ export class UserProfileComponent implements OnInit {
         this._loaderService.hideLoader();
         console.log(res);
         this._popupService.closePopups();
-        this._hideModals(this.permissionmodal);
-        this._loaderService.LoaderMessage = getMessage(res.body);
+        this.isPermissionModalOpen = false;
+        // this._hideModals(this.permissionmodal);
+        this._loaderService.LoaderMessage =
+          'Thank you for your request. We will get back to you soon.';
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {
@@ -67,9 +71,10 @@ export class UserProfileComponent implements OnInit {
       (err) => {
         if (this._accessdeniedError(err)) return;
         this._loaderService.hideLoader();
+        this._popupService.closePopups();
         console.error(err);
         this.hide();
-        this._hideModals(this.permissionmodal);
+        this.isPermissionModalOpen = false;
         this._loaderService.LoaderMessage = getMessage(err.body);
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
@@ -90,7 +95,7 @@ export class UserProfileComponent implements OnInit {
             this._loaderService.hideLoader();
             console.log(res);
             this._popupService.closePopups();
-            this._hideModals(this.feedbackmodal);
+            this.isFeedbackModalOpen = false;
             this._loaderService.LoaderMessage = getMessage(res.body);
             this._loaderService.ShowSpinner = false;
             this._loaderService.showLoader();
@@ -101,6 +106,7 @@ export class UserProfileComponent implements OnInit {
           (err) => {
             if (this._accessdeniedError(err)) return;
             this._loaderService.hideLoader();
+            this._popupService.closePopups();
             console.error(err);
             this.hide();
             this._hideModals(this.feedbackmodal);
@@ -128,7 +134,7 @@ export class UserProfileComponent implements OnInit {
             console.log(res);
             this.logOut();
             this._popupService.closePopups();
-            this._hideModals(this.deletemodal);
+            this.isDeleteModalOpen = false;
             this._loaderService.LoaderMessage = getMessage(res.body);
             this._loaderService.ShowSpinner = false;
             this._loaderService.showLoader();
@@ -140,8 +146,9 @@ export class UserProfileComponent implements OnInit {
             if (this._accessdeniedError(err)) return;
             this._loaderService.hideLoader();
             console.error(err);
+            this._popupService.closePopups();
             this.hide();
-            this._hideModals(this.deletemodal);
+            this.isDeleteModalOpen = false;
             this._loaderService.LoaderMessage = getMessage(err.body);
             this._loaderService.ShowSpinner = false;
             this._loaderService.showLoader();
@@ -222,9 +229,9 @@ export class UserProfileComponent implements OnInit {
         err.error?.toLowerCase().indexOf('access denied') > -1)
     ) {
       this._loaderService.hideLoader();
-      this._hideModals(this.permissionmodal);
-      this._hideModals(this.deletemodal);
-      this._hideModals(this.feedbackmodal);
+      this.isPermissionModalOpen = false;
+      this.isFeedbackModalOpen = false;
+      this.isDeleteModalOpen = false;
       this._popupService.closePopups();
       this.logOut();
       this._loaderService.LoaderMessage =

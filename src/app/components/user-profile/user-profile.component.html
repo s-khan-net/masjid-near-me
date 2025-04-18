@@ -63,9 +63,9 @@
       <ion-row>
         <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Account</ion-label>
         <div class="well">
-          <div class="btn-masajid" style="margin-top:5px" id="open-modal-feedback">Give is your Feedback<span
-              style="float: right;"><ion-icon name="chevron-forward-outline"></ion-icon></span></div>
-          <div class="btn-masajid" style="margin-top:12px" id="open-modal-deletion">Delete your account<span
+          <div class="btn-masajid" style="margin-top:5px" (click)="isFeedbackModalOpen = true">Give is your
+            Feedback<span style="float: right;"><ion-icon name="chevron-forward-outline"></ion-icon></span></div>
+          <div class="btn-masajid" style="margin-top:12px" (click)="isDeleteModalOpen = true">Delete your account<span
               style="float: right;"><ion-icon name="chevron-forward-outline"></ion-icon></span></div>
         </div>
       </ion-row>
@@ -80,7 +80,7 @@
 
     <ion-modal #permissionmodal [isOpen]="isPermissionModalOpen" [initialBreakpoint]="0.5"
       [breakpoints]="[0, 0.25, 0.5, 0.75]" [presentingElement]="presentingElement"
-      (willDismiss)="isPermissionModalOpen = false">
+      (willDismiss)="isPermissionModalOpen = false" handleBehavior="cycle">
       <ng-template>
         <ion-toolbar>
           <ion-title>Permissions update</ion-title>
@@ -101,8 +101,9 @@
       </ng-template>
     </ion-modal>
 
-    <ion-modal #feedbackmodal trigger="open-modal-feedback" [initialBreakpoint]="0.5"
-      [breakpoints]="[0, 0.25, 0.5, 0.75, 0.8]" [presentingElement]="presentingElement">
+    <ion-modal #feedbackmodal [isOpen]="isFeedbackModalOpen" [initialBreakpoint]="0.5"
+      [breakpoints]="[0, 0.25, 0.5, 0.75, 0.8]" [presentingElement]="presentingElement"
+      (willDismiss)="isFeedbackModalOpen = false" handleBehavior="cycle">
       <ng-template>
         <ion-toolbar>
           <ion-title>Feedback/Report an issue</ion-title>
@@ -124,8 +125,8 @@
       </ng-template>
     </ion-modal>
 
-    <ion-modal #deletemodal trigger="open-modal-deletion" [initialBreakpoint]="0.8"
-      [breakpoints]="[0, 0.25, 0.5, 0.75, 0.9,1]" [presentingElement]="presentingElement">
+    <ion-modal #deletemodal [isOpen]="isDeleteModalOpen" [initialBreakpoint]="0.8"
+      [breakpoints]="[0, 0.25, 0.5, 0.75, 0.9,1]" [presentingElement]="presentingElement" (willDismiss)="isDeleteModalOpen = false" handleBehavior="cycle">
       <ng-template>
         <ion-toolbar>
           <ion-title>Delete account</ion-title>
@@ -177,3 +178,4 @@
     </ion-modal>
   </ion-content>
 </div>
+<app-loader></app-loader>

@@ -142,10 +142,10 @@ function getMessage(msg: any) {
   let message = '';
   try {
     const jmsg = JSON.parse(JSON.stringify(msg));
-    if (jmsg.error) {
+    if (jmsg.error.message) {
       message = jmsg.error.message;
     } else {
-      message = jmsg.message;
+      message = jmsg.error;
     }
     return message;
   } catch (e) {
