@@ -60,6 +60,7 @@ export class HomePage implements OnInit {
             message: 'Press back again to exit',
             duration: 2000,
             position: 'bottom',
+            icon: 'close-outline',
             cssClass: 'toastClass',
             color: 'light',
           });
@@ -134,6 +135,7 @@ export class HomePage implements OnInit {
         const toast = await this._toastCtrl.create({
           duration: 2000,
           message: 'Coming soon',
+          icon: 'compass-outline',
           position: 'middle',
           cssClass: 'toastClass',
           color: 'light',
