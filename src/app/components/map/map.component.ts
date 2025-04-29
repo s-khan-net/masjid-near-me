@@ -39,7 +39,7 @@ export class MapComponent implements OnInit {
   private _markerIds: string[] = [];
 
   ngOnInit() {
-    this._locationService.LocatonChangedEvent.subscribe((res) => {
+    this._locationService.LocatonChangedEvent.subscribe(async (res) => {
       if (res) {
         this._locationService.mapLoaded = true;
         if (!this._map) {
@@ -49,6 +49,7 @@ export class MapComponent implements OnInit {
           this.currentLocaton = res;
           this._setLocationOnMap();
         } else {
+          await this._map.removeMarkers(this._markerIds);
           this.getMasjids(res.dragged);
         }
       }
