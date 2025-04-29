@@ -241,7 +241,7 @@ export class MapComponent implements OnInit {
   private async _accessdeniedError(): Promise<void> {
     const profile = await this._storage.get('userProfile');
     this._loaderService.hideLoader();
-    //clear user data
+    //clear user data (logout user)
     this._storage.clear();
     sessionStorage.clear();
 
@@ -266,9 +266,6 @@ export class MapComponent implements OnInit {
   }
 
   public async resetLocation() {
-    await this._map.removeMarkers(this._markerIds);
-    this._markerIds = [];
-    this.masjids = [];
     this._locationService.LocatonChangedEvent.emit(this.currentLocaton);
   }
 }
