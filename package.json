@@ -33,6 +33,7 @@
     "@capacitor/splash-screen": "^6.0.3",
     "@capacitor/status-bar": "6.0.0",
     "@ionic/angular": "^8.0.0",
+    "@ionic/storage-angular": "^4.0.0",
     "capacitor-native-settings": "^6.0.1",
     "ionicons": "^7.0.0",
     "lodash": "^4.17.21",
