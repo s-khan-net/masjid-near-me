@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
     let user = {
       user: {
         userEmail: this.email,
-        userPassword: this.password,
+        userPassword: btoa(this.password),
       },
     };
     this._authService.signIn(user).subscribe(
@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
         this._loaderService.ShowSpinner = false;
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 2500);
+        }, 5000);
 
         // this._loaderService.showMessage({message:res.body.message, hide:true})
       },
@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit {
       user: {
         userId: id.toString(),
         userEmail: this.regemail,
-        userPassword: this.regconfirmpassword,
+        userPassword: btoa(this.regconfirmpassword),
         userprofile: {
           firstName: this.regfirstname,
           lastName: this.reglastname,
@@ -117,7 +117,7 @@ export class LoginComponent implements OnInit {
         if (res.body?.status.toLowerCase() == 'ok') {
           this.hide();
         }
-        this._loaderService.LoaderMessage = getMessage(res.body);
+        this._loaderService.LoaderMessage = res.body.message;
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {

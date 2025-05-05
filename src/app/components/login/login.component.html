@@ -33,7 +33,7 @@
       <ion-row>
         <ion-col size="12">
           <ion-item>
-            <ion-label position="floating">Password {{pwdError}}</ion-label>
+            <ion-label position="floating">Password</ion-label>
             <ion-input type="password" [(ngModel)]="password" (keyup)="pwdError = true"
               [ngStyle]="{ 'border-bottom': pwdError ? '' : '1px solid red' }" aria-autocomplete="none"></ion-input>
           </ion-item>
