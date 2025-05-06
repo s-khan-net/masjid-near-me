@@ -53,6 +53,9 @@ export class UserProfileComponent implements OnInit {
   }
 
   public sendPermissionEmail() {
+    this._loaderService.LoaderMessage = 'Sending permission request';
+    this._loaderService.ShowSpinner = true;
+    this._loaderService.showLoader();
     this._userService.sendPermissionReq(this.email).subscribe(
       (res) => {
         this._loaderService.hideLoader();
@@ -87,6 +90,9 @@ export class UserProfileComponent implements OnInit {
 
   public sendFeedback() {
     if (this.feedbackMessage) {
+      this._loaderService.LoaderMessage = 'Sending feedback';
+      this._loaderService.ShowSpinner = true;
+      this._loaderService.showLoader();
       this._userService
         .sendFeedback(this.email, this.feedbackMessage)
         .subscribe(
@@ -123,6 +129,9 @@ export class UserProfileComponent implements OnInit {
 
   public confirmAccountDeletion() {
     if (this.deletionReason) {
+      this._loaderService.LoaderMessage = 'Deleting accoun';
+      this._loaderService.ShowSpinner = true;
+      this._loaderService.showLoader();
       if (this.additionalFeedback) {
         this.deletionReason = `${this.deletionReason} - ${this.additionalFeedback}`;
       }
@@ -162,27 +171,32 @@ export class UserProfileComponent implements OnInit {
 
   public checkUserPermission() {
     this._loaderService.hideLoader();
-    this._loaderService.LoaderMessage = 'Checking user permission...';
+    this._loaderService.LoaderMessage = 'Checking user permissions';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
     this._userService.checkFeedbackPermission(this.email).subscribe({
       next: (res) => {
-        let temp = res
-          .replace(/\s+/g, '')
-          .replace('}"}', '}]}')
-          .replaceAll("'", '"');
-        if (temp.indexOf('"feedback":""') > -1) {
-          temp = temp.replace('"feedback":""', '"feedback":[]');
-        } else {
-          temp = temp.replace('"feedback":"', '"feedback":[');
+        let feedbacks;
+        try {
+          feedbacks = JSON.parse(res);
+        } catch (e) {
+          // Handle JSON parsing error
+          this.openPermissionModal(false);
+          console.error('Error parsing JSON:', e);
+          this._loaderService.hideLoader();
+          this.hide();
+          this._loaderService.LoaderMessage = 'Could not check the feedback permission, pleace try again.Or send an email to <b>info@masjidnear.me</b> with the subject "Feedback permission issue"'; 
+          this._loaderService.ShowSpinner = false;
+          this._loaderService.showLoader();
+          setTimeout(() => {
+            this._loaderService.hideLoader();
+          }, 5000);
+      
+          return;
         }
-        temp = temp
-          .replaceAll('feedbackType', '"feedbackType"')
-          .replaceAll('feedbackContent', '"feedbackContent"');
-        temp = JSON.parse(temp);
-        if (temp.feedback.length > 0) {
+        if (feedbacks.length > 0) {
           //check if the feeback array contains a feedbackType of permission
-          const permissionFeedback = temp.feedback.find(
+          const permissionFeedback = feedbacks.find(
             (feedback: any) => feedback.feedbackType === 'permission'
           );
           //show the button to post request for pemission
@@ -190,7 +204,7 @@ export class UserProfileComponent implements OnInit {
             this.showPermissionRequestButton = true;
           }
         }
-        if (temp.feedback.length == 0) {
+        if (feedbacks.length == 0) {
           this.showPermissionRequestButton = true;
         }
         this._loaderService.hideLoader();
