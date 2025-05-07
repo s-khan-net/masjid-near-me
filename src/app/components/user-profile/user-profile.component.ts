@@ -53,6 +53,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   public sendPermissionEmail() {
+    this.isPermissionModalOpen = false;
     this._loaderService.LoaderMessage = 'Sending permission request';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
@@ -90,6 +91,7 @@ export class UserProfileComponent implements OnInit {
 
   public sendFeedback() {
     if (this.feedbackMessage) {
+      this.isFeedbackModalOpen = false;
       this._loaderService.LoaderMessage = 'Sending feedback';
       this._loaderService.ShowSpinner = true;
       this._loaderService.showLoader();
@@ -129,6 +131,7 @@ export class UserProfileComponent implements OnInit {
 
   public confirmAccountDeletion() {
     if (this.deletionReason) {
+      this.isDeleteModalOpen = false;
       this._loaderService.LoaderMessage = 'Deleting accoun';
       this._loaderService.ShowSpinner = true;
       this._loaderService.showLoader();
