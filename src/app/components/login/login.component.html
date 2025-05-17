@@ -76,12 +76,13 @@
             <ion-label position="floating">Password</ion-label>
             <ion-input type="password" [(ngModel)]="regpassword" (keyup)="pwdRegError = true"
               [ngStyle]="{ 'border-bottom': pwdRegError ? '' : '1px solid red' }" aria-autocomplete="none"></ion-input>
-              <ion-icon name="information-circle-outline" id="pwdInfo" slot="end"></ion-icon>
-              <ion-popover trigger="pwdInfo" triggerAction="click" side="left" alignment="start">
-                <ng-template>
-                  <ion-content class="ion-padding" style="overflow: hidden;">Password should have at least 6 charecters and at least 1 digit</ion-content>
-                </ng-template>
-              </ion-popover>
+            <ion-icon name="information-circle-outline" id="pwdInfo" slot="end"></ion-icon>
+            <ion-popover trigger="pwdInfo" triggerAction="click" side="left" alignment="start">
+              <ng-template>
+                <ion-content class="ion-padding" style="overflow: hidden;">Password should have at least 6 characters
+                  and at least 1 digit</ion-content>
+              </ng-template>
+            </ion-popover>
           </ion-item>
         </ion-col>
       </ion-row>

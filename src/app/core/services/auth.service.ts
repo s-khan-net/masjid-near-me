@@ -50,4 +50,9 @@ export class AuthService {
     let url = `${MnmConstants.baseUrl}users`;
     return this._dataService.postService(url, user);
   }
+
+  public verfiyUser(code: any): Observable<any> {
+    let url = `${MnmConstants.baseUrl}users/verify`;
+    return this._dataService.postService(url, code);
+  }
 }
