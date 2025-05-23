@@ -121,10 +121,12 @@ ion-menu-button {
   width: 100%;
 }
 
-.toastClass{
-  color:#17603a;
+.toastClass {
+  color: #17603a;
   font-size: 13px;
   font-weight: 600;
   text-align: center;
   letter-spacing: 2px;
+  width: 65%;
+  margin-left: calc(24% - 20px);
 }

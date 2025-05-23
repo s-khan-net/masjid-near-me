@@ -58,7 +58,6 @@ ion-toolbar {
 }
 
 #mnuNav>li {
-  background-color: lightgreen;
   padding: 1px;
   margin: 2px;
   border-radius: 3px;
@@ -155,6 +154,18 @@ ion-icon {
   left: 35%;
   font-size: smaller;
 }
-.toastClass{
-  --background: #FFF !important;
+
+.toastClass ::ng-deep {
+    background: #e2f0ec !important;
+}
+
+.version {
+  div {
+    font-size: 10px;
+    background: #e2f0ec !important;
+    opacity: 0.7;
+    text-align: center;
+    letter-spacing: 3px !important;
+    padding-left: 1px !important;
+  }
 }

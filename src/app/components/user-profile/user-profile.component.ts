@@ -132,7 +132,7 @@ export class UserProfileComponent implements OnInit {
   public confirmAccountDeletion() {
     if (this.deletionReason) {
       this.isDeleteModalOpen = false;
-      this._loaderService.LoaderMessage = 'Deleting accoun';
+      this._loaderService.LoaderMessage = 'Deleting account';
       this._loaderService.ShowSpinner = true;
       this._loaderService.showLoader();
       if (this.additionalFeedback) {
@@ -188,13 +188,14 @@ export class UserProfileComponent implements OnInit {
           console.error('Error parsing JSON:', e);
           this._loaderService.hideLoader();
           this.hide();
-          this._loaderService.LoaderMessage = 'Could not check the feedback permission, pleace try again.Or send an email to <b>info@masjidnear.me</b> with the subject "Feedback permission issue"'; 
+          this._loaderService.LoaderMessage =
+            'Could not check the feedback permission, pleace try again.Or send an email to <b>info@masjidnear.me</b> with the subject "Feedback permission issue"';
           this._loaderService.ShowSpinner = false;
           this._loaderService.showLoader();
           setTimeout(() => {
             this._loaderService.hideLoader();
           }, 5000);
-      
+
           return;
         }
         if (feedbacks.length > 0) {

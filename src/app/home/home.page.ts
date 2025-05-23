@@ -37,6 +37,7 @@ export class HomePage implements OnInit {
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
   public splashTextExtra: string = '';
+  public version: string = '3.0.13';
 
   private _toastElement!: HTMLIonToastElement;
   constructor(
@@ -57,7 +58,7 @@ export class HomePage implements OnInit {
           this._popupService.closePopups();
         } else {
           this._toastElement = await this._toastCtrl.create({
-            message: 'Press back again to exit',
+            message: 'Press again to exit',
             duration: 2000,
             position: 'bottom',
             icon: 'close-outline',
