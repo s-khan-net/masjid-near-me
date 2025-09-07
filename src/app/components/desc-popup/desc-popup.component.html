@@ -84,7 +84,7 @@
               <td>
                 <div id="fajr" class="time-div" [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }">
                   <span>Fajr</span>
-                  <span>{{ masjidCopy.masjidTimings?.fajr }}</span>
+                  <span>{{ masjidCopy.masjidTimings.fajr }}</span>
                 </div>
                 <ion-popover trigger="fajr" size="cover" *ngIf="editing">
                   <ng-template>
@@ -98,7 +98,7 @@
               <td>
                 <div id="zuhr" class="time-div" [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }">
                   <span>Zuhr</span>
-                  <span>{{ masjidCopy.masjidTimings?.zuhr }}</span>
+                  <span>{{ masjidCopy.masjidTimings.zuhr }}</span>
                   <ion-popover trigger="zuhr" size="cover" *ngIf="editing">
                     <ng-template>
                       <ion-datetime presentation="time" [(ngModel)]="masjidCopy.masjidTimings.zuhr"
@@ -112,7 +112,7 @@
               <td>
                 <div id="asr" class="time-div" [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }">
                   <span>Asr</span>
-                  <span>{{ masjidCopy.masjidTimings?.asr }}</span>
+                  <span>{{ masjidCopy.masjidTimings.asr }}</span>
                   <ion-popover trigger="asr" size="cover" *ngIf="editing">
                     <ng-template>
                       <ion-datetime presentation="time" [(ngModel)]="masjidCopy.masjidTimings.asr"
@@ -126,7 +126,7 @@
               <td>
                 <div id="maghrib" class="time-div">
                   <span>Maghrib</span>
-                  <span>{{ masjidCopy.masjidTimings?.maghrib }}</span>
+                  <span>{{ masjidCopy.masjidTimings.maghrib }}</span>
                 </div>
               </td>
             </tr>
@@ -134,7 +134,7 @@
               <td>
                 <div id="isha" class="time-div" [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }">
                   <span>Isha</span>
-                  <span>{{ masjidCopy.masjidTimings?.isha }}</span>
+                  <span>{{ masjidCopy.masjidTimings.isha }}</span>
                   <ion-popover trigger="isha" size="cover" *ngIf="editing">
                     <ng-template>
                       <ion-datetime presentation="time" [(ngModel)]="masjidCopy.masjidTimings.isha"
@@ -148,7 +148,7 @@
               <td>
                 <div id="jumah" class="time-div" [ngStyle]="{ border: editing ? '1px solid #CCC' : '' }">
                   <span>Jumah</span>
-                  <span>{{ masjidCopy.masjidTimings?.jumah }}</span>
+                  <span>{{ masjidCopy.masjidTimings.jumah }}</span>
                   <ion-popover trigger="jumah" size="cover" *ngIf="editing">
                     <ng-template>
                       <ion-datetime presentation="time" [(ngModel)]="masjidCopy.masjidTimings.jumah"
