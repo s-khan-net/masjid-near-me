@@ -21,7 +21,7 @@ export class SettingsComponent implements OnInit {
     private _settingsService: SettingsService,
     private _loaderService: LoaderService,
     private _storage: StorageService
-  ) {}
+  ) { }
   public radii = [1000, 2000];
   public settings = {
     radius: 2000,
@@ -48,36 +48,45 @@ export class SettingsComponent implements OnInit {
 
   public async saveSettings() {
     if (this.settings) {
-      this._loaderService.hideLoader();
-      this._loaderService.LoaderMessage = 'Loading';
-      this._loaderService.ShowSpinner = true;
-      this._loaderService.showLoader();
-      await this._storage.remove('userSettings')
-      await this._storage.set('userSettings',btoa(JSON.stringify(this.settings)))
-      this._settingsService
-        .updateSettings(this.settings, SettingType.SETTINGS)
-        .then(
-          (res) => {
-            if (res) {
-              this._loaderService.hideLoader();
-              this._loaderService.LoaderMessage =
-                'Settings updated successfully';
-              this._loaderService.ShowSpinner = false;
-              this._loaderService.showLoader();
-              this.hide();
-              setTimeout(() => {
-                this._loaderService.hideLoader();
-                this._locationService.resetLocation();
-              }, 4500);
-            }
-          },
-          (err) => {
-            if (this._accessdeniedError(err)) return;
-          }
-        );
+      try {
+        this._showLoaderWithMessage('Updating settings...', true);
+        await this._storage.remove('userSettings')
+        await this._storage.set('userSettings', btoa(JSON.stringify(this.settings)))
+        this._updateSettingsForUser();
+      }
+      catch (err) {
+        console.error(err);
+      }
     }
   }
 
+  private _updateSettingsForUser() {
+    this._settingsService
+      .updateSettings(this.settings, SettingType.SETTINGS)
+      .then((res) => {
+        this._showLoaderWithMessage('Settings updated successfully', false, 4500, true, true);
+      }, (err) => {
+        if (this._accessdeniedError(err)) return;
+      });
+  }
+
+  private _showLoaderWithMessage(msg: string, ShowSpinner: boolean = false, timeout?: number, hideMe: boolean = false, resetLocation: boolean = false) {
+    this._loaderService.hideLoader();
+    this._loaderService.LoaderMessage = msg;
+    this._loaderService.ShowSpinner = ShowSpinner;
+    this._loaderService.showLoader();
+    if(hideMe){
+      this.hide();
+    }
+    if (timeout) {
+      setTimeout(() => {
+        this._loaderService.hideLoader();
+        if(resetLocation){
+          this._locationService.resetLocation();
+        }
+      }, timeout);
+    }
+  }
   private _accessdeniedError(err: any): boolean {
     if (
       err.status === 401 ||
