@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  IonToast,
   MenuController,
-  NavController,
   Platform,
   ToastController,
 } from '@ionic/angular';
@@ -17,8 +15,7 @@ import { App } from '@capacitor/app';
 import { AndroidSettings, NativeSettings } from 'capacitor-native-settings';
 import { Network } from '@capacitor/network';
 import { StorageService } from '../core/services/storage.service';
-import { UsersService } from '../services/users.service';
-import { firstValueFrom } from 'rxjs';
+import { SettingsService } from '../services/settings.service';
 
 @Component({
   selector: 'app-home',
@@ -37,21 +34,22 @@ export class HomePage implements OnInit {
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
   public splashTextExtra: string = '';
-  public version: string = '3.1.013';
+  public version: string = '3.2.019';
+  public osVersion: number = 0;
 
   private _toastElement!: HTMLIonToastElement;
   constructor(
-    private _navCtrl: NavController,
     private _locationService: LocationService,
     private _mnuCtrl: MenuController,
     private _popupService: PopupService,
     private _platform: Platform,
     private _toastCtrl: ToastController,
     private _storage: StorageService,
-    private _userService: UsersService
-  ) {}
+    private _settingsService: SettingsService
+  ) { }
   async ngOnInit(): Promise<void> {
     if (this._platform.is('android')) {
+      this.osVersion = this._settingsService.osVersion;
       this._checkLocation();
       this._platform.backButton.subscribe(async (val) => {
         if (this._popupService.hasOpenPopups()) {
@@ -172,6 +170,19 @@ export class HomePage implements OnInit {
 
   public onMenuOpen(): void {
     console.log('opening');
+  }
+
+  public async showAppVersion() {
+    const toast = await this._toastCtrl.create({
+      duration: 2000,
+      message: 'Fixed issues in Android 15 with some UI updates. Version: ' + this.version,
+      icon: 'information-circle-outline',
+      position: 'middle',
+      cssClass: 'toastClass',
+      color: 'light',
+    });
+
+    await toast.present();
   }
 
   //#region splashText

@@ -47,7 +47,7 @@
           ></ion-icon>
         </div>
       </li>
-      <li class="version">
+      <li class="version" (click)="showAppVersion()">
         <div >
           <ion-icon name="information-circle-outline" style="vertical-align: middle;font-size: 18px;padding-right: 9px;"></ion-icon>
           <span>Version: {{version}}</span>
@@ -59,7 +59,7 @@
 <div class="ion-page" id="main-content">
   <app-loader></app-loader>
   <ion-header style="background-color: transparent">
-    <ion-toolbar style="background-color: transparent; padding-top:32px">
+    <ion-toolbar style="background-color: transparent;" [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>

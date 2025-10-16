@@ -70,7 +70,7 @@ export class UserProfileComponent implements OnInit {
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 5000);
+        }, 3500);
       },
       (err) => {
         if (this._accessdeniedError(err)) return;
@@ -84,7 +84,7 @@ export class UserProfileComponent implements OnInit {
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 4500);
+        }, 3500);
       }
     );
   }
@@ -109,7 +109,7 @@ export class UserProfileComponent implements OnInit {
             this._loaderService.showLoader();
             setTimeout(() => {
               this._loaderService.hideLoader();
-            }, 5000);
+            }, 3500);
           },
           (err) => {
             if (this._accessdeniedError(err)) return;
@@ -123,7 +123,7 @@ export class UserProfileComponent implements OnInit {
             this._loaderService.showLoader();
             setTimeout(() => {
               this._loaderService.hideLoader();
-            }, 4500);
+            }, 3500);
           }
         );
     }
@@ -152,7 +152,7 @@ export class UserProfileComponent implements OnInit {
             this._loaderService.showLoader();
             setTimeout(() => {
               this._loaderService.hideLoader();
-            }, 5000);
+            }, 3500);
           },
           (err) => {
             if (this._accessdeniedError(err)) return;
@@ -166,7 +166,7 @@ export class UserProfileComponent implements OnInit {
             this._loaderService.showLoader();
             setTimeout(() => {
               this._loaderService.hideLoader();
-            }, 4500);
+            }, 3500);
           }
         );
     }
@@ -194,7 +194,7 @@ export class UserProfileComponent implements OnInit {
           this._loaderService.showLoader();
           setTimeout(() => {
             this._loaderService.hideLoader();
-          }, 5000);
+          }, 3500);
 
           return;
         }
@@ -225,7 +225,7 @@ export class UserProfileComponent implements OnInit {
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 4500);
+        }, 3500);
       },
     });
   }
@@ -258,7 +258,7 @@ export class UserProfileComponent implements OnInit {
       this._loaderService.showLoader();
       setTimeout(() => {
         this._loaderService.hideLoader();
-      }, 5000);
+      }, 3500);
       return true;
     }
     return false;

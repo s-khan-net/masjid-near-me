@@ -1,14 +1,14 @@
 ion-toolbar {
-    --background: -moz-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+    --background: -moz-linear-gradient(0deg, #ffffff 0%, #99ccbe 100%);
     --background: -webkit-gradient(linear,
             left top,
             right top,
-            color-stop(0%, #99ccbe),
-            color-stop(100%, #ffffff));
-    --background: -webkit-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-    --background: -o-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-    --background: -ms-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-    --background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+            color-stop(0%, #ffffff),
+            color-stop(100%, #99ccbe));
+    --background: -webkit-linear-gradient(0deg, #ffffff 0%, #99ccbe 100%);
+    --background: -o-linear-gradient(0deg, #ffffff 0%, #99ccbe 100%);
+    --background: -ms-linear-gradient(0deg, #ffffff 0%, #99ccbe 100%);
+    --background: linear-gradient(0deg, #ffffff 0%, #99ccbe 100%);
     --ion-color-base: transparent !important;
 }
 
@@ -49,16 +49,3 @@ ion-toolbar {
         font-size: 45px;
     }
 }
-// ion-item {
-//     --background: -moz-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-//     --background: -webkit-gradient(linear,
-//             left top,
-//             right top,
-//             color-stop(0%, #99ccbe),
-//             color-stop(100%, #ffffff));
-//     --background: -webkit-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-//     --background: -o-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-//     --background: -ms-linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-//     --background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-//     --ion-color-base: transparent !important;
-// }

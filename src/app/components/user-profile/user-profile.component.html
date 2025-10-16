@@ -137,7 +137,7 @@
           </div>
           <div style="margin-top: 12px;">
             <ion-list>
-              <ion-radio-group [(ngModel)]="deletionReason">
+              <ion-radio-group [allowEmptySelection]="true" [(ngModel)]="deletionReason">
                 <ion-item>
                   <ion-label>Privacy concerns</ion-label>
                   <ion-radio slot="start" value="privacy"></ion-radio>
