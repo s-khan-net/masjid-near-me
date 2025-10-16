@@ -1,6 +1,6 @@
 {
   "name": "masjid-near-me",
-  "version": "3.1.002",
+  "version": "3.2.019",
   "author": "Saud Khan",
   "homepage": "https://masjidnear.me",
   "scripts": {
@@ -24,6 +24,7 @@
     "@capacitor/android": "7.4.3",
     "@capacitor/app": "7.0.2",
     "@capacitor/core": "7.4.0",
+    "@capacitor/device": "^7.0.2",
     "@capacitor/geolocation": "5.0.8",
     "@capacitor/google-maps": "^7.1.1",
     "@capacitor/haptics": "7.0.2",
