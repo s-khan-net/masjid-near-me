@@ -5,6 +5,7 @@ import {
   SalaahTimesService,
   AlAdhanOptions,
 } from 'src/app/services/salaah-times.service';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-timing-widjet',
@@ -13,6 +14,7 @@ import {
 })
 export class TimingWidjetComponent implements OnInit {
   constructor(
+    private _settingsService: SettingsService,
     private _salaahTimesService: SalaahTimesService,
     private _locationService: LocationService,
     private _storage: StorageService
@@ -22,11 +24,13 @@ export class TimingWidjetComponent implements OnInit {
   private currentLocaton: any;
   public hijriDate!: string;
   public stbArray: any[] = [];
+  public osVersion: number = 0;
   ngOnInit() {
     this._locationService.LocatonChangedEvent.subscribe((res) => {
       if (res) {
         this.currentLocaton = res;
         this.getSalaahTimes();
+        this.osVersion = this._settingsService.osVersion;
       }
     });
   }

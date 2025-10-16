@@ -1,4 +1,4 @@
-<div id="timings" class="timings-container" style="padding-top:32px">
+<div id="timings" class="timings-container" [ngStyle]="{'padding-top': osVersion >= 15 ? '42px' : ''}">
   <div class="widgetContainer" *ngIf="!showLoader">
     <div id="timesObject" style="display: none">18:01</div>
     <div class="load">{{ hijriDate }}</div>
