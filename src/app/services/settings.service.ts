@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataService } from '../core/services/dataservice.service';
 import { MnmConstants } from '../core/mnm-constants';
 import { UsersService } from './users.service';
+import { Device } from '@capacitor/device';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +11,26 @@ export class SettingsService {
   constructor(
     private _dataService: DataService,
     private _userService: UsersService
-  ) {}
+  ) {
+    this.getOsVersion();
+  }
 
-  getSettings() {}
+  private _osVersion: number = 0;
+
+  public get osVersion(): number {
+    return this._osVersion;
+  }
+
+  getOsVersion(): void {
+    Device.getInfo().then(info => {
+      if (info.platform === 'android' || info.platform === 'ios') {
+        const version = parseFloat(info.osVersion || '0');
+        this._osVersion = isNaN(version) ? 0 : version;
+      } else {
+        this._osVersion = 0;
+      }
+    });
+  }
 
   updateSettings(userSettings: any, type: SettingType): Promise<boolean> {
     let res: boolean = false;
