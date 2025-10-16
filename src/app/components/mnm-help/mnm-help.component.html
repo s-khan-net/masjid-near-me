@@ -1,279 +1,281 @@
-<ion-header>
-  <ion-toolbar style="padding-top:32px">
-    <ion-buttons slot="start">
-      <ion-button (click)="hide()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
-          <path
-            d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
-            fill="#17603A" />
-        </svg>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Help</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content class="ion-padding">
-  <ion-accordion-group class="open-sans-font">
-    <ion-accordion value="first">
-      <ion-item slot="header">
-        <ion-label>Basic usage</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content" style="font-family: Arial, sans-serif; line-height: 1.3;">
-        <div style="padding: 4px;">
-          &nbsp;&nbsp;&nbsp;When you start this application, it locates you on
-          the map <img src="./assets/icon/pin.png" />, and gets the nearest
-          masjids
-          <img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png" />,
-          masjid names are listed on the menu. On touching the marker, or on a
-          name from the menu, the details of the masjid are shown. You can
-          navigate to the masjid by touching the
-          <i class="glyphicon glyphicon-send"></i> button in the description
-          window. (this will open google maps).<br />
-        </div>
-        <div style="display: inline-block">
-          &nbsp;Refresh the search by touching
-        </div>
-        <div id="btnReset" style="
-            width: 22px;
-            height: 22px;
-            display: inline-block;
-            border-radius: 50%;
-            background: darkgreen;
-            cursor: default;
-            box-shadow: 0px 1px 3px #666;
-            bottom: inherit;
-            right: inherit;
-            position: inherit;
-          ">
-          <div id="blRing">
-            <div id="wRing" class="plus"></div>
-          </div>
-        </div>
-        <div style="display: inline-block">on the bottom left.</div>
-        <div>
-          You can move the pin (long press the pin to activate) to reload the
-          masjids at the new location. Watch a demo here:
-          <a href="https://youtube.com/shorts/XTOCx83E30I" target="_blank"><img src="./assets/images/y_24X24.png"
-              alt="YouTube" /></a>
-        </div>
-        <div>
-          &nbsp;&nbsp;&nbsp;The masjids loaded on the menu, can be verified (the
-          ones present in our database) or unverified (the ones on google maps).
-          <div style="padding: 2px; display: inline-block">
-            <img src="./assets/images/helpV_UV.png" style="padding-top: 10px" />
+<div class="ion-page">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="hide()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+            <path
+              d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
+              fill="#17603A" />
+          </svg>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Help</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-accordion-group class="open-sans-font">
+      <ion-accordion value="first">
+        <ion-item slot="header">
+          <ion-label>Basic usage</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content" style="font-family: Arial, sans-serif; line-height: 1.3;">
+          <div style="padding: 4px;">
+            &nbsp;&nbsp;&nbsp;When you start this application, it locates you on
+            the map <img src="./assets/icon/pin.png" />, and gets the nearest
+            masjids
+            <img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png" />,
+            masjid names are listed on the menu. On touching the marker, or on a
+            name from the menu, the details of the masjid are shown. You can
+            navigate to the masjid by touching the
+            <i class="glyphicon glyphicon-send"></i> button in the description
+            window. (this will open google maps).<br />
           </div>
           <div style="display: inline-block">
-            The verifed masjids have data about the Salaah times & more details
-            thst can be viewed when you tap the marker or if you tsp in the name
-            of the masjid in the menu. The details can be edited by users with
-            edit permissions.
+            &nbsp;Refresh the search by touching
           </div>
-          <div style="display: inline-block; padding-left: 46px; padding-top: 30px">
-            <img src="./assets/images/help_edits.png" />
-          </div>
-        </div>
-      </div>
-    </ion-accordion>
-    <ion-accordion value="second">
-      <ion-item slot="header">
-        <ion-label>Settings &amp; Users</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content" style="font-family: Arial, sans-serif; line-height: 1.3;">
-        <div>
-          The Search radius, Maslak (Hanafi or Shafi), Salaah times calculation
-          method can be set from the
-          <span style="
-              background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-              width: 20%;
-            "><span class="fa fa-cog" style="padding-right: 5px; padding-left: 3px"></span>Settings</span>
-          page.
-        </div>
-        <div>
-          Users can signUp/signIn using their email and password from the
-          <span style="
-              background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-              width: 20%;
-            "><span class="fa fa-user" style="padding-right: 5px; padding-left: 3px"></span>
-            Users</span>
-          page. Watch this video <a href="https://youtube.com/shorts/_bAOAHck9ew?si=CITGTSvEWfm_BEyD" target="_blank"><img
-              src="./assets/images/y_24X24.png" alt="YouTube" /></a> to see how you can seamlessly sign up from the app.
-          When a new user is registered, 'default' permissions are
-          assigned. The user can request for 'edit' from the user profile page.
-          The request will be sent to the admin for approval. Watch this video <a
-            href="https://youtube.com/shorts/yYKvChkZZxo" target="_blank"><img src="./assets/images/y_24X24.png"
-              alt="YouTube" /></a> to see how you can request for elevated permissions.
-        </div>
-      </div>
-    </ion-accordion>
-    <ion-accordion value="third">
-      <ion-item slot="header">
-        <ion-label>More usage details</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content" style="font-family: Arial, sans-serif; line-height: 1.3;">
-        <div style="padding: 4px">
-          <div class="row">
-            <div class="col-xs-8">
-              &nbsp;&nbsp;&nbsp;The masjids loaded on the menu, can be verified
-              (the ones present in our database) or unverified (the ones on
-              google maps).
+          <div id="btnReset" style="
+              width: 22px;
+              height: 22px;
+              display: inline-block;
+              border-radius: 50%;
+              background: darkgreen;
+              cursor: default;
+              box-shadow: 0px 1px 3px #666;
+              bottom: inherit;
+              right: inherit;
+              position: inherit;
+            ">
+            <div id="blRing">
+              <div id="wRing" class="plus"></div>
             </div>
-            <div class="col-xs-4" style="padding: 2px">
+          </div>
+          <div style="display: inline-block">on the bottom left.</div>
+          <div>
+            You can move the pin (long press the pin to activate) to reload the
+            masjids at the new location. Watch a demo here:
+            <a href="https://youtube.com/shorts/XTOCx83E30I" target="_blank"><img src="./assets/images/y_24X24.png"
+                alt="YouTube" /></a>
+          </div>
+          <div>
+            &nbsp;&nbsp;&nbsp;The masjids loaded on the menu, can be verified (the
+            ones present in our database) or unverified (the ones on google maps).
+            <div style="padding: 2px; display: inline-block">
               <img src="./assets/images/helpV_UV.png" style="padding-top: 10px" />
             </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              &nbsp;Registered users with edit permissions, can edit the details
-              by using
-              <span class="infoWTimes"><button style="background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-              width: 15%;">edit</button></span>
-              button, this will make the fields editable. The changes can be
-              saved by touching the
-              <span class="infoWTimes"><button style="background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
-              width: 15%;">save</button></span>
-              button. The changes will be reflected immediately on the map. Watch a demo here:
-              <a href="https://youtube.com/shorts/BWVFAwVxtlo" target="_blank"><img src="./assets/images/y_24X24.png"
-                  alt="YouTube" /></a>
+            <div style="display: inline-block">
+              The verifed masjids have data about the Salaah times & more details
+              thst can be viewed when you tap the marker or if you tsp in the name
+              of the masjid in the menu. The details can be edited by users with
+              edit permissions.
             </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-12">
-              Verifying masjids can be done choosing the options to verify a
-              masjid from the edit window. When an unverified masjid is
-              selected, the option to mark a masjid as verified is available.
-              <img src="./assets/images/help_verify.png" />
-              After a masjid is verified, the details are
-              reflected immediatly on the map. Watch a demo here:
-              <a href="https://youtube.com/shorts/qt0AUJWkoBw" target="_blank"><img src="./assets/images/y_24X24.png"
-                  alt="YouTube" /></a>
+            <div style="display: inline-block; padding-left: 46px; padding-top: 30px">
+              <img src="./assets/images/help_edits.png" />
             </div>
           </div>
         </div>
-      </div>
-    </ion-accordion>
-    <ion-accordion value="fourth">
-      <ion-item slot="header">
-        <ion-label>Privacy Policy</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">
-        <div id="policy">
-          <h3>Privacy Policy for Masjid Near Me</h3>
-          <p><strong>Effective Date</strong>: 19th April 2025</p>
-
-          <h3>1. Introduction</h3>
-          <p>
-            Welcome to Masjid Near Me ("we", "our", "us"). We are committed to
-            protecting your privacy and ensuring your personal information is
-            handled in a safe and responsible manner. This Privacy Policy
-            explains how we collect, use, and share information about you when
-            you use our Android app.
-          </p>
-          <h4>- Google maps</h4>
-          <div class="col-xs-4" style="padding: 2px">
-            <img src="./assets/images/powered_by_google_on_white.png" style="padding-top: 10px" />
+      </ion-accordion>
+      <ion-accordion value="second">
+        <ion-item slot="header">
+          <ion-label>Settings &amp; Users</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content" style="font-family: Arial, sans-serif; line-height: 1.3;">
+          <div>
+            The Search radius, Maslak (Hanafi or Shafi), Salaah times calculation
+            method can be set from the
+            <span style="
+                background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+                width: 20%;
+              "><span class="fa fa-cog" style="padding-right: 5px; padding-left: 3px"></span>Settings</span>
+            page.
           </div>
-          <p>
-            We use Google Maps services to provide you with information about
-            masjids that are near your location. The masjids are displayed as
-            markers on a map and the data for each masjid is fetched from Google
-            Maps. We store this informatin in addition to extra information
-            about the masjid such as the prayer times.
-          </p>
-
-          <h3>2. Information We Collect</h3>
-          <p>
-            <strong>Location Data</strong>: To provide you with information
-            about nearby masjids, we obtain your device's precise location using
-            location services on your device. This data is essential for the
-            core functionality of our app. This data is not sent off the app and
-            is never saved anywhere.
-          </p>
-          <p>
-            <strong>Usage Data</strong>: We may collect information about how
-            you use our app, including interactions with the app's features.
-            This helps us improve the app's performance and your user
-            experience.
-          </p>
-          <p>
-            <strong>User registration information</strong>: We do not require any
-            user registration or personal information to use the website. But to use features like
-            "Edit a Masjid" or "Verify a Masjid", you will be required to register with your email address.
-            This information is stored in our database and is used to verify the user. We do not share this information
-            with any third parties or use it for any other purpose.
-          </p>
-          <h3>3. How We Use Your Information</h3>
-          <p>
-            <strong>Location Data</strong>: Your location data is used to
-            identify and display masjids near you. The information about your
-            location is not stored on our servers or shared with third parties.
-          </p>
-          <p>
-            <strong>Usage Data</strong>: Usage data (stored as logs) helps us
-            understand app performance and identify areas for improvement. This
-            data is aggregated and anonymized, ensuring it cannot be used to
-            identify you.
-          </p>
-
-          <h3>4. Sharing Your Information</h3>
-          <p>
-            We do not share any information from this app with third parties.
-            Niether do we have any cookies or trackers being saved.
-          </p>
-
-          <h3>5. Data Security</h3>
-          <p>
-            We take data security seriously and have implemented measures to
-            protect your information from unauthorized access. Out API is
-            located at https://api.masjidnear.me ad is SSL secured. However, no
-            method of transmission over the internet or electronic storage is
-            100% secure. Therefore, while we strive to use commercially
-            acceptable means to protect your information, we cannot guarantee
-            its absolute security.
-          </p>
-
-          <h3>6. Your Rights</h3>
-          <p>
-            <strong>Access and Update</strong>: You have the right to access and
-            update your personal information. If you need assistance, please
-            contact us.
-          </p>
-          <p>
-            <strong>Withdrawal of Consent</strong>: You can withdraw your
-            consent to the collection and use of your location data at any time
-            by adjusting your device settings. Note that disabling location data
-            will affect the app's core functionality.
-          </p>
-
-          <h3>7. Changes to This Privacy Policy</h3>
-          <p>
-            We may update this Privacy Policy from time to time. When we do, we
-            will notify you by updating the "Effective Date" at the top of this
-            policy. We encourage you to review this policy periodically to stay
-            informed about how we are protecting your information.
-          </p>
-
-          <h3>8. Contact Us</h3>
-          <p>
-            If you have any questions or concerns about this Privacy Policy,
-            please contact us at:<br />
-            <a href="mailto:info@masjidnear.me"> info&#64;masjidnear.me </a>
-          </p>
+          <div>
+            Users can signUp/signIn using their email and password from the
+            <span style="
+                background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+                width: 20%;
+              "><span class="fa fa-user" style="padding-right: 5px; padding-left: 3px"></span>
+              Users</span>
+            page. Watch this video <a href="https://youtube.com/shorts/_bAOAHck9ew?si=CITGTSvEWfm_BEyD" target="_blank"><img
+                src="./assets/images/y_24X24.png" alt="YouTube" /></a> to see how you can seamlessly sign up from the app.
+            When a new user is registered, 'default' permissions are
+            assigned. The user can request for 'edit' from the user profile page.
+            The request will be sent to the admin for approval. Watch this video <a
+              href="https://youtube.com/shorts/yYKvChkZZxo" target="_blank"><img src="./assets/images/y_24X24.png"
+                alt="YouTube" /></a> to see how you can request for elevated permissions.
+          </div>
         </div>
+      </ion-accordion>
+      <ion-accordion value="third">
+        <ion-item slot="header">
+          <ion-label>More usage details</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content" style="font-family: Arial, sans-serif; line-height: 1.3;">
+          <div style="padding: 4px">
+            <div class="row">
+              <div class="col-xs-8">
+                &nbsp;&nbsp;&nbsp;The masjids loaded on the menu, can be verified
+                (the ones present in our database) or unverified (the ones on
+                google maps).
+              </div>
+              <div class="col-xs-4" style="padding: 2px">
+                <img src="./assets/images/helpV_UV.png" style="padding-top: 10px" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                &nbsp;Registered users with edit permissions, can edit the details
+                by using
+                <span class="infoWTimes"><button style="background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+                width: 15%;">edit</button></span>
+                button, this will make the fields editable. The changes can be
+                saved by touching the
+                <span class="infoWTimes"><button style="background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
+                width: 15%;">save</button></span>
+                button. The changes will be reflected immediately on the map. Watch a demo here:
+                <a href="https://youtube.com/shorts/BWVFAwVxtlo" target="_blank"><img src="./assets/images/y_24X24.png"
+                    alt="YouTube" /></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                Verifying masjids can be done choosing the options to verify a
+                masjid from the edit window. When an unverified masjid is
+                selected, the option to mark a masjid as verified is available.
+                <img src="./assets/images/help_verify.png" />
+                After a masjid is verified, the details are
+                reflected immediatly on the map. Watch a demo here:
+                <a href="https://youtube.com/shorts/qt0AUJWkoBw" target="_blank"><img src="./assets/images/y_24X24.png"
+                    alt="YouTube" /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ion-accordion>
+      <ion-accordion value="fourth">
+        <ion-item slot="header">
+          <ion-label>Privacy Policy</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <div id="policy">
+            <h3>Privacy Policy for Masjid Near Me</h3>
+            <p><strong>Effective Date</strong>: 19th April 2025</p>
+
+            <h3>1. Introduction</h3>
+            <p>
+              Welcome to Masjid Near Me ("we", "our", "us"). We are committed to
+              protecting your privacy and ensuring your personal information is
+              handled in a safe and responsible manner. This Privacy Policy
+              explains how we collect, use, and share information about you when
+              you use our Android app.
+            </p>
+            <h4>- Google maps</h4>
+            <div class="col-xs-4" style="padding: 2px">
+              <img src="./assets/images/powered_by_google_on_white.png" style="padding-top: 10px" />
+            </div>
+            <p>
+              We use Google Maps services to provide you with information about
+              masjids that are near your location. The masjids are displayed as
+              markers on a map and the data for each masjid is fetched from Google
+              Maps. We store this informatin in addition to extra information
+              about the masjid such as the prayer times.
+            </p>
+
+            <h3>2. Information We Collect</h3>
+            <p>
+              <strong>Location Data</strong>: To provide you with information
+              about nearby masjids, we obtain your device's precise location using
+              location services on your device. This data is essential for the
+              core functionality of our app. This data is not sent off the app and
+              is never saved anywhere.
+            </p>
+            <p>
+              <strong>Usage Data</strong>: We may collect information about how
+              you use our app, including interactions with the app's features.
+              This helps us improve the app's performance and your user
+              experience.
+            </p>
+            <p>
+              <strong>User registration information</strong>: We do not require any
+              user registration or personal information to use the website. But to use features like
+              "Edit a Masjid" or "Verify a Masjid", you will be required to register with your email address.
+              This information is stored in our database and is used to verify the user. We do not share this information
+              with any third parties or use it for any other purpose.
+            </p>
+            <h3>3. How We Use Your Information</h3>
+            <p>
+              <strong>Location Data</strong>: Your location data is used to
+              identify and display masjids near you. The information about your
+              location is not stored on our servers or shared with third parties.
+            </p>
+            <p>
+              <strong>Usage Data</strong>: Usage data (stored as logs) helps us
+              understand app performance and identify areas for improvement. This
+              data is aggregated and anonymized, ensuring it cannot be used to
+              identify you.
+            </p>
+
+            <h3>4. Sharing Your Information</h3>
+            <p>
+              We do not share any information from this app with third parties.
+              Niether do we have any cookies or trackers being saved.
+            </p>
+
+            <h3>5. Data Security</h3>
+            <p>
+              We take data security seriously and have implemented measures to
+              protect your information from unauthorized access. Out API is
+              located at https://api.masjidnear.me ad is SSL secured. However, no
+              method of transmission over the internet or electronic storage is
+              100% secure. Therefore, while we strive to use commercially
+              acceptable means to protect your information, we cannot guarantee
+              its absolute security.
+            </p>
+
+            <h3>6. Your Rights</h3>
+            <p>
+              <strong>Access and Update</strong>: You have the right to access and
+              update your personal information. If you need assistance, please
+              contact us.
+            </p>
+            <p>
+              <strong>Withdrawal of Consent</strong>: You can withdraw your
+              consent to the collection and use of your location data at any time
+              by adjusting your device settings. Note that disabling location data
+              will affect the app's core functionality.
+            </p>
+
+            <h3>7. Changes to This Privacy Policy</h3>
+            <p>
+              We may update this Privacy Policy from time to time. When we do, we
+              will notify you by updating the "Effective Date" at the top of this
+              policy. We encourage you to review this policy periodically to stay
+              informed about how we are protecting your information.
+            </p>
+
+            <h3>8. Contact Us</h3>
+            <p>
+              If you have any questions or concerns about this Privacy Policy,
+              please contact us at:<br />
+              <a href="mailto:info@masjidnear.me"> info&#64;masjidnear.me </a>
+            </p>
+          </div>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+    <div class="well">
+      Please verify as many masjids as you can and help others. &nbsp;Jazakallahu
+      khairan
+    </div>
+    <div>
+      Find us on:&nbsp;&nbsp;&nbsp;
+      <div style="display: inline-block; padding-right: 31px">
+        <a href="http://x.com/masjidnearme" target="_blank"><img src="./assets/icon/x_24X24.png" alt="twitter" /></a>
       </div>
-    </ion-accordion>
-  </ion-accordion-group>
-  <div class="well">
-    Please verify as many masjids as you can and help others. &nbsp;Jazakallahu
-    khairan
-  </div>
-  <div>
-    Find us on:&nbsp;&nbsp;&nbsp;
-    <div style="display: inline-block; padding-right: 31px">
-      <a href="http://x.com/masjidnearme" target="_blank"><img src="./assets/icon/x_24X24.png" alt="twitter" /></a>
+      <div style="display: inline-block; padding-right: 31px">
+        <a href="https://www.youtube.com/@masjidnearme" target="_blank"><img src="./assets/icon/y_24X24.png"
+            alt="YouTube" /></a>
+      </div>
     </div>
-    <div style="display: inline-block; padding-right: 31px">
-      <a href="https://www.youtube.com/@masjidnearme" target="_blank"><img src="./assets/icon/y_24X24.png"
-          alt="YouTube" /></a>
-    </div>
-  </div>
-</ion-content>
+  </ion-content>
+</div>
