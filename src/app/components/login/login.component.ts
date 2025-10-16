@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
         this._loaderService.ShowSpinner = false;
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 5000);
+        }, 3500);
 
         // this._loaderService.showMessage({message:res.body.message, hide:true})
       },
@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit {
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 5000);
+        }, 500);
       }
     );
   }
@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 5000);
+        }, 3500);
       },
       (err) => {
         this._loaderService.hideLoader();
@@ -133,7 +133,7 @@ export class LoginComponent implements OnInit {
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 4500);
+        }, 3500);
       }
     );
   }

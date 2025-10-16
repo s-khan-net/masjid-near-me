@@ -256,7 +256,7 @@ export class MapComponent implements OnInit {
     this._loaderService.showLoader();
     setTimeout(() => {
       this._loaderService.hideLoader();
-    }, 5000);
+    }, 3500);
   }
 
   private getInfo(masjid: IMasjid) {

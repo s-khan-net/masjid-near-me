@@ -162,7 +162,7 @@ export class DescPopupComponent implements OnInit {
           setTimeout(() => {
             this._loaderService.hideLoader();
             this._locationService.resetLocation();
-          }, 4500);
+          }, 3500);
         }
       },
       (err) => {
@@ -173,7 +173,7 @@ export class DescPopupComponent implements OnInit {
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 4500);
+        }, 3500);
       }
     );
     this.editing = false;
@@ -195,7 +195,7 @@ export class DescPopupComponent implements OnInit {
       this._loaderService.showLoader();
       setTimeout(() => {
         this._loaderService.hideLoader();
-      }, 5000);
+      }, 3500);
       return true;
     }
     return false;

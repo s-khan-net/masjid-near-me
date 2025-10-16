@@ -102,7 +102,7 @@ export class SettingsComponent implements OnInit {
       this._loaderService.showLoader();
       setTimeout(() => {
         this._loaderService.hideLoader();
-      }, 5000);
+      }, 3500);
       return true;
     }
     return false;
