@@ -27,7 +27,7 @@ export class MapComponent implements OnInit {
     private _loaderService: LoaderService,
     private _storage: StorageService,
     private _userService: UsersService
-  ) {}
+  ) { }
 
   @Input() public masjids: IMasjid[] = [];
   @Input() public currentLocaton!: ICurrentLocation;
@@ -137,6 +137,10 @@ export class MapComponent implements OnInit {
       this.masjids = [];
     });
 
+    await this._map.setOnMapClickListener(() => {
+      document.dispatchEvent(new MouseEvent('click', { bubbles: false, clientX: 10, clientY: 10 }));
+    })
+
     this._map.setOnInfoWindowClickListener((event) => {
       this.markerClick(event);
     });
@@ -168,7 +172,7 @@ export class MapComponent implements OnInit {
   }
 
   private async getMasjids(dragged?: boolean): Promise<void> {
-    this._loaderService.hideLoader();
+    // this._loaderService.hideLoader();
     this._loaderService.LoaderMessage = 'Searching';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
@@ -266,6 +270,6 @@ export class MapComponent implements OnInit {
   }
 
   public async resetLocation() {
-    this._locationService.LocatonChangedEvent.emit(this.currentLocaton);
+    this._locationService.LocatonChangedEvent.emit(this._locationService.currentLocation);
   }
 }

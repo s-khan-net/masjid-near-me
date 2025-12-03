@@ -1,6 +1,6 @@
 <div class="ion-page">
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
       <ion-buttons slot="start">
         <ion-button (click)="hide()">
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
@@ -81,8 +81,8 @@
         </ion-item>
         <div class="ion-padding" slot="content" style="font-family: Arial, sans-serif; line-height: 1.3;">
           <div>
-            The Search radius, Maslak (Hanafi or Shafi), Salaah times calculation
-            method can be set from the
+            &nbsp;&nbsp;&nbsp;The Search radius, Maslak (Hanafi or Shafi), Salaah times calculation
+            method and Salaah times notifications can be set from the
             <span style="
                 background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
                 width: 20%;
@@ -90,7 +90,13 @@
             page.
           </div>
           <div>
-            Users can signUp/signIn using their email and password from the
+            &nbsp;&nbsp;&nbsp;Notifications for salaah times can be enabled/disabled from the
+            settings page. When enabled, the app will use your current location and display notifications during Salaah times. On tapping the notification, the app will open and display the masjids near your location.
+            Watch this video <a href="https://youtube.com/shorts/gso96lK1DyU" target="_blank"><img
+                src="./assets/images/y_24X24.png" alt="YouTube" /></a> to see how you can enable notifications from the app.
+          </div>
+          <div style="padding-top: 3px;">
+            &nbsp;&nbsp;&nbsp;Users can signUp/signIn using their email and password from the
             <span style="
                 background: linear-gradient(0deg, #99ccbe 0%, #ffffff 100%);
                 width: 20%;
@@ -139,7 +145,7 @@
             </div>
             <div class="row">
               <div class="col-xs-12">
-                Verifying masjids can be done choosing the options to verify a
+                &nbsp;&nbsp;&nbsp;Verifying masjids can be done, choosing the options to verify a
                 masjid from the edit window. When an unverified masjid is
                 selected, the option to mark a masjid as verified is available.
                 <img src="./assets/images/help_verify.png" />
@@ -276,6 +282,10 @@
         <a href="https://www.youtube.com/@masjidnearme" target="_blank"><img src="./assets/icon/y_24X24.png"
             alt="YouTube" /></a>
       </div>
+    </div>
+    <div style="padding-top: 12px; font-size: 12px; color: gray;">
+      It would be great if you could rate us on the
+      <a href="https://play.google.com/store/apps/details?id=me.masjidnear" target="_blank">Google Play Store</a>.
     </div>
   </ion-content>
 </div>

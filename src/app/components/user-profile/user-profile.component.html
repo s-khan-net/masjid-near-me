@@ -1,6 +1,6 @@
 <div class="ion-page">
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
       <ion-buttons slot="start">
         <ion-button (click)="hide()">
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">

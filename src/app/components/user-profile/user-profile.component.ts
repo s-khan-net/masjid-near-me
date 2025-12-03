@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { PopupService } from 'src/app/services/popup.service';
+import { SettingsService } from 'src/app/services/settings.service';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -14,7 +15,8 @@ export class UserProfileComponent implements OnInit {
     private _popupService: PopupService,
     private _userService: UsersService,
     private _loaderService: LoaderService,
-    private _storage: StorageService
+    private _storage: StorageService,
+    private _settingsService: SettingsService
   ) {}
 
   public email: string = '';
@@ -29,6 +31,8 @@ export class UserProfileComponent implements OnInit {
   public isPermissionModalOpen: boolean = false;
   public isFeedbackModalOpen: boolean = false;
   public isDeleteModalOpen: boolean = false;
+
+  public osVersion: number = this._settingsService.osVersion;
 
   @ViewChild('deletemodal') deletemodal: ElementRef | undefined;
   @ViewChild('feedbackmodal') feedbackmodal: ElementRef | undefined;

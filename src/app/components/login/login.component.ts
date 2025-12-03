@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { PopupService } from 'src/app/services/popup.service';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private _popupService: PopupService,
     private _authService: AuthService,
-    private _loaderService: LoaderService
+    private _loaderService: LoaderService,
+    private _settingsService: SettingsService
   ) {}
 
   ngOnInit() {}
@@ -31,6 +33,9 @@ export class LoginComponent implements OnInit {
   public pwdRegError: boolean = true;
   public emailRegError: boolean = true;
   public compareError: boolean = false;
+
+  public osVersion: number = this._settingsService.osVersion;
+
   public isValid(): boolean {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordPattern = /^(?=.*\d).{6,}$/;
