@@ -55,7 +55,7 @@ export class DescPopupComponent implements OnInit {
   }
 
   public dismiss() {
-    this._popupService.closePopups();
+    this._popupService.closeDesc();
   }
 
   public navigate() {
@@ -107,7 +107,6 @@ export class DescPopupComponent implements OnInit {
     this._loaderService.LoaderMessage = 'Saving masjid details';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
-    //update masjid
     this._updateMasjid();
   }
 
