@@ -20,6 +20,14 @@ export class SalaahTimesService {
     const url = `${MnmConstants.alAdhanTimingsPath}${options.today}?latitude=${options.location.lat}&longitude=${options.location.lng}&method=${options.method}&school=${options.school}`
     return this._dataService.getData(url)
   }
+
+  getTimes(options:AlAdhanOptions, duration?: number): Observable<any> {
+    let d = new Date();
+    d.setDate(d.getDate() + (duration ? duration : 19));
+    const toDate = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+    const url = `${MnmConstants.alAdhanCalendarPath}from/${options.today}/to/${toDate}?latitude=${options.location.lat}&longitude=${options.location.lng}&method=${options.method}&school=${options.school}`
+    return this._dataService.getData(url)
+  }
 }
 
 export interface AlAdhanOptions {

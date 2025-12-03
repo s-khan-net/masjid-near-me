@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LocationService {
-  constructor() {}
+  constructor() { }
 
   private _mapLoaded: boolean = false;
 
@@ -13,7 +13,7 @@ export class LocationService {
     return this._mapLoaded;
   }
   public set mapLoaded(value: boolean) {
-    this._mapLoaded = value;  
+    this._mapLoaded = value;
   }
 
   public LocatonChangedEvent: EventEmitter<ICurrentLocation> =
@@ -36,9 +36,22 @@ export class LocationService {
     }
   }
 
+  public getCity(): Observable<string> {
+    return new Observable((observer) => {
+      // Simple geolocation API check provides values to publish
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.currentLocation.latitude}&lon=${this.currentLocation.longitude}`)
+        .then(response => response.json())
+        .then(data => {
+          const city = data.address.city || data.address.town || data.address.village || data.address.hamlet || '';
+          this._currentLocation.city = city;
+          observer.next(city);
+        })
+        .catch(error => {
+          observer.error(error);
+        });
+    });
+  }
   public getLocation(): Observable<any> {
-    // Create an Observable that will start listening to geolocation updates
-    // when a consumer subscribes.
     return new Observable((observer) => {
       let watchId: number;
 
@@ -69,6 +82,8 @@ export class LocationService {
 export interface ICurrentLocation {
   latitude: number;
   longitude: number;
+  heading?: any;
+  city?: any;
   desc?: string;
   dragged?: boolean;
 }
