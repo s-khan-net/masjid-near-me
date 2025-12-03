@@ -7,7 +7,7 @@ import { AuthService } from './core/services/auth.service';
   styleUrls: ['app.component.scss'],
   standalone: false,
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
   constructor(private zone: NgZone, private _authService: AuthService) {
     this.initializeApp();
 
@@ -34,9 +34,5 @@ export class AppComponent implements OnInit{
         }
       });
     });
-  }
-  async ngOnInit(): Promise<void> {
-
-  }
-  
+  } 
 }
