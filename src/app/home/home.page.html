@@ -1,14 +1,10 @@
 <div id="splash" *ngIf="showSplash">
   <img src="../../assets/images/logo.png" alt="logo" />
   <br />
-  <div style="color: darkgreen" id="splashText">
+  <div style="color: darkgreen;padding: 0px 12px 0px 12px;" id="splashText">
     {{ splashText }}<br /><br />
     {{ splashTextExtra }}<br />
-    <div
-      style="padding-top: 19px; color: darkgreen"
-      id="btnLocDiv1"
-      [hidden]="isLocationEnabled"
-    >
+    <div style="padding-top: 19px; color: darkgreen" id="btnLocDiv1" [hidden]="isLocationEnabled">
       Please
       <button class="btn-masajid" (click)="showLocationSettings()">
         enable
@@ -16,11 +12,7 @@
       <!-- <input type="button" value="enable" id="btnLocRequest" class="btn-masajid"/>  -->
       your location services
     </div>
-    <div
-      style="padding-top: 19px; color: darkgreen"
-      id="btnLocDiv2"
-      [hidden]="locationPermissionFailed"
-    >
+    <div style="padding-top: 19px; color: darkgreen" id="btnLocDiv2" [hidden]="locationPermissionFailed">
       Please give
       <button class="btn-masajid" (click)="requestLocationPermission()">
         permission
@@ -41,15 +33,13 @@
       <li *ngFor="let item of mnuItems" (click)="menuClick(item)">
         <div>
           {{item.name}}
-          <ion-icon
-            name="{{item.icon}}"
-            style="vertical-align: middle"
-          ></ion-icon>
+          <ion-icon name="{{item.icon}}" style="vertical-align: middle"></ion-icon>
         </div>
       </li>
       <li class="version" (click)="showAppVersion()">
-        <div >
-          <ion-icon name="information-circle-outline" style="vertical-align: middle;font-size: 18px;padding-right: 9px;"></ion-icon>
+        <div>
+          <ion-icon name="information-circle-outline"
+            style="vertical-align: middle;font-size: 18px;padding-right: 9px;"></ion-icon>
           <span>Version: {{version}}</span>
         </div>
       </li>
@@ -72,4 +62,38 @@
     </ion-toolbar>
   </ion-header>
   <app-map></app-map>
+  <div class="whatsnew" id="whats-new" *ngIf="showingAppVersion" ClickOutside (clickOutside)="hideWhatsNew()">
+    <table>
+      <th>What's new</th>
+      <tr>
+        <td>
+          * New feature added for Salaah time notifications.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          * UI issues for older Android version fixed.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          * Help updated.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://play.google.com/store/apps/details?id=me.masjidnear" target="_blank">
+            <div style="padding-top: 12px; font-size: 12px;">
+              rate us
+              <ion-icon name="star" style="font-size: 12px;"></ion-icon>
+              <ion-icon name="star" style="font-size: 12px;"></ion-icon>
+              <ion-icon name="star" style="font-size: 12px;"></ion-icon>
+              <ion-icon name="star" style="font-size: 12px;"></ion-icon>
+              <ion-icon name="star" style="font-size: 12px;"></ion-icon>
+            </div>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>

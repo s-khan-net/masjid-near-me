@@ -14,6 +14,7 @@ import { UserProfileComponent } from '../components/user-profile/user-profile.co
 import { SettingsComponent } from '../components/settings/settings.component';
 import { TimingWidjetComponent } from '../components/timing-widjet/timing-widjet.component';
 import { MnmHelpComponent } from '../components/mnm-help/mnm-help.component';
+import { ClickOutsideDirective } from '../directives/click-outside.directive';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
@@ -27,7 +28,8 @@ import { MnmHelpComponent } from '../components/mnm-help/mnm-help.component';
     UserProfileComponent,
     SettingsComponent,
     TimingWidjetComponent,
-    MnmHelpComponent
+    MnmHelpComponent,
+    ClickOutsideDirective
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

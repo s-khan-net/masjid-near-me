@@ -45,7 +45,7 @@ ion-toolbar {
   width: 100%;
   height: 100%;
   user-select: none;
-  padding-top:32px;
+  padding-top: 32px;
 }
 
 #mnuNav {
@@ -151,13 +151,17 @@ ion-icon {
   color: red;
   position: absolute;
   z-index: 2001;
-  top: 10%;
+  top: 20%;
   left: 35%;
   font-size: smaller;
 }
 
 .toastClass ::ng-deep {
-    background: #e2f0ec !important;
+  background: #e2f0ec !important;
+
+  ::ng-deep .toast-container {
+    padding: 10px !important;
+  }
 }
 
 .version {
@@ -168,5 +172,37 @@ ion-icon {
     text-align: center;
     letter-spacing: 3px !important;
     padding-left: 1px !important;
+  }
+}
+
+.whatsnew {
+  position: absolute;
+  color: #17603a;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 2px;
+  width: 65%;
+  margin-left: calc(24% - 20px);
+  background: white;
+  z-index: 600001;
+  top: 35%;
+  padding: 12px;
+  border: 1px solid #17603a;
+  box-shadow: 2px -1px 29px -1px rgba(0, 0, 0, 0.58);
+  -webkit-box-shadow: 2px -1px 29px -1px rgba(0, 0, 0, 0.58);
+  -moz-box-shadow: 2px -1px 29px -1px rgba(0, 0, 0, 0.58);
+
+  table {
+    border: 1px solid #DDD;
+  }
+
+  td,
+  th {
+    padding: 5px;
+  }
+
+  td {
+    text-align: left;
   }
 }

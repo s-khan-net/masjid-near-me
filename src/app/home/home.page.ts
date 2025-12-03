@@ -15,7 +15,9 @@ import { App } from '@capacitor/app';
 import { AndroidSettings, NativeSettings } from 'capacitor-native-settings';
 import { Network } from '@capacitor/network';
 import { StorageService } from '../core/services/storage.service';
-import { SettingsService } from '../services/settings.service';
+import { ISettings, SettingsService } from '../services/settings.service';
+import { NotificationService } from '../services/notification.service';
+import { AlAdhanOptions } from '../services/salaah-times.service';
 
 @Component({
   selector: 'app-home',
@@ -34,8 +36,9 @@ export class HomePage implements OnInit {
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
   public splashTextExtra: string = '';
-  public version: string = '3.2.019';
+  public version: string = '3.3.001';
   public osVersion: number = 0;
+  public showingAppVersion: boolean = false;
 
   private _toastElement!: HTMLIonToastElement;
   constructor(
@@ -45,38 +48,50 @@ export class HomePage implements OnInit {
     private _platform: Platform,
     private _toastCtrl: ToastController,
     private _storage: StorageService,
-    private _settingsService: SettingsService
+    private _settingsService: SettingsService,
+    private _notificationService: NotificationService
   ) { }
   async ngOnInit(): Promise<void> {
     if (this._platform.is('android')) {
-      this.osVersion = this._settingsService.osVersion;
+      this.osVersion = await this._settingsService.getOsVersion();
       this._checkLocation();
-      this._platform.backButton.subscribe(async (val) => {
-        if (this._popupService.hasOpenPopups()) {
-          this._popupService.closePopups();
-        } else {
-          this._toastElement = await this._toastCtrl.create({
-            message: 'Press again to exit',
-            duration: 2000,
-            position: 'bottom',
-            icon: 'close-outline',
-            cssClass: 'toastClass',
-            color: 'light',
-          });
-          setTimeout(() => {
-            this._exitArray++;
-          }, 2000);
-          if (this._exitArray == 0) {
-            await this._toastElement.dismiss();
-            App.exitApp();
-          } else {
-            this._exitArray--;
-            await this._toastElement.present();
+      this._checkNetwork();
+      this._platform.backButton.subscribeWithPriority(9999, async (processNextHandler) => {
+        const popup = this._popupService.hasOpenPopups()
+        if (popup) {
+          if (popup.popupObj.name === 'Settings') {
+            this._popupService.dismissEvent.emit({ popup: popup, backHandler: processNextHandler });
           }
+          else {
+            await this._popupService.closePopups();
+          }
+        } else {
+          await this._exitApp();
         }
       });
     } else {
       this._navigateToDashboard();
+    }
+  }
+
+  private async _exitApp() {
+    this._toastElement = await this._toastCtrl.create({
+      message: 'Press again to exit',
+      duration: 2000,
+      position: 'bottom',
+      icon: 'close-outline',
+      cssClass: 'toastClass',
+      color: 'light',
+    });
+    setTimeout(() => {
+      this._exitArray++;
+    }, 2000);
+    if (this._exitArray == 0) {
+      await this._toastElement.dismiss();
+      App.exitApp();
+    } else {
+      this._exitArray--;
+      await this._toastElement.present();
     }
   }
 
@@ -112,13 +127,14 @@ export class HomePage implements OnInit {
       this._locationService.currentLocation = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
+        heading: position.coords.heading ? position.coords.heading : null
         //to set the location on startup then declare as below
-        // lt = 21.16980812743961; // mysuru
-        // ln = 79.0795353478851;
-        // lt = 12.929502; //Bangalore,
-        // ln = 77.586098;
-        // var lt = 52.504859; //Birmingham UK
-        // var ln = -1.863434;
+        // latitude: 21.16980812743961, // mysuru
+        // longitude: 79.0795353478851,
+        // latitude: 12.929502, //Bangalore,
+        // longitude: 77.586098,
+        // latitude: 52.504859, //Birmingham UK
+        // longitude: -1.863434,
       };
     } else {
       throw new Error('Position could not be found');
@@ -131,16 +147,7 @@ export class HomePage implements OnInit {
         this._popupService.showSettings();
         break;
       case 'Compass':
-        const toast = await this._toastCtrl.create({
-          duration: 2000,
-          message: 'Coming soon',
-          icon: 'compass-outline',
-          position: 'middle',
-          cssClass: 'toastClass',
-          color: 'light',
-        });
-
-        await toast.present();
+        this._popupService.showToast('Coming soon', "middle", 2500, 'compass-outline')
         break;
       case 'Users':
         this._popupService.showLogin();
@@ -164,25 +171,21 @@ export class HomePage implements OnInit {
   }
 
   public closeMenu(): void {
-    console.log('close menu');
     this._mnuCtrl.close();
   }
 
-  public onMenuOpen(): void {
-    console.log('opening');
+  public showAppVersion() {
+    setTimeout(() => {
+      this.showingAppVersion = true;
+      setTimeout(() => {
+        this.showingAppVersion = false;
+      }, 9000);
+    }, 50);
+    this.closeMenu();
   }
 
-  public async showAppVersion() {
-    const toast = await this._toastCtrl.create({
-      duration: 2000,
-      message: 'Fixed issues in Android 15 with some UI updates. Version: ' + this.version,
-      icon: 'information-circle-outline',
-      position: 'middle',
-      cssClass: 'toastClass',
-      color: 'light',
-    });
-
-    await toast.present();
+  public hideWhatsNew() {
+    this.showingAppVersion = false;
   }
 
   //#region splashText
@@ -232,8 +235,15 @@ export class HomePage implements OnInit {
       intervalcounter++;
       if (this._locationService.mapLoaded) {
         clearInterval(interval);
-        this.showSplash = false;
-        this._checkNetwork();
+        try {
+          this._checkNotifications();
+        }
+        catch (ex) {
+          this.splashText = 'Error loading notifications';
+          setTimeout(() => {
+            this.showSplash = false;
+          }, 2000);
+        }
       } else {
         this.splashText = 'Loading map... Please wait';
         if (intervalcounter > 30) {
@@ -252,6 +262,84 @@ export class HomePage implements OnInit {
       }
     }, 1900);
   }
+  private _checkNotifications() {
+    this._notificationService.areEnabled().then(async (enabled) => {
+      if (enabled) {
+        await this._notificationService.cancelPastNotifications();
+        const notifs = await this._notificationService.getPendingNotifications();
+        if (notifs && notifs.notifications) {
+          this.splashTextExtra = `You have ${notifs.notifications.length} pending notifications`;
+          if (notifs.notifications.length < 20 && notifs.notifications.length > 0) {
+            this.splashTextExtra = 'Scheduling salaah notifications...';
+            const setNotifications = await this._scheduleSalaahNotfications();
+            if (setNotifications) {
+              this.splashTextExtra = 'Notifications are scheduled';
+            }
+            else {
+              this.splashTextExtra = 'Go to Settings to manage prayer notifications.';
+            }
+            setTimeout(() => {
+              this.showSplash = false;
+            }, 1000);
+          }
+          else {
+            if (notifs.notifications.length == 0) {
+              this.splashTextExtra = 'Go to Settings to manage prayer notifications.';
+            }
+            else {
+              this.splashTextExtra = 'Loading notifications...';
+            }
+            setTimeout(() => {
+              this.showSplash = false;
+            }, 2500);
+          }
+        }
+      }
+      else {
+        await this._notificationService.cancelAllNotifications();
+        this.splashTextExtra = 'Notifications are disabled. Go to Settings to enable them';
+        setTimeout(() => {
+          this.showSplash = false;
+        }, 2500);
+      }
+    });
+  }
+
+  private async _scheduleSalaahNotfications() {
+    return new Promise<boolean>(async (resolve, reject) => {
+      try {
+        let settings: ISettings = {
+          radius: 2000,
+          calcMethod: 2,
+          school: 0,
+          notificationsEnabled: false,
+          currentLocation: this._locationService.currentLocation,
+        };
+        const sessionSettings = await this._storage.get('userSettings')
+        if (sessionSettings)
+          settings = JSON.parse(atob(sessionSettings));
+        const d = new Date();
+        const salaahNotifs: AlAdhanOptions = {
+          location: {
+            lat: this._locationService.currentLocation.latitude,
+            lng: this._locationService.currentLocation.longitude
+          },
+          today: d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear(),
+          method: settings.calcMethod,
+          school: settings.school,
+        };
+        this._notificationService.scheduleSalaahNotifications(salaahNotifs).then(async () => {
+          const cancelNotifications = await this._notificationService.cancelPastNotifications();
+          resolve(cancelNotifications);
+        }).catch((err) => {
+          reject(err);
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
   private _checkNetwork() {
     if (Network) {
       Network.getStatus().then((status) => {
