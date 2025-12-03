@@ -30,10 +30,10 @@ export class AuthService {
         sessionStorage.setItem('token', data.headers.get('x-auth-token'));
         this._storage.set('token', data.headers.get('x-auth-token'));
         this._storage.set('userEmail', data.body.user.userEmail);
-        this._storage.set(
-          'userSettings',
-          btoa(JSON.stringify(data.body.user.settings))
-        );
+        // this._storage.set(
+        //   'userSettings',
+        //   btoa(JSON.stringify(data.body.user.settings))
+        // );
         this._storage.set(
           'userRole',
           btoa(JSON.stringify(data.body.user.role))
