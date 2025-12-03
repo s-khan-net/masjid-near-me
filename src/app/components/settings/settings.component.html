@@ -1,18 +1,12 @@
 <div class="ion-page">
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
       <ion-buttons slot="start">
         <ion-button (click)="hide()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            viewBox="0 0 512 512"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
             <path
               d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
-              fill="#17603A"
-            />
+              fill="#17603A" />
           </svg>
         </ion-button>
       </ion-buttons>
@@ -28,7 +22,7 @@
             <ion-radio-group [(ngModel)]="settings.radius">
               <ion-item>
                 @for (radius of radii; track radius) {
-                  <ion-radio [value]="radius" style="margin-right: 10px;">&nbsp;<b>{{ radius / 1000 }} Km</b></ion-radio>
+                <ion-radio [value]="radius" style="margin-right: 10px;">&nbsp;<b>{{ radius / 1000 }} Km</b></ion-radio>
                 }
               </ion-item>
             </ion-radio-group>
@@ -40,10 +34,7 @@
         <div class="well">
           <ion-item>
             <!-- 1 hanfi 0 shafi -->
-            <ion-radio-group
-              [(ngModel)]="settings.school"
-              (ionChange)="handleChange($event)"
-            >
+            <ion-radio-group [(ngModel)]="settings.school" (ionChange)="handleChange($event)">
               <ion-item>
                 <ion-radio [value]="1" style="margin-right: 10px;">&nbsp;<b>Hanfi</b></ion-radio>
                 <ion-radio [value]="0">&nbsp;<b>Shafi</b></ion-radio>
@@ -53,31 +44,52 @@
         </div>
       </ion-row>
       <ion-row>
-        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Set calculation method for salaah timings:</ion-label>
+        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Set calculation method for salaah
+          timings:</ion-label>
         <div class="well">
           <ion-item>
-            <ion-select
-              [(ngModel)]="settings.calcMethod"
-              id="calcMethod"
-              placeholder="Set calculation method"
-            >
-              <ion-select-option [value]="1"
-                >University of Islamic Sciences, Karachi</ion-select-option
-              >
-              <ion-select-option [value]="2"
-                >ISNA-Islamic Society of North America</ion-select-option
-              >
-              <ion-select-option [value]="3"
-                >MWL-Muslim World League</ion-select-option
-              >
-              <ion-select-option [value]="4"
-                >Umm al-Qura, Makkah</ion-select-option
-              >
-              <ion-select-option [value]="5"
-                >Egyptian General Authority of Survey</ion-select-option
-              >
+            <ion-select [(ngModel)]="settings.calcMethod" id="calcMethod" placeholder="Set calculation method">
+              <ion-select-option [value]="1">University of Islamic Sciences, Karachi</ion-select-option>
+              <ion-select-option [value]="2">ISNA-Islamic Society of North America</ion-select-option>
+              <ion-select-option [value]="3">MWL-Muslim World League</ion-select-option>
+              <ion-select-option [value]="4">Umm al-Qura, Makkah</ion-select-option>
+              <ion-select-option [value]="5">Egyptian General Authority of Survey</ion-select-option>
             </ion-select>
           </ion-item>
+        </div>
+      </ion-row>
+      <ion-row>
+        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Notification settings:</ion-label>
+        <div class="well">
+          <ion-item>
+            <ion-toggle [(ngModel)]="settings.notificationsEnabled" (ngModelChange)="locateMe($event)"
+              id="notificationsEnabled">{{settings.notificationsEnabled? 'Disable' : 'Enable'}}
+              Notifications</ion-toggle>
+          </ion-item>
+          <ion-item *ngIf="settings.notificationsEnabled">
+            <div class="well">
+              <ion-label style="font-size: 12px; color: #17603a;">
+                Your current location will be used to fetch accurate salaah timings for your area.
+              </ion-label>
+              <div style="display: inline-block;width: 100%;">
+                <div id="location" style="display: inline-block;width: 80%;font-size: 14px; color: #17603a;">
+                  Location:{{ settings.currentLocation?.city || '' }}
+                </div>
+                <div class="loc-btn" style="display: inline-block;width: 19%;text-align: center;">
+                  <button (click)="locateMe(true, true)" class="btn-masajid"><ion-icon
+                      name="location"></ion-icon></button>
+                </div>
+              </div>
+            </div>
+          </ion-item>
+        </div>
+        <div style="position: absolute; bottom: 0;">
+          <ion-col size="12" style="text-align: center; font-size: 12px; color: #eceaea;">
+            <div class="btn-masjid" (click)="getNotifications()">-</div>
+          </ion-col>
+          <!-- <ion-col size="12" style="text-align: center; font-size: 12px; color: gray;">
+            <div class="btn-masjid" (click)="setTempNotification()">set temp notif</div>
+          </ion-col> -->
         </div>
       </ion-row>
       <ion-row style="margin-top: 32px">

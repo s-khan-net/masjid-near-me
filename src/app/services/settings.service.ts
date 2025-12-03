@@ -3,6 +3,8 @@ import { DataService } from '../core/services/dataservice.service';
 import { MnmConstants } from '../core/mnm-constants';
 import { UsersService } from './users.service';
 import { Device } from '@capacitor/device';
+import { StorageService } from '../core/services/storage.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +12,8 @@ import { Device } from '@capacitor/device';
 export class SettingsService {
   constructor(
     private _dataService: DataService,
-    private _userService: UsersService
+    private _userService: UsersService,
+    private _storageService: StorageService
   ) {
     this.getOsVersion();
   }
@@ -21,15 +24,31 @@ export class SettingsService {
     return this._osVersion;
   }
 
-  getOsVersion(): void {
-    Device.getInfo().then(info => {
+  async getOsVersion(): Promise<number> {
+    return new Promise<number>(async (resolve, reject) => {
+      const info = await Device.getInfo()
       if (info.platform === 'android' || info.platform === 'ios') {
         const version = parseFloat(info.osVersion || '0');
         this._osVersion = isNaN(version) ? 0 : version;
       } else {
         this._osVersion = 0;
       }
+      resolve(this._osVersion);
     });
+  }
+
+  public async getSettings(): Promise<ISettings> {
+    let sessionSettings = await this._storageService.get('userSettings');
+    if (sessionSettings) {
+      return new Promise<any>((resolve, reject) => {
+        resolve(JSON.parse(atob(sessionSettings)));
+      });
+    }
+    else {
+      return new Promise<any>((resolve, reject) => {
+        resolve(null);
+      });
+    }
   }
 
   updateSettings(userSettings: any, type: SettingType): Promise<boolean> {
@@ -76,4 +95,12 @@ export class SettingsService {
 export enum SettingType {
   PROFILE = 'profile',
   SETTINGS = 'settings',
+}
+
+export interface ISettings {
+   radius: Number;
+    calcMethod: Number;
+    school: Number;
+    notificationsEnabled?: boolean;
+    currentLocation?: any;
 }
