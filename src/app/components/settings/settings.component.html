@@ -30,22 +30,8 @@
         </div>
       </ion-row>
       <ion-row>
-        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Maslak:</ion-label>
-        <div class="well">
-          <ion-item>
-            <!-- 1 hanfi 0 shafi -->
-            <ion-radio-group [(ngModel)]="settings.school" (ionChange)="handleChange($event)">
-              <ion-item>
-                <ion-radio [value]="1" style="margin-right: 10px;">&nbsp;<b>Hanfi</b></ion-radio>
-                <ion-radio [value]="0">&nbsp;<b>Shafi</b></ion-radio>
-              </ion-item>
-            </ion-radio-group>
-          </ion-item>
-        </div>
-      </ion-row>
-      <ion-row>
-        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Set calculation method for salaah
-          timings:</ion-label>
+        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Calculation method for salaah
+          times:</ion-label>
         <div class="well">
           <ion-item>
             <ion-select [(ngModel)]="settings.calcMethod" id="calcMethod" placeholder="Set calculation method">
@@ -55,6 +41,18 @@
               <ion-select-option [value]="4">Umm al-Qura, Makkah</ion-select-option>
               <ion-select-option [value]="5">Egyptian General Authority of Survey</ion-select-option>
             </ion-select>
+          </ion-item>
+        </div>
+        <ion-label style="font-size: 14px; color: #17603a; font-weight: bold;">Asr Method:</ion-label>
+        <div class="well">
+          <ion-item>
+            <!-- 1 hanfi 0 shafi -->
+            <ion-radio-group [(ngModel)]="settings.school" (ionChange)="handleChange($event)">
+              <ion-item>
+                <ion-radio [value]="1" style="margin-right: 10px;">&nbsp;<b>Hanfi</b></ion-radio>
+                <ion-radio [value]="0">&nbsp;<b>Shafi</b></ion-radio>
+              </ion-item>
+            </ion-radio-group>
           </ion-item>
         </div>
       </ion-row>

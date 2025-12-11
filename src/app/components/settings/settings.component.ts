@@ -26,7 +26,7 @@ export class SettingsComponent implements OnInit {
     private _storage: StorageService,
     private _notificationService: NotificationService
   ) { }
-  public radii = [1000, 2000];
+  public radii = [1000, 2000, 3000];
   public settings: ISettings = {
     radius: 2000,
     calcMethod: 4,

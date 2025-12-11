@@ -171,16 +171,15 @@ export class MapComponent implements OnInit {
     this._map.setCamera(cameraConfig);
   }
 
-  private async getMasjids(dragged?: boolean): Promise<void> {
+  private async getMasjids(dragged?: boolean, radius: number = 2000): Promise<void> {
     // this._loaderService.hideLoader();
-    this._loaderService.LoaderMessage = 'Searching';
+    this._loaderService.LoaderMessage = `Searching for masjids within ${radius / 1000} km`;
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
     this.currentLocaton = this._locationService.currentLocation;
     const sessionSettings = await this._storage.get('userSettings');
-    let radius = 2000;
     if (sessionSettings) {
-      radius = JSON.parse(atob(sessionSettings)).radius;
+      radius = JSON.parse(atob(sessionSettings)).radius > radius ? JSON.parse(atob(sessionSettings)).radius : radius;
     }
     let self = this;
     this._masjidService
@@ -203,16 +202,21 @@ export class MapComponent implements OnInit {
             self._loaderService.hideLoader();
             self._checkUserTokenValidity();
           } else {
-            self.masjids = [];
-            self._loaderService.hideLoader();
-            self._loaderService.LoaderMessage = 'No Masjids Found';
-            this._loaderService.ShowSpinner = false;
-            self._loaderService.showLoader();
-            setTimeout(() => {
+            if (radius < 25000) {
+              self._reloadMasjidsForMoreRadius(radius);
+            }
+            else {
+              self.masjids = [];
               self._loaderService.hideLoader();
-              self._checkUserTokenValidity();
-            }, 2500);
-            // this._loaderService.messageUpdateEvent.emit({message:'No Masjids Found',hide:true})
+              self._loaderService.LoaderMessage = 'No Masjids Found';
+              self._loaderService.ShowSpinner = false;
+              self._loaderService.showLoader();
+              setTimeout(() => {
+                self._loaderService.hideLoader();
+                self._checkUserTokenValidity();
+              }, 2500);
+              // this._loaderService.messageUpdateEvent.emit({message:'No Masjids Found',hide:true})
+            }
           }
         },
         (err: any) => {
@@ -220,6 +224,10 @@ export class MapComponent implements OnInit {
           this._loaderService.hideLoader();
         }
       );
+  }
+  private _reloadMasjidsForMoreRadius(radius: number) {
+    this._loaderService.LoaderMessage = `No masjids found within ${radius / 1000} km. Expanding search radius to ${(radius / 1000) + 5} km`
+    this.getMasjids(true, radius + 5000);
   }
   private async _checkUserTokenValidity() {
     const token = await this._storage.get('token');
