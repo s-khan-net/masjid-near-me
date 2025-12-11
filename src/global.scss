@@ -152,7 +152,8 @@ ion-radio::part(container) {
   border-radius: 4px;
   color: #17603A !important;
   padding: 10px;
-
+  text-align: center;
+  
   &.hover {
     background: -webkit-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;
     background: -o-linear-gradient(180deg, rgba(180, 240, 223, 1) 0%, rgba(255, 245, 245, 1) 100%) !important;

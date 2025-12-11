@@ -43,9 +43,14 @@ textarea {
   user-select: none;
   border-style: inherit;
   border-radius: 5px;
-
+  background-color: transparent;
+  
   &:focus-visible {
     border: 1px solid #FFF;
+  }
+
+  &:read-only {
+    background-color: transparent;
   }
 }
 
