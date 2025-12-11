@@ -55,10 +55,9 @@ export class FlmnuComponent implements OnInit {
     });
     this._masjidService.masjidsLoaded$.subscribe((obj) => {
       this.masjids = obj.masjids;
-      const t = obj.dragged ? 1000 : 0;
-      setTimeout(() => {
+      if(this.masjids.length > 0) {
         this._toggleFLmnuInOut();
-      }, t);
+      }
     });
   }
 

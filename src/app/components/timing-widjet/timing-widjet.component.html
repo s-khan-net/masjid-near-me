@@ -6,4 +6,7 @@
       {{ item.name }}<br />{{ item.val }}
     </div>
   </div>
+  <div class="widgetContainer" *ngIf="showLoader">
+    <div class="load">Loading salaah times...</div>
+  </div>
 </div>
