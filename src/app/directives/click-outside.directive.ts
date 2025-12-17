@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Directive, ElementRef, EventEmitter, HostListener, NgZone, Output, output, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, EventEmitter, HostListener, NgZone, Optional, Output, output, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[ClickOutside]',
@@ -7,7 +7,7 @@ import { ChangeDetectorRef, Directive, ElementRef, EventEmitter, HostListener, N
 export class ClickOutsideDirective {
   @Output() clickOutside = new EventEmitter<any>();
   
-  constructor(private elementRef: ElementRef, private cdref: ChangeDetectorRef) { }
+  constructor(private elementRef: ElementRef, @Optional() private cdref?: ChangeDetectorRef) { }
 
   @HostListener('document:click', ['$event.target'])
   @HostListener('document:touchstart', ['$event.target'])
@@ -15,7 +15,7 @@ export class ClickOutsideDirective {
     const clickin = this.elementRef.nativeElement.contains(targetElement);
     if (!clickin) {
       this.clickOutside.emit();
-      this.cdref.detectChanges();
+      this.cdref?.detectChanges();
     }
   }
 }
