@@ -9,6 +9,7 @@ import { StorageService } from '../core/services/storage.service';
 import { AlertController } from '@ionic/angular';
 import { MnmConstants } from '../core/mnm-constants';
 import * as _ from 'lodash';
+import { MyMasjidsComponent } from '../components/my-masjids/my-masjids.component';
 
 @Injectable({
   providedIn: 'root',
@@ -44,6 +45,22 @@ export class PopupService {
     this._pages.find(p => p.name === 'Users')!.isOpen = true;
     await this.modal.present();
   }
+
+  public async showMyMasjids() {
+    const myMasjids = await this._storage.get('myMasjids');
+    if (!myMasjids) {
+      return;
+    }
+    const myMasjidsList = myMasjids ? JSON.parse(atob(myMasjids)) : [];
+    this.modal = await this._modalCtrl.create({
+      component: MyMasjidsComponent,
+      componentProps: { myMasjids: myMasjidsList },
+    });
+    this.modal.isOpen = true;
+    this._pages.find(p => p.name === 'My Masjids')!.isOpen = true;
+    await this.modal.present();
+  }
+
 
   public async showHelp() {
     this.modal = await this._modalCtrl.create({

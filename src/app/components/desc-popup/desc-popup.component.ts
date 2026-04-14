@@ -9,6 +9,7 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 import { MasjidService } from 'src/app/services/masjid.service';
 import { LocationService } from 'src/app/services/location.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-desc-popup',
@@ -26,12 +27,14 @@ export class DescPopupComponent implements OnInit {
     private _loaderService: LoaderService,
     private _masjidService: MasjidService,
     private _locationService: LocationService,
-    private _storage: StorageService
-  ) {}
+    private _storage: StorageService,
+    private _usersService: UsersService
+  ) { }
 
   public salaahTimesAvailable: boolean = false;
   public editing: boolean = false;
   public userRole: any;
+  public inmyMasjids: boolean = false;
   async ngOnInit() {
     this.masjidCopy = _.cloneDeep(this.masjid);
     this.masjidCopy.masjidTimings.maghrib =
@@ -41,6 +44,9 @@ export class DescPopupComponent implements OnInit {
     const role = await this._storage.get('userRole');// sessionStorage.getItem('userRole');
     if (role) this.userRole = JSON.parse(atob(role));
     else this.userRole = { roleName: '' };
+    const myMasjids = await this._storage.get('myMasjids');
+    const myMasjidsList = myMasjids ? JSON.parse(atob(myMasjids)) : [];
+    this.inmyMasjids = myMasjidsList.find((m: any) => m.masjidAddress.googlePlaceId === this.masjidCopy.masjidAddress.googlePlaceId)
   }
   private _checkAlltimesAvailable(): boolean {
     return !!(
@@ -198,6 +204,104 @@ export class DescPopupComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  public async addToMyMasjids() {
+    const myMasjids = await this._storage.get('myMasjids');
+    const myMasjidsList = myMasjids ? JSON.parse(atob(myMasjids)) : [];
+    if (myMasjidsList.length >= 5) {
+      this._popupService.showToast('You can only add upto 5 masjids to your list', 'middle', 2000, 'close-outline');
+      return;
+    }
+    const alert = {
+      header: 'Add to My Masjids',
+      message: 'Do you want to add this masjid to your masjids list?',
+      buttons: [
+        {
+          text: 'Yes',
+          role: 'confirm',
+          cssClass: 'alert-class',
+          handler: () => {
+            this._addToMyMasjids();
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'alert-class',
+          handler: () => {
+            console.log('Not adding to my masjids');
+          }
+        }
+      ]
+    }
+    this._popupService.showConfirmationAlert(alert);
+  }
+  private async _addToMyMasjids() {
+    const myMasjids = await this._storage.get('myMasjids');
+    const myMasjidsList = myMasjids ? JSON.parse(atob(myMasjids)) : [];
+    if (!this.inmyMasjids) {
+      myMasjidsList.push(this.masjidCopy);
+      this._storage.set('myMasjids', btoa(JSON.stringify(myMasjidsList)));
+
+      this._updateMyMasjids(myMasjidsList).then(() => {
+        this._popupService.showToast('Masjid added to My Masjids', 'bottom', 2000, 'checkmark-outline');
+        this.inmyMasjids = true;
+      }).catch(() => {
+        this._popupService.showToast('Failed to add masjid to My Masjids', 'bottom', 2000, 'close-outline');
+        this.inmyMasjids = false;
+      });
+    }
+  }
+  public removeFromMyMasjids() {
+    const alert = {
+      header: 'Remove from My Masjids',
+      message: 'Do you want to remove this masjid from your masjids list?',
+      buttons: [
+        {
+          text: 'Yes',
+          role: 'confirm',
+          cssClass: 'alert-class',
+          handler: () => {
+            this._removeFromMyMasjids();
+          }
+        },
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'alert-class',
+          handler: () => {
+            console.log('Not removing from my masjids');
+          }
+        }
+      ]
+    }
+    this._popupService.showConfirmationAlert(alert);
+  }
+
+  private async _removeFromMyMasjids() {
+    const myMasjids = await this._storage.get('myMasjids');
+    let myMasjidsList = myMasjids ? JSON.parse(atob(myMasjids)) : [];
+    myMasjidsList = myMasjidsList.filter((m: any) => m.masjidAddress.googlePlaceId !== this.masjidCopy.masjidAddress.googlePlaceId);
+    this._storage.set('myMasjids', btoa(JSON.stringify(myMasjidsList)));
+    this._updateMyMasjids(myMasjidsList).then(() => {
+      this._popupService.showToast('Masjid removed from My Masjids', 'bottom', 2000, 'checkmark-outline');
+      this.inmyMasjids = false;
+    }).catch(() => {
+      this._popupService.showToast('Failed to remove masjid from My Masjids', 'bottom', 2000, 'close-outline');
+    });
+  }
+  private async _updateMyMasjids(myMasjidsList: any[]) {
+    if (myMasjidsList.length > 0) {
+      const myMasjidsListForUpdate = myMasjidsList.map((m: any) => m._id);
+      this._usersService.updateMyMasjidsForUser(myMasjidsListForUpdate).then((res) => {
+        if (res) {
+          console.log('My Masjids updated for user');
+        } else {
+          console.log('Failed to update My Masjids for user');
+        }
+      });
+    }
   }
 
   private _logOut() {

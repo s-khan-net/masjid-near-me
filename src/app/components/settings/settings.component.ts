@@ -103,7 +103,7 @@ export class SettingsComponent implements OnInit {
   public async saveSettings() {
     if (this.settings) {
       try {
-        this._showLoaderWithMessage('Updating settings...', true);
+        this._showLoaderWithMessage('Updating settings', true);
         this._storage.remove('userSettings')
         await this._storage.set('userSettings', btoa(JSON.stringify(this.settings)))
         //create salaah notifications if enabled
@@ -143,6 +143,7 @@ export class SettingsComponent implements OnInit {
       .then((res) => {
         this._showLoaderWithMessage('Settings updated successfully', false, 1500, true, true);
       }, (err) => {
+        this._showLoaderWithMessage('Settings updated, but with errors. Please login again.', false, 1500, true, true);
         if (this._accessdeniedError(err)) return;
       });
   }
@@ -205,7 +206,7 @@ export class SettingsComponent implements OnInit {
       if (this.settings.currentLocation && this.settings.currentLocation.city && !override) {
         return;
       }
-      this._showLoaderWithMessage('Locating you...', true);
+      this._showLoaderWithMessage('Locating you', true);
       let _self = this;
       const city = this._locationService.getCity().subscribe({
         async next() {

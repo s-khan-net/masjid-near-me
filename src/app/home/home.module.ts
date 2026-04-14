@@ -15,6 +15,8 @@ import { SettingsComponent } from '../components/settings/settings.component';
 import { TimingWidjetComponent } from '../components/timing-widjet/timing-widjet.component';
 import { MnmHelpComponent } from '../components/mnm-help/mnm-help.component';
 import { ClickOutsideDirective } from '../directives/click-outside.directive';
+import { MyMasjidsComponent } from '../components/my-masjids/my-masjids.component';
+import { SalaahtimesdisplayPipe } from '../pipes/salaahtimesdisplay.pipe';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
@@ -26,10 +28,12 @@ import { ClickOutsideDirective } from '../directives/click-outside.directive';
     LoaderComponent,
     LoginComponent,
     UserProfileComponent,
+    MyMasjidsComponent,
     SettingsComponent,
     TimingWidjetComponent,
     MnmHelpComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    SalaahtimesdisplayPipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

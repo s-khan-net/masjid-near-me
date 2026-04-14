@@ -18,7 +18,7 @@ export class AppComponent {
         console.log('appUrlOpen', event);
         // Handle the URL event here
         // For example, navigate to a specific page based on the URL
-        const pathArray = event.url.split('localhost:8100')
+        const pathArray = event.url.split('https://masjidnear.me/');
         const param = pathArray.pop();
         if(param && param?.indexOf('verify') > -1 && param.indexOf('?') > -1) {
           const code = param.split('?')[1].split('=')[1];

@@ -200,7 +200,10 @@ export class MapComponent implements OnInit {
             self.masjids = masjids;
             await self._setMarkersForMasjids();
             self._loaderService.hideLoader();
-            self._checkUserTokenValidity();
+            /** removing validity check from maps, 
+             * as the search radius is no more dependent on settingd 
+             * This change was implimented in versin 3.5+
+            self._checkUserTokenValidity(); */
           } else {
             if (radius < 25000) {
               self._reloadMasjidsForMoreRadius(radius);
@@ -213,7 +216,10 @@ export class MapComponent implements OnInit {
               self._loaderService.showLoader();
               setTimeout(() => {
                 self._loaderService.hideLoader();
-                self._checkUserTokenValidity();
+                /** removing validity check from maps, 
+                 * as the search radius is no more dependent on settingd 
+                 * This change was implimented in versin 3.5+
+                self._checkUserTokenValidity(); */
               }, 2500);
               // this._loaderService.messageUpdateEvent.emit({message:'No Masjids Found',hide:true})
             }

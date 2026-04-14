@@ -1,15 +1,23 @@
 <!-- <ion-header> -->
-  <ion-toolbar>
-    <ion-title>{{ masjidCopy.masjidName }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button color="dark" (click)="share()">
-        <ion-icon name="share-social-outline"></ion-icon>
+<ion-toolbar>
+  <ion-title>{{ masjidCopy.masjidName }}</ion-title>
+  <ion-buttons slot="end">
+    <ng-container *ngIf="userRole?.roleName != '' && masjidCopy.verified">
+      <ion-button color="dark" (click)="addToMyMasjids()" *ngIf="!inmyMasjids">
+        <ion-icon name="star-outline"></ion-icon>
       </ion-button>
-      <ion-button color="dark" (click)="navigate()">
-        <ion-icon name="navigate-outline"></ion-icon>
+      <ion-button color="dark" (click)="removeFromMyMasjids()" *ngIf="inmyMasjids">
+        <ion-icon name="star"></ion-icon>
       </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+    </ng-container>
+    <ion-button color="dark" (click)="share()">
+      <ion-icon name="share-social-outline"></ion-icon>
+    </ion-button>
+    <ion-button color="dark" (click)="navigate()">
+      <ion-icon name="navigate-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
 <!-- </ion-header> -->
 <ion-content>
   <ion-grid>

@@ -20,6 +20,46 @@ export class UsersService {
     }
   }
 
+  public async updateMyMasjidsForUser(myMasjids: any) {
+    let res: boolean = false;
+    return new Promise(async (resolve, reject) => {
+      (await this.getUserByToken()).subscribe(async (data) => {
+        if (data && data.body.user) {
+          let userObj = {
+            user: data.body.user,
+          };
+          userObj.user.myMasjids = myMasjids;
+          res = await this._updateUser(userObj);
+          if (res) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        } else {
+          console.log('No user found');
+          resolve(false);
+        }
+      });
+    });
+  }
+  private _updateUser(userObj: { user: any; }): Promise<boolean> {
+    const url = `${MnmConstants.baseUrl}${MnmConstants.usersMidPath}`;
+    return new Promise((resolve, reject) => {
+      this._dataService.putService(url, userObj).subscribe((data) => {
+        if (JSON.stringify(data)) {
+          if (JSON.parse(JSON.stringify(data)).body.updated) {
+            console.log('Masjid list updated successfully');
+            resolve(true);
+          }
+        } else {
+          console.log('Masjid list update failed');
+          reject(false);
+        }
+      });
+    });
+  }
+
+
   public deleteUserAccount(userEmail: string, reason: string) {
     const url = `${MnmConstants.baseUrl}users`;
     //make user object with email and reason

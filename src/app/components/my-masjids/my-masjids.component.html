@@ -1,0 +1,98 @@
+<div class="ion-page">
+  <ion-header>
+    <ion-toolbar [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
+      <ion-buttons slot="start">
+        <ion-button (click)="hide()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+            <path
+              d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
+              fill="#17603A" />
+          </svg>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>My Masjids</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-accordion-group class="open-sans-font">
+      <ng-container *ngIf="myMasjids.length > 0; else noMasjids">
+        <ion-accordion *ngFor="let masjid of myMasjids">
+          <ion-item slot="header">
+            <ion-label>{{ masjid.masjidName }}</ion-label>
+          </ion-item>
+          <div slot="content" style="font-family: Arial, sans-serif; line-height: 1.3;">
+            <div style="padding: 4px;">
+              <ion-grid>
+                <ion-row style="background-color: #f0f0f0;  border-radius: 4px;">
+                  <ion-col size="7" style="border-right: 1px solid #DDD;">
+                    <div style="padding-top:4px;" *ngIf="masjid.masjidAddress.description">
+                      <ion-icon name="expand"></ion-icon>
+                      {{masjid.masjidAddress.description}}
+                    </div>
+                    <div style="padding-top:4px;">
+                      <ion-icon name="navigate"></ion-icon>
+                      {{masjid.masjidAddress.city}}, {{masjid.masjidAddress.locality}}
+                    </div>
+                    <div>
+                      {{masjid.masjidAddress.zipcode}}
+                    </div>
+                    <div>
+                      {{masjid.masjidAddress.state}}, {{masjid.masjidAddress.country}}
+                    </div>
+                    <div *ngIf="masjid.masjidAddress.phone" style="padding-top:4px;">
+                      <ion-icon name="call"></ion-icon>
+                      {{masjid.masjidAddress.phone}}
+                    </div>
+                  </ion-col>
+                  <ion-col size="5">
+                    <ng-container *ngFor="let prayer of masjid.masjidTimings | salaahtimesdisplay ">
+                      <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+                        <span>{{ prayer.name }}</span>
+                        <span>{{ prayer.value }}</span>
+                      </div>
+                    </ng-container>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="7">
+                    <span style="font-size: x-small;padding: 5px ">* Maghreb begins according to the local time at the
+                      masjid.</span>
+                  </ion-col>
+                  <ion-col size="5">
+                    <div style="margin-top: 8px; display: flex; justify-content: flex-end;">
+                      <div class="btn-masajid" (click)="removeFromMyMasjids(masjid)">
+                        <ion-icon name="trash-outline"></ion-icon>
+                        Remove
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </div>
+        </ion-accordion>
+      </ng-container>
+      <ng-template #noMasjids>
+        <ion-item>
+          <ion-label class="ion-text-center">
+            You haven't added any masjids to your list yet.
+          </ion-label>
+        </ion-item>
+      </ng-template>
+
+    </ion-accordion-group>
+    <div class="well" style="margin-top:24px">
+      <ul>
+        <li>You can add up to 5 masjids to your list.</li>
+        <li>- To add a masjid:
+          <ul>
+            <li>Search for the masjid</li>
+            <li>Click on the <ion-icon name="star-outline"></ion-icon> icon on the masjid details card</li>
+          </ul>
+        </li>
+        <li> Watch this video <a href="https://www.youtube.com/shorts/7nSdcCfDyTI" target="_blank"><img
+              src="./assets/images/y_24X24.png" alt="YouTube" /></a> for more information.</li>
+      </ul>
+    </div>
+  </ion-content>
+</div>

@@ -7,6 +7,7 @@ export class MnmConstants {
       url: 'settings',
     },
     { name: 'Users', icon: 'people', fun: 'ShowSignIn()', url: 'settings' },
+    { name: 'My Masjids', icon: 'list', fun: 'ShowMyMasjids()' },
     { name: 'Compass', icon: 'compass', fun: 'setScreenForCompass()' },
     // {"name":"Verse","icon":"fa fa-bookmark-o fa-4x","fun":"showAyah()"},
     { name: 'Help', icon: 'help-circle', fun: 'showHelp()' },
@@ -16,6 +17,7 @@ export class MnmConstants {
     { name: 'Settings', isOpen: false },
     { name: 'Users', isOpen: false },
     { name: 'Profile', isOpen: false },
+    { name: 'My Masjids', isOpen: false },
     { name: 'Compass', isOpen: false },
     { name: 'Help', isOpen: false },
   ]

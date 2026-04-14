@@ -41,6 +41,7 @@ export class AuthService {
         let profile = data.body.user.userprofile;
         profile['phone'] = data.body.user.userPhone;
         this._storage.set('userProfile', btoa(JSON.stringify(profile)));
+        this._storage.set('myMasjids', btoa(JSON.stringify(data.body.user.myMasjids || [])));
         return data;
       })
     );

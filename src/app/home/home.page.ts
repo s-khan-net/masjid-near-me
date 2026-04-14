@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
   public splashTextExtra: string = '';
-  public version: string = '3.3.113';
+  public version: string = '3.4.003';
   public osVersion: number = 0;
   public showingAppVersion: boolean = false;
 
@@ -101,7 +101,7 @@ export class HomePage implements OnInit {
 
   private async setUserName(mnuOpened?: boolean) {
     const userProfile = await this._storage.get('userProfile'); //sessionStorage.getItem('userProfile');
-    /** here the token is taken from the storage and saved inn the sessionstorage
+    /** here the token is taken from the storage and saved in the sessionstorage
      * so user login is maintained in the app
      */
     const token = await this._storage.get('token');
@@ -116,7 +116,7 @@ export class HomePage implements OnInit {
           }
         });
       } else {
-        this.mnuItems = _.cloneDeep(MnmConstants.menuItems);
+          this.mnuItems = this.mnuItems.filter((x: any) => x.name !== 'My Masjids');
       }
     }
   }
@@ -151,6 +151,9 @@ export class HomePage implements OnInit {
         break;
       case 'Users':
         this._popupService.showLogin();
+        break;
+      case 'My Masjids':
+        this._popupService.showMyMasjids();
         break;
       case 'Share':
         await Share.share({
@@ -246,7 +249,7 @@ export class HomePage implements OnInit {
         }
       } else {
         this.splashText = 'Loading map... Please wait';
-        if (intervalcounter > 30) {
+        if (intervalcounter > 20) {
           clearInterval(interval);
           this.splashText = 'Sorry, Unable to load map';
         }
@@ -276,7 +279,7 @@ export class HomePage implements OnInit {
               this.splashTextExtra = 'Notifications are scheduled';
             }
             else {
-              this.splashTextExtra = 'Go to Settings to manage prayer notifications.';
+              this.splashTextExtra = 'Manage prayer notifications from Settings';
             }
             setTimeout(() => {
               this.showSplash = false;
@@ -284,7 +287,7 @@ export class HomePage implements OnInit {
           }
           else {
             if (notifs.notifications.length == 0) {
-              this.splashTextExtra = 'Go to Settings to manage prayer notifications.';
+              this.splashTextExtra = 'Manage prayer notifications from Settings';
             }
             else {
               this.splashTextExtra = 'Loading notifications...';
