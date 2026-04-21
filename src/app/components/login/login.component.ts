@@ -133,12 +133,12 @@ export class LoginComponent implements OnInit {
         this._loaderService.hideLoader();
         console.error(err);
         this.hide();
-        this._loaderService.LoaderMessage = getMessage(err.body);
+        this._loaderService.LoaderMessage = err.body ? getMessage(err.body) : 'An error occurred while sign up. Please try again.';
         this._loaderService.ShowSpinner = false;
         this._loaderService.showLoader();
         setTimeout(() => {
           this._loaderService.hideLoader();
-        }, 3500);
+        }, 4000);
       }
     );
   }
