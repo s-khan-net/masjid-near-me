@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
   public splashTextExtra: string = '';
-  public version: string = '3.4.003';
+  public version: string = '3.9.011';
   public osVersion: number = 0;
   public showingAppVersion: boolean = false;
 
@@ -115,9 +115,7 @@ export class HomePage implements OnInit {
             x.name = name;
           }
         });
-      } else {
-          this.mnuItems = this.mnuItems.filter((x: any) => x.name !== 'My Masjids');
-      }
+      } 
     }
   }
 
@@ -147,12 +145,17 @@ export class HomePage implements OnInit {
         this._popupService.showSettings();
         break;
       case 'Compass':
-        this._popupService.showToast('Coming soon', "middle", 2500, 'compass-outline')
+        this._popupService.showCompass();
         break;
       case 'Users':
         this._popupService.showLogin();
         break;
       case 'My Masjids':
+        const userProfile = await this._storage.get('userProfile');
+        if (!userProfile) {
+          this._popupService.showToast('Please login to view your masjids', "middle", 2500, 'warning-outline');
+          return;
+        }
         this._popupService.showMyMasjids();
         break;
       case 'Share':
@@ -300,7 +303,7 @@ export class HomePage implements OnInit {
       }
       else {
         await this._notificationService.cancelAllNotifications();
-        this.splashTextExtra = 'Notifications are disabled. Go to Settings to enable them';
+        this.splashTextExtra = 'Manage prayer notifications from Settings';
         setTimeout(() => {
           this.showSplash = false;
         }, 2500);

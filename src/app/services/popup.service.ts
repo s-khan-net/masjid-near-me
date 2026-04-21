@@ -10,6 +10,7 @@ import { AlertController } from '@ionic/angular';
 import { MnmConstants } from '../core/mnm-constants';
 import * as _ from 'lodash';
 import { MyMasjidsComponent } from '../components/my-masjids/my-masjids.component';
+import { CompassComponent } from '../components/compass/compass.component';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +44,15 @@ export class PopupService {
     });
     this.modal.isOpen = true;
     this._pages.find(p => p.name === 'Users')!.isOpen = true;
+    await this.modal.present();
+  }
+
+   public async showCompass() {
+    this.modal = await this._modalCtrl.create({
+      component: CompassComponent,
+    });
+    this.modal.isOpen = true;
+    this._pages.find(p => p.name === 'Compass')!.isOpen = true;
     await this.modal.present();
   }
 

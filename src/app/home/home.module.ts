@@ -15,6 +15,7 @@ import { SettingsComponent } from '../components/settings/settings.component';
 import { TimingWidjetComponent } from '../components/timing-widjet/timing-widjet.component';
 import { MnmHelpComponent } from '../components/mnm-help/mnm-help.component';
 import { ClickOutsideDirective } from '../directives/click-outside.directive';
+import { CompassComponent } from '../components/compass/compass.component';
 import { MyMasjidsComponent } from '../components/my-masjids/my-masjids.component';
 import { SalaahtimesdisplayPipe } from '../pipes/salaahtimesdisplay.pipe';
 
@@ -32,9 +33,10 @@ import { SalaahtimesdisplayPipe } from '../pipes/salaahtimesdisplay.pipe';
     SettingsComponent,
     TimingWidjetComponent,
     MnmHelpComponent,
+    CompassComponent,
     ClickOutsideDirective,
     SalaahtimesdisplayPipe
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class HomePageModule {}
+export class HomePageModule { }

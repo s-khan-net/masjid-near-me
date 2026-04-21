@@ -1,0 +1,46 @@
+<div class="ion-page">
+    <ion-header>
+        <ion-toolbar [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
+            <ion-buttons slot="start">
+                <ion-button (click)="hide()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512">
+                        <path
+                            d="M401.4 224h-214l83-79.4c11.9-12.5 11.9-32.7 0-45.2s-31.2-12.5-43.2 0L89 233.4c-6 5.8-9 13.7-9 22.4v.4c0 8.7 3 16.6 9 22.4l138.1 134c12 12.5 31.3 12.5 43.2 0 11.9-12.5 11.9-32.7 0-45.2l-83-79.4h214c16.9 0 30.6-14.3 30.6-32 .1-18-13.6-32-30.5-32z"
+                            fill="#17603A" />
+                    </svg>
+                </ion-button>
+            </ion-buttons>
+            <ion-title>Compass</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <div class="compass-shell" [class.disabled]="!locationReady || !deviceSupported">
+        <div class="compass-card">
+            <div class="compass-title">
+                <!-- <div>Compass</div> -->
+                <div class="compass-status">{{ statusMessage }}</div>
+            </div>
+
+            <div class="compass-frame">
+                <div class="compass-dial"  [style.transform]="'rotate(' + dialRotation + 'deg)'" [ngClass]="{'dial-shadow' : opacity == 1 }">
+                    <div class="qibla-line" *ngIf="locationReady" [style.transform]="'rotate(' + degreesToQibla + 'deg)'"></div>
+                    <div class="compass-marker north">N</div>
+                    <div class="compass-marker east">E</div>
+                    <div class="compass-marker south">S</div>
+                    <div class="compass-marker west">W</div>
+                </div>
+                <div class="compass-arrow" [style.opacity]="opacity"></div>
+            </div>
+
+            <div class="compass-direction" *ngIf="locationReady">
+                {{ cardinalDirection }} • {{ heading | number:'1.0-0' }}°
+            </div>
+
+            <div class="compass-footer" *ngIf="currentLocation">
+                <div>{{ currentLocation.latitude | number:'1.2-2' }}, {{ currentLocation.longitude | number:'1.2-2' }}<span *ngIf="currentLocation.city"><br>{{ currentLocation.city }}</span>
+                </div>
+                <div>{{ degreesToQibla }}° to qibla</div>
+
+            </div>
+        </div>
+    </div>
+</div>
