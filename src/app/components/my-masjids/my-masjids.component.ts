@@ -11,10 +11,11 @@ import { UsersService } from 'src/app/services/users.service';
   styleUrls: ['./my-masjids.component.scss'],
 })
 export class MyMasjidsComponent implements OnInit {
-  @Input() myMasjids!: [IMasjid];
+  @Input() myMasjids!: IMasjid[];
   public osVersion: number = this._settingsService.osVersion;
   constructor(private _storage: StorageService, private _popupService: PopupService, private _settingsService: SettingsService, private _usersService: UsersService) { }
   async ngOnInit() {
+    this.myMasjids = this.myMasjids ? this.myMasjids : [];
     console.log('My masjids:', this.myMasjids);
   }
   public removeFromMyMasjids(masjid: IMasjid) {

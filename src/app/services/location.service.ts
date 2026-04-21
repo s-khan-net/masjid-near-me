@@ -16,7 +16,7 @@ export class LocationService {
     this._mapLoaded = value;
   }
 
-  public LocatonChangedEvent: EventEmitter<ICurrentLocation> =
+  public LocationChangedEvent: EventEmitter<ICurrentLocation> =
     new EventEmitter<ICurrentLocation>();
 
   private _currentLocation!: ICurrentLocation;
@@ -32,7 +32,7 @@ export class LocationService {
 
   public resetLocation() {
     if (this._currentLocation) {
-      this.LocatonChangedEvent.emit(this._currentLocation);
+      this.LocationChangedEvent.emit(this._currentLocation);
     }
   }
 
@@ -43,7 +43,8 @@ export class LocationService {
         .then(response => response.json())
         .then(data => {
           const city = data.address.city || data.address.town || data.address.village || data.address.hamlet || '';
-          this._currentLocation.city = city;
+          const country = data.address.country || '';
+          this._currentLocation.city = `${city}, ${country}`;
           observer.next(city);
         })
         .catch(error => {

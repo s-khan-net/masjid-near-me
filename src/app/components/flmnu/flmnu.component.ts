@@ -50,7 +50,7 @@ export class FlmnuComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._locationService.LocatonChangedEvent.subscribe((res) => {
+    this._locationService.LocationChangedEvent.subscribe((res) => {
       if (res) this.masjids = [];
     });
     this._masjidService.masjidsLoaded$.subscribe((obj) => {

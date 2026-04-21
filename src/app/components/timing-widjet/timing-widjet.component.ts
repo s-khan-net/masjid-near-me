@@ -26,7 +26,7 @@ export class TimingWidjetComponent implements OnInit {
   public stbArray: any[] = [];
   public osVersion: number = 0;
   ngOnInit() {
-    this._locationService.LocatonChangedEvent.subscribe((res) => {
+    this._locationService.LocationChangedEvent.subscribe((res) => {
       if (res) {
         this.currentLocaton = res;
         this.getSalaahTimes();
