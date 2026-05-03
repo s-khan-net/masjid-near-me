@@ -18,6 +18,7 @@ import { ClickOutsideDirective } from '../directives/click-outside.directive';
 import { CompassComponent } from '../components/compass/compass.component';
 import { MyMasjidsComponent } from '../components/my-masjids/my-masjids.component';
 import { SalaahtimesdisplayPipe } from '../pipes/salaahtimesdisplay.pipe';
+import { ResetBtnComponent } from '../components/reset-btn/reset-btn.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
@@ -34,6 +35,7 @@ import { SalaahtimesdisplayPipe } from '../pipes/salaahtimesdisplay.pipe';
     TimingWidjetComponent,
     MnmHelpComponent,
     CompassComponent,
+    ResetBtnComponent,
     ClickOutsideDirective,
     SalaahtimesdisplayPipe
   ],

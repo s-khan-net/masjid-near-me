@@ -8,7 +8,6 @@ import { IMasjid } from '../models/masjids.model';
 import { LocationService } from '../services/location.service';
 import { PopupService } from '../services/popup.service';
 import { MnmConstants } from '../core/mnm-constants';
-import { Geolocation } from '@capacitor/geolocation';
 import * as _ from 'lodash';
 import { Share } from '@capacitor/share';
 import { App } from '@capacitor/app';
@@ -36,7 +35,7 @@ export class HomePage implements OnInit {
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
   public splashTextExtra: string = '';
-  public version: string = '3.9.011';
+  public version: string = '4.0.019';
   public osVersion: number = 0;
   public showingAppVersion: boolean = false;
 
@@ -115,12 +114,12 @@ export class HomePage implements OnInit {
             x.name = name;
           }
         });
-      } 
+      }
     }
   }
 
   private async setCurrentLocation(): Promise<void> {
-    const position = await Geolocation.getCurrentPosition();
+    const position = await this._locationService.getCurrentLocation();
     if (position) {
       this._locationService.currentLocation = {
         latitude: position.coords.latitude,
@@ -134,7 +133,10 @@ export class HomePage implements OnInit {
         // latitude: 52.504859, //Birmingham UK
         // longitude: -1.863434,
       };
+      //store the location in storage for later use
+      await this._storage.set('currentLocation', btoa(JSON.stringify(this._locationService.currentLocation)));
     } else {
+      alert('Position could not be found');
       throw new Error('Position could not be found');
     }
   }
@@ -196,7 +198,7 @@ export class HomePage implements OnInit {
 
   //#region splashText
   private _checkLocation() {
-    Geolocation.checkPermissions()
+    this._locationService.checkLocationPermission()
       .then((res) => {
         this.isLocationEnabled = true;
         if (res.location == 'granted') {
@@ -207,7 +209,17 @@ export class HomePage implements OnInit {
           this.requestLocationPermission();
         }
       })
-      .catch((ex) => {
+      .catch(async (ex) => {
+        //if currentLocation is available in storage then use it
+        const location = await this._storage.get('currentLocation');
+        if (location) {
+          const storedLocation = JSON.parse(atob(location));
+          this._locationService.currentLocation = storedLocation;
+          this.splashText = 'Got your previous location... loading map';
+          this._navigateToDashboard(true);
+          return;
+        }
+
         this.splashText = 'Please start Location services on your device';
         setTimeout(() => {
           this.showLocationSettings();
@@ -216,7 +228,7 @@ export class HomePage implements OnInit {
   }
   public requestLocationPermission() {
     //request permissions
-    Geolocation.requestPermissions().then((res) => {
+    this._locationService.requestLocationPermission().then((res) => {
       if (res.location == 'granted') {
         this.locationPermissionFailed = true;
         this.splashText = 'Checking location... loading map';
@@ -234,8 +246,10 @@ export class HomePage implements OnInit {
     });
   }
 
-  private _navigateToDashboard() {
-    this.setCurrentLocation();
+  private _navigateToDashboard(savedLocation?: boolean) {
+    if(!savedLocation) {
+      this.setCurrentLocation();
+    }
     let intervalcounter = 0;
     let interval = setInterval(() => {
       intervalcounter++;
@@ -352,7 +366,10 @@ export class HomePage implements OnInit {
         this.connected = status.connected;
       });
       Network.addListener('networkStatusChange', (status) => {
-        this.connected = status.connected;
+        if (!this.connected && status.connected) {
+          this.connected = status.connected;
+          this._locationService.resetLocation();
+        }
       });
     }
   }

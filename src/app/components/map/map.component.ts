@@ -42,15 +42,15 @@ export class MapComponent implements OnInit {
     this._locationService.LocationChangedEvent.subscribe(async (res) => {
       if (res) {
         this._locationService.mapLoaded = true;
+        this.currentLocaton = res;
         if (!this._map) {
           this._loaderService.LoaderMessage = 'Loading Map';
           this._loaderService.ShowSpinner = true;
           this._loaderService.showLoader();
-          this.currentLocaton = res;
           this._setLocationOnMap();
         } else {
-          await this._map.removeMarkers(this._markerIds);
-          this.getMasjids(res.dragged);
+            await this._map.removeMarkers(this._markerIds);
+            this._setLocationOnMap();
         }
       }
     });
@@ -77,9 +77,9 @@ export class MapComponent implements OnInit {
           });
         });
         this._map.addMarkers(this._markers).then((ids) => {
+          this._markerIds = [...this._markerIds, ...ids];
           this.masjidMarkers = _.cloneDeep(this.masjids);
           this.masjidMarkers.map((masjid: any, index: any) => {
-            this._markerIds = ids;
             masjid['markerId'] = ids[index];
           });
         });
@@ -87,36 +87,48 @@ export class MapComponent implements OnInit {
     }
   }
   private async _setLocationOnMap() {
-    this._map = await GoogleMap.create({
-      id: 'mnm-map', // Unique identifier for this map instance
-      element: this.mapRef.nativeElement, // reference to the capacitor-google-map element
-      apiKey: apiKey, // Your Google Maps API Key
-      config: {
-        center: {
-          // The initial position to be rendered by the map
-          lat: this.currentLocaton.latitude,
-          lng: this.currentLocaton.longitude,
+    if (this._map) {
+      this._map.setCamera(
+        {
+          coordinate: {
+            lat: this.currentLocaton.latitude,
+            lng: this.currentLocaton.longitude,
+          }, zoom: 15, animate: true
+        }
+      );
+    }
+    else {
+      this._map = await GoogleMap.create({
+        id: 'mnm-map', // Unique identifier for this map instance
+        element: this.mapRef.nativeElement, // reference to the capacitor-google-map element
+        apiKey: apiKey, // Your Google Maps API Key
+        config: {
+          center: {
+            // The initial position to be rendered by the map
+            lat: this.currentLocaton.latitude,
+            lng: this.currentLocaton.longitude,
+          },
+          disableDefaultUI: true,
+          // mapTypeId: MapType.Normal,
+          maxZoom: 19,
+          zoom: 15, // The initial zoom level to be rendered by the map
         },
-        disableDefaultUI: true,
-        // mapTypeId: MapType.Normal,
-        maxZoom: 19,
-        zoom: 15, // The initial zoom level to be rendered by the map
-      },
-    });
+      });
+    }
     await this._map.addMarker({
       coordinate: {
         lat: this.currentLocaton.latitude,
         lng: this.currentLocaton.longitude,
       },
       draggable: true,
-      // iconUrl: 'assets/icon/marker-icon-2x.png',
-      // title: 'You are here',
       iconSize: {
         width: 25,
         height: 41,
       },
       // tintColor: { r: 69, g: 139, b: 214, a: 0 },
       iconUrl: 'assets/icon/pin.png',
+    }).then((markerId) => {
+      this._markerIds.push(markerId);
     });
     await this._map.setOnMarkerClickListener(async (event) => {
       const masjid = this.masjidMarkers.filter((m: any) => {
@@ -145,7 +157,7 @@ export class MapComponent implements OnInit {
       this.markerClick(event);
     });
 
-    this.getMasjids();
+    this.getMasjids(this.currentLocaton.dragged);
   }
 
   public async markerClick(event: any) {
@@ -172,7 +184,6 @@ export class MapComponent implements OnInit {
   }
 
   private async getMasjids(dragged?: boolean, radius: number = 2000): Promise<void> {
-    // this._loaderService.hideLoader();
     this._loaderService.LoaderMessage = `Searching for masjids within ${radius / 1000} km`;
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
@@ -200,10 +211,6 @@ export class MapComponent implements OnInit {
             self.masjids = masjids;
             await self._setMarkersForMasjids();
             self._loaderService.hideLoader();
-            /** removing validity check from maps, 
-             * as the search radius is no more dependent on settingd 
-             * This change was implimented in versin 3.5+
-            self._checkUserTokenValidity(); */
           } else {
             if (radius < 25000) {
               self._reloadMasjidsForMoreRadius(radius);
@@ -216,10 +223,6 @@ export class MapComponent implements OnInit {
               self._loaderService.showLoader();
               setTimeout(() => {
                 self._loaderService.hideLoader();
-                /** removing validity check from maps, 
-                 * as the search radius is no more dependent on settingd 
-                 * This change was implimented in versin 3.5+
-                self._checkUserTokenValidity(); */
               }, 2500);
               // this._loaderService.messageUpdateEvent.emit({message:'No Masjids Found',hide:true})
             }
@@ -234,27 +237,6 @@ export class MapComponent implements OnInit {
   private _reloadMasjidsForMoreRadius(radius: number) {
     this._loaderService.LoaderMessage = `No masjids found within ${radius / 1000} km. Expanding search radius to ${(radius / 1000) + 5} km`
     this.getMasjids(true, radius + 5000);
-  }
-  private async _checkUserTokenValidity() {
-    const token = await this._storage.get('token');
-    if (!token) {
-      return;
-    }
-    (await this._userService.getUserByToken()).subscribe({
-      next: (data: any) => {
-        if (!data || !data.body.user) {
-          console.log('No user found');
-          this._accessdeniedError();
-        } else {
-          sessionStorage.removeItem('token');
-          sessionStorage.setItem('token', token);
-        }
-      },
-      error: (err: any) => {
-        console.log('No user found');
-        this._accessdeniedError();
-      },
-    });
   }
   private async _accessdeniedError(): Promise<void> {
     const profile = await this._storage.get('userProfile');
@@ -281,9 +263,5 @@ export class MapComponent implements OnInit {
     return masjid.Distance
       ? `Distance: ${parseFloat(masjid.Distance).toFixed(2)} Km`
       : '';
-  }
-
-  public async resetLocation() {
-    this._locationService.LocationChangedEvent.emit(this._locationService.currentLocation);
   }
 }

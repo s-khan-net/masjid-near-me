@@ -96,7 +96,7 @@
         var whitescreen = document.getElementById("whitescreen");
         if (whitescreen.style.display !== "block") {
           document.getElementById("whitescreen-stack").innerHTML =
-            error.stack.replace(/\n/g, "<br/>");
+            error.stack?.replace(/\n/g, "<br/>");
           whitescreen.style.display = "block";
           document.body.style.display = "block"; // only for ionic
         }

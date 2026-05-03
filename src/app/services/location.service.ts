@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Geolocation, PermissionStatus, Position, PositionOptions } from '@capacitor/geolocation';
 
 @Injectable({
   providedIn: 'root',
@@ -78,6 +79,34 @@ export class LocationService {
       };
     });
   }
+
+  public getNavigatorCurrentLocation(options?: PositionOptions): Promise<GeolocationPosition> {
+    return new Promise<GeolocationPosition>((resolve, reject) => {
+      if (!('geolocation' in navigator)) {
+        reject(new Error('Navigator geolocation is not available'));
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position: GeolocationPosition) => resolve(position),
+        (error: GeolocationPositionError) => reject(error),
+        options
+      );
+    });
+  }
+
+  public async checkLocationPermission(): Promise<PermissionStatus> {
+    return Geolocation.checkPermissions();
+  }
+
+  public getCurrentLocation(options?: PositionOptions): Promise<Position> {
+    return Geolocation.getCurrentPosition(options);
+  }
+
+  public requestLocationPermission(): Promise<PermissionStatus> {
+    return Geolocation.requestPermissions();
+  }
+
 }
 
 export interface ICurrentLocation {

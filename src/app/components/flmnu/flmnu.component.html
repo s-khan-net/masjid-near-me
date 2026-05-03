@@ -11,7 +11,7 @@
   <ul id="flmnuNav" *ngIf="masjids && masjids.length > 0">
     <ng-container *ngFor="let masjid of masjids">
       <li [hidden]="masjid.notMasjid">
-        <div (click)="selectMasjid(masjid)">
+        <div (click)="selectMasjid(masjid)" class="masjid-name">
           <ion-icon name="arrow-back-circle" style="margin-left: -4px;" [ngStyle]="{'color': masjid.verified ? '#17603a': '#999'}" title="masjid.masjidName"></ion-icon>
           {{masjid.masjidName}}
         </div>

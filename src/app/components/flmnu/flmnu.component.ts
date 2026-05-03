@@ -22,7 +22,7 @@ import { MasjidService } from 'src/app/services/masjid.service';
       state(
         'initial',
         style({
-          right: '-219px',
+          right: '-214px',
         })
       ),
       state(
@@ -56,7 +56,10 @@ export class FlmnuComponent implements OnInit {
     this._masjidService.masjidsLoaded$.subscribe((obj) => {
       this.masjids = obj.masjids;
       if(this.masjids.length > 0) {
-        this._toggleFLmnuInOut();
+        if(!obj.dragged)
+          this._toggleFLmnuInOut();
+        else
+          this.toggleFlmnu();
       }
     });
   }

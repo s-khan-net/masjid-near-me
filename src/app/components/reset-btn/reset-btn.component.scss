@@ -1,0 +1,16 @@
+ion-icon {
+    font-size: 32px;
+    color: white;
+    margin-bottom:-3px;
+}
+
+.reset-btn {
+    bottom: 30px;
+    right: 88%;
+    z-index: 2;
+    border-radius: 50%;
+    background: darkgreen;
+    position: absolute;
+    cursor: pointer;
+    box-shadow: 0px 1px 3px #666;
+}
