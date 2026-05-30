@@ -17,7 +17,7 @@ export class UserProfileComponent implements OnInit {
     private _loaderService: LoaderService,
     private _storage: StorageService,
     private _settingsService: SettingsService
-  ) {}
+  ) { }
 
   public email: string = '';
   public userProfile: any;
@@ -50,9 +50,12 @@ export class UserProfileComponent implements OnInit {
   public hide() {
     this._popupService.closePopups();
   }
-  public logOut() {
+  public async logOut() {
+    const loc = await this._storage.get('currentLocation');
     this._storage.clear();
     sessionStorage.clear();
+    //dont remove the current location from storage until after the storage is cleared
+    await this._storage.set('currentLocation', loc);
     this.hide();
   }
 

@@ -25,14 +25,32 @@ export class MasjidService {
     );
   }
 
-  getMasjidDetails(googlePlaceId: string): Observable<any> {
+  public searchMasjids(txt: string): Observable<any> {
+    const url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}search?txt=${txt}&limit=19`;
+    return this._dataService.getData(url)
+  }
+
+  getMasjidDetails(googlePlaceId: string, token?: string): Observable<any> {
+    if (token) {
+      sessionStorage.setItem('token', token);
+    }
     const url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}details/${googlePlaceId}`;
     return this._dataService.getData(url)
   }
-  updateMasjid(masjid: IMasjid): Promise<boolean> {
+  async updateMasjid(masjid: IMasjid, type?: string): Promise<boolean> {
+    if(!type){
+      type = 'updateMasjid';
+    }
+    /* 
+    TAKE FORM THE STORGE AND SET IN SESSIONSTORAGE TO MAKE SURE IT GETS PICKED UP BY THE INTERCEPTOR IN THE DATASERVICE
+    */
+    const token = await this._storage.get('token');
+    if (token) {
+      sessionStorage.setItem('token', token);
+    }
     return new Promise((resolve, reject) => {
       const url = `${MnmConstants.baseUrl}${MnmConstants.masjidMidPath}`;
-      this._dataService.putService(url, { masjid }).subscribe(async (data) => {
+      this._dataService.putService(url, { masjid:masjid , type:type}).subscribe(async (data) => {
         if (JSON.stringify(data)) {
           if (JSON.parse(JSON.stringify(data)).body.updated) {
             console.log('Masjid updated successfully');

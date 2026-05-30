@@ -17,6 +17,7 @@ import { StorageService } from '../core/services/storage.service';
 import { ISettings, SettingsService } from '../services/settings.service';
 import { NotificationService } from '../services/notification.service';
 import { AlAdhanOptions } from '../services/salaah-times.service';
+import { LoaderService } from '../core/services/loader.service';
 
 @Component({
   selector: 'app-home',
@@ -35,9 +36,10 @@ export class HomePage implements OnInit {
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
   public splashTextExtra: string = '';
-  public version: string = '4.0.019';
+  public version: string = '4.5.019';
   public osVersion: number = 0;
   public showingAppVersion: boolean = false;
+  public showSearch: boolean = false;
 
   private _toastElement!: HTMLIonToastElement;
   constructor(
@@ -47,6 +49,7 @@ export class HomePage implements OnInit {
     private _platform: Platform,
     private _toastCtrl: ToastController,
     private _storage: StorageService,
+    private _loaderService: LoaderService,
     private _settingsService: SettingsService,
     private _notificationService: NotificationService
   ) { }
@@ -56,6 +59,7 @@ export class HomePage implements OnInit {
       this._checkLocation();
       this._checkNetwork();
       this._platform.backButton.subscribeWithPriority(9999, async (processNextHandler) => {
+        this._loaderService.hideLoader();
         const popup = this._popupService.hasOpenPopups()
         if (popup) {
           if (popup.popupObj.name === 'Settings') {
@@ -247,7 +251,7 @@ export class HomePage implements OnInit {
   }
 
   private _navigateToDashboard(savedLocation?: boolean) {
-    if(!savedLocation) {
+    if (!savedLocation) {
       this.setCurrentLocation();
     }
     let intervalcounter = 0;
@@ -387,4 +391,16 @@ export class HomePage implements OnInit {
     );
   }
   //#endregion
+
+  public popSearch() {
+    this.showSearch = true;
+  }
+
+  public onSearchHidden() {
+    this.showSearch = false;
+  }
+
+  public onSearchResultSelected(location: any) {
+    this._locationService.currentLocation = location;
+  }
 }

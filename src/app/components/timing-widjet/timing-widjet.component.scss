@@ -1,19 +1,16 @@
 .timings-container {
-    // -webkit-box-shadow: 2px 2px 1px 0px rgba(0, 0, 0, 0.77);
-    // -moz-box-shadow: 2px 2px 1px 0px rgba(0, 0, 0, 0.77);
-    // box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.77);
-    color: #17603a;
-    font-weight: 600;
-    font-family: monospace;
-    z-index: 1000;
+font-family: monospace;
+    font-weight:600;
+    z-index: 999;
     position: absolute;
-    top: 0;
-    left: calc(46% - 119px);
-    border-radius: 3px;
-
+    top: 3.5%;
+    // left: calc(45% - 99px);
+    border-radius:3px;
+        left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
 }
-
-.widgetContainer {
+.widgetContainer{
     /*max-width:317px;*/
     padding-top: 10px;
     margin: 0 auto;
@@ -22,29 +19,26 @@
     background: -moz-linear-gradient(180deg, rgb(205, 227, 221) 0%, rgb(205 227 221) 100%);
     background: linear-gradient(180deg, rgb(205, 227, 221) 0%, rgb(205 227 221) 100%);
     box-shadow: 0px 3px 0px 0px rgba(0, 0, 0, 0.2);
-
+    
 }
-
-.stb {
-    width: 61px;
-    height: 36px;
+.stb{
     border-radius: 3px;
     text-align: center;
-    display: inline-block;
+    display: inline-flex;
+    justify-content: space-around;
     vertical-align: middle;
     cursor: default;
+    margin: 3px 5px 0px;	
 }
-
 .active {
-    color: #999;
+    color:#999;
 }
 
 .load {
+    padding-top: 2px;
     text-align: center;
     font-weight: 700;
 }
-
-.maghrib-padding {
-    padding-left: 3px;
-    padding-right: 3px;
+.divider {
+    border-right: 1px solid #999;
 }

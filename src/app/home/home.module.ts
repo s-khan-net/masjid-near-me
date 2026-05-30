@@ -19,6 +19,7 @@ import { CompassComponent } from '../components/compass/compass.component';
 import { MyMasjidsComponent } from '../components/my-masjids/my-masjids.component';
 import { SalaahtimesdisplayPipe } from '../pipes/salaahtimesdisplay.pipe';
 import { ResetBtnComponent } from '../components/reset-btn/reset-btn.component';
+import { PopSearchComponent } from '../components/pop-search/pop-search.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
@@ -36,6 +37,7 @@ import { ResetBtnComponent } from '../components/reset-btn/reset-btn.component';
     MnmHelpComponent,
     CompassComponent,
     ResetBtnComponent,
+    PopSearchComponent,
     ClickOutsideDirective,
     SalaahtimesdisplayPipe
   ],

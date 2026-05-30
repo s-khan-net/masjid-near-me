@@ -1,7 +1,6 @@
 ion-icon {
     font-size: 32px;
     color: white;
-    margin-bottom:-3px;
 }
 
 .reset-btn {
@@ -13,4 +12,8 @@ ion-icon {
     position: absolute;
     cursor: pointer;
     box-shadow: 0px 1px 3px #666;
+}
+
+ion-fab-button {
+    --background: darkgreen;
 }

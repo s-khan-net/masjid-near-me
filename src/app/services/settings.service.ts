@@ -51,8 +51,14 @@ export class SettingsService {
     }
   }
 
-  updateSettings(userSettings: any, type: SettingType): Promise<boolean> {
+  async updateSettings(userSettings: any, type: SettingType): Promise<boolean> {
     let res: boolean = false;
+    /* TAKE FORM THE STORGE AND SET IN SESSIONSTORAGE TO MAKE SURE IT GETS PICKED UP BY THE INTERCEPTOR IN THE DATASERVICE
+    */
+    const token = await this._storageService.get('token');
+    if (token) {
+      sessionStorage.setItem('token', token);
+    }
     return new Promise(async (resolve, reject) => {
       (await this._userService.getUserByToken()).subscribe(async (data) => {
         if (data && data.body.user) {
@@ -74,8 +80,15 @@ export class SettingsService {
     });
   }
 
-  private _updateUser(userObj: { user: any }): Promise<boolean> {
+  private async _updateUser(userObj: { user: any }): Promise<boolean> {
     const url = `${MnmConstants.baseUrl}${MnmConstants.usersMidPath}`;
+    /*
+     * TAKE FORM THE STORGE AND SET IN SESSIONSTORAGE TO MAKE SURE IT GETS PICKED UP BY THE INTERCEPTOR IN THE DATASERVICE
+     */
+    const token = await this._storageService.get('token');
+    if (token) {
+      sessionStorage.setItem('token', token);
+    }
     return new Promise((resolve, reject) => {
       this._dataService.putService(url, userObj).subscribe((data) => {
         if (JSON.stringify(data)) {
@@ -98,9 +111,9 @@ export enum SettingType {
 }
 
 export interface ISettings {
-   radius: Number;
-    calcMethod: Number;
-    school: Number;
-    notificationsEnabled?: boolean;
-    currentLocation?: any;
+  radius: Number;
+  calcMethod: Number;
+  school: Number;
+  notificationsEnabled?: boolean;
+  currentLocation?: any;
 }

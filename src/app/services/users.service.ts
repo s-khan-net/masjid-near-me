@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../core/services/dataservice.service';
 import { MnmConstants } from '../core/mnm-constants';
-import { of } from 'rxjs';
+import { catchError, of } from 'rxjs';
 import { StorageService } from '../core/services/storage.service';
 
 @Injectable({
@@ -14,7 +14,10 @@ export class UsersService {
     let url = `${MnmConstants.baseUrl}auth/verify`;
     const token = await this._storage.get('token');
     if (token) {
-      return this._dataService.postService(url, { token });
+      return this._dataService.postService(url, { token }).pipe(catchError((error) => {
+        console.error('Error verifying token:', error);
+        return of(null); // Return null or an appropriate value on error
+      }));
     } else {
       return of(null);
     }

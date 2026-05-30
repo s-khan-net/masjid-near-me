@@ -113,10 +113,11 @@ export class DescPopupComponent implements OnInit {
     this._loaderService.LoaderMessage = 'Saving masjid details';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
-    this._updateMasjid();
+    this._updateMasjid('updateMasjid');
   }
 
-  public verifyMasjid(res: boolean): void {
+  public async verifyMasjid(res: boolean): Promise<void> {
+    const token = await this._storage.get('token');
     console.log('Masjid verified', this.masjidCopy);
     this._loaderService.hideLoader();
     this._loaderService.LoaderMessage = 'Getting masjid details';
@@ -129,7 +130,7 @@ export class DescPopupComponent implements OnInit {
     }
     //get masjid details from placeId
     this._masjidService
-      .getMasjidDetails(this.masjidCopy.masjidAddress.googlePlaceId)
+      .getMasjidDetails(this.masjidCopy.masjidAddress.googlePlaceId, token)
       .subscribe({
         next: (res) => {
           if (res) {
@@ -137,7 +138,7 @@ export class DescPopupComponent implements OnInit {
             this.masjidCopy.masjidAddress = masjidWithDetails.masjidAddress;
           }
           this._loaderService.hideLoader();
-          this._updateMasjid();
+          this._updateMasjid('verifyMasjid');
         },
         error: (err) => {
           if (this._accessdeniedError(err)) return;
@@ -152,11 +153,11 @@ export class DescPopupComponent implements OnInit {
       });
   }
 
-  private _updateMasjid() {
+  private _updateMasjid(type?: string) {
     this._loaderService.LoaderMessage = 'Updating masjid details';
     this._loaderService.ShowSpinner = true;
     this._loaderService.showLoader();
-    this._masjidService.updateMasjid(this.masjidCopy).then(
+    this._masjidService.updateMasjid(this.masjidCopy, type).then(
       (res: any) => {
         if (res) {
           this._loaderService.hideLoader();
@@ -304,8 +305,11 @@ export class DescPopupComponent implements OnInit {
     }
   }
 
-  private _logOut() {
+  private async _logOut() {
+    const loc = await this._storage.get('currentLocation');
     this._storage.clear();
     sessionStorage.clear();
+    //dont remove the current location from storage until after the storage is cleared
+    await this._storage.set('currentLocation', loc);
   }
 }

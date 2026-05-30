@@ -1,10 +1,13 @@
-<div id="timings" class="timings-container" [ngStyle]="{'padding-top': osVersion >= 15 ? '42px' : ''}">
+<div id="timings" class="timings-container" [ngStyle]="{'margin-top': osVersion >= 15 ? '38px' : ''}">
   <div class="widgetContainer" *ngIf="!showLoader">
     <div id="timesObject" style="display: none">18:01</div>
     <div class="load">{{ hijriDate }}</div>
-    <div *ngFor="let item of stbArray" class="stb" [ngStyle]="{'width':item.name == 'Maghrib' ? '63px' : '60px'}">
-      {{ item.name }}<br />{{ item.val }}
-    </div>
+    <ng-container *ngFor="let item of stbArray; let i = index">
+      <div class="stb">
+        {{ item.name }}<br />{{ item.val }}
+      </div>
+      <span class="divider" *ngIf="i < stbArray.length - 1"></span>
+    </ng-container>
   </div>
   <div class="widgetContainer" *ngIf="showLoader">
     <div class="load">Loading salaah times...</div>

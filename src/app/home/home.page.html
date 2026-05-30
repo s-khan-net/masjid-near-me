@@ -51,12 +51,12 @@
   <ion-header style="background-color: transparent">
     <ion-toolbar style="background-color: transparent;" [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
       <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
+        <ion-menu-button style="color: #17603a;"></ion-menu-button>
       </ion-buttons>
-      <!-- <ion-buttons slot="end" (click)="showSettings()">
-        <ion-icon name="settings" style="vertical-align: middle"></ion-icon>
+      <ion-buttons slot="end" (click)="popSearch()">
+        <ion-icon name="search-outline" style="font-size: 36px; vertical-align: middle;color: #17603a;"></ion-icon>
       </ion-buttons>
-      <ion-buttons slot="end" (click)="showCompass()">
+      <!--<ion-buttons slot="end" (click)="showCompass()">
         <ion-icon name="compass" style="vertical-align: middle"></ion-icon>
       </ion-buttons> -->
     </ion-toolbar>
@@ -67,17 +67,17 @@
       <th>What's new</th>
       <tr>
         <td>
-          * Compass feature added to find qibla direction.
+          * Search for masjids by cities, and states.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          * Map localtion optimized for easy search.
         </td>
       </tr>
       <tr>
         <td>
           * Location caching for faster load times and offline use.
-        </td>
-      </tr>
-      <tr>
-        <td>
-          * Optimized map performance.
         </td>
       </tr>
       <tr>
@@ -96,4 +96,5 @@
       </tr>
     </table>
   </div>
-</div>
+  <app-pop-search [showSearch]="showSearch" (searchHidden)="onSearchHidden()"
+    (resultSelected)="onSearchResultSelected($event)"></app-pop-search>

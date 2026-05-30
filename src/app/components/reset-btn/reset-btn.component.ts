@@ -75,7 +75,6 @@ export class ResetBtnComponent implements OnInit {
         await this._storage.set('currentLocation', btoa(JSON.stringify(this._locationService.currentLocation)));
       }
     } catch (err) {
-      alert('Error getting location: ' + JSON.stringify(err));
       this._loaderService.LoaderMessage = 'Unable to get location. Please ensure location services are enabled and try again.';
       this._loaderService.ShowSpinner = false;
       this._loaderService.showLoader();

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import * as _ from 'lodash';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { StorageService } from 'src/app/core/services/storage.service';
@@ -24,9 +25,10 @@ export class SettingsComponent implements OnInit {
     private _settingsService: SettingsService,
     private _loaderService: LoaderService,
     private _storage: StorageService,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
+    private _platform: Platform,
   ) { }
-  public radii = [1000, 2000, 3000];
+  public radii = [1000, 2000];
   public settings: ISettings = {
     radius: 2000,
     calcMethod: 4,
@@ -122,7 +124,9 @@ export class SettingsComponent implements OnInit {
         }
         else {
           //remove existing salaah notifications
-          await this._notificationService.cancelAllNotifications();
+          if (this._platform.is('android')) {
+            await this._notificationService.cancelAllNotifications();
+          }
         }
         this._originalSettings = _.cloneDeep(this.settings);
         const token = await this._storage.get('token');
@@ -187,9 +191,12 @@ export class SettingsComponent implements OnInit {
     }
     return false;
   }
-  private _logOut() {
+  private async _logOut() {
+    const loc = await this._storage.get('currentLocation');
     this._storage.clear();
     sessionStorage.clear();
+    //dont remove the current location from storage until after the storage is cleared
+    await this._storage.set('currentLocation', loc);
   }
 
   public async locateMe(event?: any, override: boolean = false) {

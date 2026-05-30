@@ -1,0 +1,33 @@
+<div class="search-container" *ngIf="showSearch" (click)="hideSearch()">
+    {{ isSearching }}
+    <div class="pop-search" (click)="$event.stopPropagation()">
+        <ion-searchbar #searchbarRef placeholder="Search for cities, states..." animated [(ngModel)]="searchQuery"
+            [debounce]="500" [disabled]="isSearching" (ionInput)="search()">
+        </ion-searchbar>
+        <ng-container *ngIf="searchQuery.length > 2">
+            <ng-container *ngIf="searchResults$ | async as searchResults; else loading">
+                <ng-container *ngIf="!searchResults?.error; else error">
+                    <div *ngIf="searchResults.length == 0" class="no-search-results">No results found</div>
+                    <div class="search-results">
+                        <div class="search-result-item" *ngFor="let masjid of searchResults"
+                            (click)="goToSearchResult(masjid)">
+                            <div class="search-result-name">{{ masjid.masjidName }}<span>{{masjid.masjidAddress.city}},
+                                    {{masjid.masjidAddress.state}}</span></div>
+                            <div class="search-result-location">{{masjid.matchedAddressFields[0].property}}:
+                                {{masjid.matchedAddressFields[0].value}}</div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+        <ng-template #loading>
+            <div class="search-loading">
+                <div class="search-loading-spinner"></div>
+                <div class="search-loading-text">Searching for masjids...</div>
+            </div>
+        </ng-template>
+        <ng-template #error>
+            <div class="search-error">An error occurred while searching. Please try again.</div>
+        </ng-template>
+    </div>
+</div>

@@ -16,13 +16,14 @@
     <div class="compass-shell" [class.disabled]="!locationReady || !deviceSupported">
         <div class="compass-card">
             <div class="compass-title">
-                <!-- <div>Compass</div> -->
                 <div class="compass-status">{{ statusMessage }}</div>
             </div>
 
             <div class="compass-frame">
-                <div class="compass-dial"  [style.transform]="'rotate(' + dialRotation + 'deg)'" [ngClass]="{'dial-shadow' : opacity == 1 }">
-                    <div class="qibla-line" *ngIf="locationReady" [style.transform]="'rotate(' + degreesToQibla + 'deg)'"></div>
+                <div class="compass-dial" [style.transform]="'rotate(' + dialRotation + 'deg)'"
+                    [ngClass]="{'dial-shadow' : opacity == 1 }">
+                    <div class="qibla-line" *ngIf="locationReady"
+                        [style.transform]="'rotate(' + degreesToQibla + 'deg)'"></div>
                     <div class="compass-marker north">N</div>
                     <div class="compass-marker east">E</div>
                     <div class="compass-marker south">S</div>
@@ -36,10 +37,10 @@
             </div>
 
             <div class="compass-footer" *ngIf="currentLocation">
-                <div>{{ currentLocation.latitude | number:'1.2-2' }}, {{ currentLocation.longitude | number:'1.2-2' }}<span *ngIf="currentLocation.city"><br>{{ currentLocation.city }}</span>
+                <div>{{ currentLocation.latitude | number:'1.2-2' }}, {{ currentLocation.longitude | number:'1.2-2'
+                    }}<span *ngIf="currentLocation.city"><br>{{ currentLocation.city }}</span>
                 </div>
                 <div>{{ degreesToQibla }}° to qibla</div>
-
             </div>
         </div>
     </div>
