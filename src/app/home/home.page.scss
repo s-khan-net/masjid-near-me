@@ -207,3 +207,42 @@ ion-icon {
     text-align: left;
   }
 }
+
+.no-location {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(129 170 145 / 19%);
+  // z-index: 9999;
+}
+
+.no-location-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.no-location-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #17603a;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.no-location-sub-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #17603a;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}

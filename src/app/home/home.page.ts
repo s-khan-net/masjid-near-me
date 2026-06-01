@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   MenuController,
   Platform,
@@ -73,7 +73,8 @@ export class HomePage implements OnInit {
         }
       });
     } else {
-      this._navigateToDashboard();
+      this._navigateToDashboardWithoutLocation();
+      // this._navigateToDashboard();
     }
   }
 
@@ -107,7 +108,7 @@ export class HomePage implements OnInit {
     /** here the token is taken from the storage and saved in the sessionstorage
      * so user login is maintained in the app
      */
-    const token = await this._storage.get('token');
+    // const token = await this._storage.get('token');
 
     this.mnuItems = _.cloneDeep(MnmConstants.menuItems);
     if (mnuOpened) {
@@ -201,7 +202,7 @@ export class HomePage implements OnInit {
   }
 
   //#region splashText
-  private _checkLocation() {
+  private _checkLocation(fromInit: boolean = true) {
     this._locationService.checkLocationPermission()
       .then((res) => {
         this.isLocationEnabled = true;
@@ -224,12 +225,30 @@ export class HomePage implements OnInit {
           return;
         }
 
-        this.splashText = 'Please start Location services on your device';
-        setTimeout(() => {
-          this.showLocationSettings();
-        }, 1900);
+        if (!fromInit) {
+          this.splashText = 'Please start Location services on your device';
+          setTimeout(() => {
+            this.showLocationSettings();
+          }, 1900);
+        }
+        this._navigateToDashboardWithoutLocation();
       });
   }
+  public _navigateToDashboardWithoutLocation() {
+    this.isLocationEnabled = false;
+    this.splashText = 'Your location is required to use this App.';
+    this.splashTextExtra = 'Enable location on your device or manually search for a location to find nearby masjids.';
+    try {
+      this._checkNotifications(false);
+    }
+    catch (ex) {
+      this.splashText = 'Error loading notifications';
+      setTimeout(() => {
+        this.showSplash = false;
+      }, 2000);
+    }
+  }
+
   public requestLocationPermission() {
     //request permissions
     this._locationService.requestLocationPermission().then((res) => {
@@ -246,6 +265,7 @@ export class HomePage implements OnInit {
             //
           });
         }
+        this._navigateToDashboardWithoutLocation();
       }
     });
   }
@@ -286,32 +306,38 @@ export class HomePage implements OnInit {
       }
     }, 1900);
   }
-  private _checkNotifications() {
+  private _checkNotifications(showSplashMessages: boolean = true) {
     this._notificationService.areEnabled().then(async (enabled) => {
       if (enabled) {
         await this._notificationService.cancelPastNotifications();
         const notifs = await this._notificationService.getPendingNotifications();
         if (notifs && notifs.notifications) {
-          this.splashTextExtra = `You have ${notifs.notifications.length} pending notifications`;
+          if (showSplashMessages)
+            this.splashTextExtra = `You have ${notifs.notifications.length} pending notifications`;
           if (notifs.notifications.length < 20 && notifs.notifications.length > 0) {
-            this.splashTextExtra = 'Scheduling salaah notifications...';
+            if (showSplashMessages)
+              this.splashTextExtra = 'Scheduling salaah notifications...';
             const setNotifications = await this._scheduleSalaahNotfications();
-            if (setNotifications) {
-              this.splashTextExtra = 'Notifications are scheduled';
-            }
-            else {
-              this.splashTextExtra = 'Manage prayer notifications from Settings';
+            if (showSplashMessages) {
+              if (setNotifications) {
+                this.splashTextExtra = 'Notifications are scheduled';
+              }
+              else {
+                this.splashTextExtra = 'Manage prayer notifications from Settings';
+              }
             }
             setTimeout(() => {
               this.showSplash = false;
             }, 1000);
           }
           else {
-            if (notifs.notifications.length == 0) {
-              this.splashTextExtra = 'Manage prayer notifications from Settings';
-            }
-            else {
-              this.splashTextExtra = 'Loading notifications...';
+            if (showSplashMessages) {
+              if (notifs.notifications.length == 0) {
+                this.splashTextExtra = 'Manage prayer notifications from Settings';
+              }
+              else {
+                this.splashTextExtra = 'Loading notifications...';
+              }
             }
             setTimeout(() => {
               this.showSplash = false;
@@ -401,6 +427,23 @@ export class HomePage implements OnInit {
   }
 
   public onSearchResultSelected(location: any) {
-    this._locationService.currentLocation = location;
+    this.isLocationEnabled = true;
+    setTimeout(async () => {
+      this._locationService.currentLocation = location;
+      const savedLocation = await this._storage.get('currentLocation');
+      if (!savedLocation) {
+        await this._storage.set('currentLocation', btoa(JSON.stringify(this._locationService.currentLocation)));
+      }
+    }, 10);
+  }
+
+  public async enableLocation() {
+    // if (this._locationService)
+    //   this._popupService.showToast(`location service is available `);
+    // else {
+    //   this._popupService.showToast(`location service is not available `);
+    //   this._locationService = Inject(LocationService);
+    // }
+    this._checkLocation(false);
   }
 }

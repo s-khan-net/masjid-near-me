@@ -4,27 +4,25 @@
   <div style="color: darkgreen;padding: 0px 12px 0px 12px;" id="splashText">
     {{ splashText }}<br /><br />
     {{ splashTextExtra }}<br />
-    <div style="padding-top: 19px; color: darkgreen" id="btnLocDiv1" [hidden]="isLocationEnabled">
+    <!-- <div style="padding-top: 19px; color: darkgreen" id="btnLocDiv1" [hidden]="isLocationEnabled">
       Please
       <button class="btn-masajid" (click)="showLocationSettings()">
         enable
       </button>
-      <!-- <input type="button" value="enable" id="btnLocRequest" class="btn-masajid"/>  -->
       your location services
-    </div>
+    </div> -->
     <div style="padding-top: 19px; color: darkgreen" id="btnLocDiv2" [hidden]="locationPermissionFailed">
       Please give
-      <button class="btn-masajid" (click)="requestLocationPermission()">
-        permission
+      <button class="btn-masajid" (click)="_navigateToDashboardWithoutLocation()">
+        provide your location
       </button>
-      <!-- <input type="button" value="permission" id="btnLocRequest" class="btn-masajid"/>  -->
       to use your location
     </div>
   </div>
 </div>
-<app-timing-widjet></app-timing-widjet>
+<app-timing-widjet *ngIf="isLocationEnabled"></app-timing-widjet>
 <div id="divOffline" class="offline" [hidden]="connected">You are offline</div>
-<ion-menu contentId="main-content" (ionWillOpen)="menuWillOpen()">
+<ion-menu *ngIf="isLocationEnabled" contentId="main-content" (ionWillOpen)="menuWillOpen()">
   <div class="menu">
     <div style="text-align: center; margin-top: 12px">
       <img src="../../assets/images/logo.png" alt="Masjid near me" />
@@ -49,7 +47,7 @@
 <div class="ion-page" id="main-content">
   <app-loader></app-loader>
   <ion-header style="background-color: transparent">
-    <ion-toolbar style="background-color: transparent;" [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
+    <ion-toolbar style="background-color: transparent;" [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}" *ngIf="isLocationEnabled">
       <ion-buttons slot="start">
         <ion-menu-button style="color: #17603a;"></ion-menu-button>
       </ion-buttons>
@@ -98,3 +96,31 @@
   </div>
   <app-pop-search [showSearch]="showSearch" (searchHidden)="onSearchHidden()"
     (resultSelected)="onSearchResultSelected($event)"></app-pop-search>
+  <ng-container *ngIf="!isLocationEnabled">
+    <div class="no-location">
+      <div class="no-location-content">
+        <div class="no-location-title">Location not found</div>
+        <div class="no-location-sub-title">This app needs to know your location to work properly.</div>
+        <div class="button-grid" style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 12px;">
+          <button class="btn-masajid" style="aspect-ratio: 1 / 1; width: 100%;letter-spacing: 1px;" (click)="enableLocation()">
+            <ion-icon name="location" style="font-size: 32px; vertical-align: middle;"></ion-icon><br>
+             Enable your current location 
+          </button>
+          <!-- <button class="btn-masajid" style="aspect-ratio: 1 / 1; width: 100%;letter-spacing: 1px;">
+            <ion-icon name="compass" style="font-size: 32px; vertical-align: middle;"></ion-icon><br>
+             Show Compass
+          </button> -->
+          <button class="btn-masajid" style="aspect-ratio: 1 / 1; width: 100%;letter-spacing: 1px;" (click)="popSearch()">
+            <ion-icon name="search" style="font-size: 32px; vertical-align: middle;"></ion-icon><br>
+             Search for Masjids near you
+          </button>
+          <!-- <button class="btn-masajid" style="aspect-ratio: 1 / 1; width: 100%;letter-spacing: 1px;">
+            <ion-icon name="map" style="font-size: 32px; vertical-align: middle;"></ion-icon><br>
+             View Map
+          </button> 
+        <button class="btn-masjid" style="aspect-ratio: 1 / 1; width: 100%;">Button 5</button>
+          <button class="btn-masjid" style="aspect-ratio: 1 / 1; width: 100%;">Button 6</button> -->
+        </div>
+      </div>
+    </div>
+  </ng-container>

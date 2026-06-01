@@ -1,6 +1,6 @@
-<app-flmnu
+<app-flmnu *ngIf="_map"
   [masjids]="masjidMarkers"
   (setCamera)="markerClick($event)"
 ></app-flmnu>
 <capacitor-google-map #map></capacitor-google-map>
-<app-reset-btn></app-reset-btn>
+<app-reset-btn *ngIf="_map"></app-reset-btn>
