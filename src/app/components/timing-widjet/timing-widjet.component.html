@@ -1,5 +1,5 @@
-<div id="timings" class="timings-container" [ngStyle]="{'margin-top': osVersion >= 15 ? '38px' : ''}">
-  <div class="widgetContainer" *ngIf="!showLoader">
+<div id="timings" *ngIf="!_locationService.mapMode()" class="timings-container" [ngStyle]="{'margin-top': osVersion >= 15 ? '38px' : ''}">
+  <div class="widgetContainer" *ngIf="stbArray.length > 0">
     <div id="timesObject" style="display: none">18:01</div>
     <div class="load">{{ hijriDate }}</div>
     <ng-container *ngFor="let item of stbArray; let i = index">
@@ -9,7 +9,7 @@
       <span class="divider" *ngIf="i < stbArray.length - 1"></span>
     </ng-container>
   </div>
-  <div class="widgetContainer" *ngIf="showLoader">
+  <div class="widgetContainer" *ngIf="stbArray.length === 0">
     <div class="load">Loading salaah times...</div>
   </div>
 </div>

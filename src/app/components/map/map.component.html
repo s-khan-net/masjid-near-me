@@ -1,6 +1,8 @@
-<app-flmnu
-  [masjids]="masjidMarkers"
-  (setCamera)="markerClick($event)"
-></app-flmnu>
+<app-flmnu *ngIf="!_locationService.mapMode()" [masjids]="masjidMarkers" (setCamera)="markerClick($event)"></app-flmnu>
+<div class="map-cover" #mapCover></div>
 <capacitor-google-map #map></capacitor-google-map>
-<app-reset-btn></app-reset-btn>
+
+<app-reset-btn *ngIf="!_locationService.mapMode()"></app-reset-btn>
+<div class="pin-container" *ngIf="_locationService.mapMode() && !pinPlaced" #pinContainer >
+  <img src="assets/icon/pin.png" [ngClass]="{ grayscale: mapZoom <= 13 }" [attr.draggable]="mapZoom > 13" #mapModePin />
+</div>

@@ -24,7 +24,7 @@
 </div>
 <app-timing-widjet></app-timing-widjet>
 <div id="divOffline" class="offline" [hidden]="connected">You are offline</div>
-<ion-menu contentId="main-content" (ionWillOpen)="menuWillOpen()">
+<ion-menu contentId="main-content" *ngIf="!_locationService.mapMode()" (ionWillOpen)="menuWillOpen()">
   <div class="menu">
     <div style="text-align: center; margin-top: 12px">
       <img src="../../assets/images/logo.png" alt="Masjid near me" />
@@ -50,15 +50,19 @@
   <app-loader></app-loader>
   <ion-header style="background-color: transparent">
     <ion-toolbar style="background-color: transparent;" [ngStyle]="{'padding-top': osVersion >= 15 ? '32px' : ''}">
-      <ion-buttons slot="start">
+      <div class="mapModeInfo" *ngIf="_locationService.mapMode()">{{ _locationService.mapModeInfo() }}</div>
+      <ion-buttons slot="end" *ngIf="_locationService.mapMode()">
+        <ion-icon name="close-circle-outline" (click)="setMapMode()" style="vertical-align: middle;color: #17603a;"></ion-icon>
+      </ion-buttons>
+      <ion-buttons slot="start" *ngIf="!_locationService.mapMode()">
         <ion-menu-button style="color: #17603a;"></ion-menu-button>
       </ion-buttons>
-      <ion-buttons slot="end" (click)="popSearch()">
-        <ion-icon name="search-outline" style="font-size: 36px; vertical-align: middle;color: #17603a;"></ion-icon>
+      <ion-buttons slot="end" (click)="popSearch()" *ngIf="!_locationService.mapMode()">
+        <ion-icon name="search-outline" style="padding-right: 5px; vertical-align: middle;color: #17603a;"></ion-icon>
       </ion-buttons>
-      <!--<ion-buttons slot="end" (click)="showCompass()">
-        <ion-icon name="compass" style="vertical-align: middle"></ion-icon>
-      </ion-buttons> -->
+      <ion-buttons slot="end" (click)="setMapMode()" *ngIf="!_locationService.mapMode()">
+        <ion-icon name="map" style="vertical-align: middle;color: #17603a;"></ion-icon>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
   <app-map></app-map>

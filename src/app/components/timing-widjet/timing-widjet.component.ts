@@ -16,7 +16,7 @@ export class TimingWidjetComponent implements OnInit {
   constructor(
     private _settingsService: SettingsService,
     private _salaahTimesService: SalaahTimesService,
-    private _locationService: LocationService,
+    public _locationService: LocationService,
     private _storage: StorageService
   ) {}
 

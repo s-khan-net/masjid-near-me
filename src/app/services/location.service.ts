@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Geolocation, PermissionStatus, Position, PositionOptions } from '@capacitor/geolocation';
 
@@ -8,7 +8,15 @@ import { Geolocation, PermissionStatus, Position, PositionOptions } from '@capac
 export class LocationService {
   constructor() { }
 
+  public mapModeInfo = signal('');
+
   private _mapLoaded: boolean = false;
+  private _mapMode = signal(false);
+  readonly mapMode = this._mapMode.asReadonly();
+
+  public setMapMode(value: boolean) {
+    this._mapMode.set(value);
+  }
 
   public get mapLoaded(): boolean {
     return this._mapLoaded;

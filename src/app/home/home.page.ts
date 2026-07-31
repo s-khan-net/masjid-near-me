@@ -40,10 +40,11 @@ export class HomePage implements OnInit {
   public osVersion: number = 0;
   public showingAppVersion: boolean = false;
   public showSearch: boolean = false;
-
+  public mapMode: boolean = false;
+  
   private _toastElement!: HTMLIonToastElement;
   constructor(
-    private _locationService: LocationService,
+    public _locationService: LocationService,
     private _mnuCtrl: MenuController,
     private _popupService: PopupService,
     private _platform: Platform,
@@ -60,6 +61,11 @@ export class HomePage implements OnInit {
       this._checkNetwork();
       this._platform.backButton.subscribeWithPriority(9999, async (processNextHandler) => {
         this._loaderService.hideLoader();
+        if(this._locationService.mapMode()) {
+          this._locationService.setMapMode(false);
+          this.mapMode = false;
+          return;
+        }
         const popup = this._popupService.hasOpenPopups()
         if (popup) {
           if (popup.popupObj.name === 'Settings') {
@@ -260,7 +266,14 @@ export class HomePage implements OnInit {
       if (this._locationService.mapLoaded) {
         clearInterval(interval);
         try {
-          this._checkNotifications();
+          if (this._platform.is('android')){
+            this._checkNotifications();
+          }
+          else{
+            setTimeout(() => {
+            this.showSplash = false;
+          }, 2000);
+          }
         }
         catch (ex) {
           this.splashText = 'Error loading notifications';
@@ -402,5 +415,10 @@ export class HomePage implements OnInit {
 
   public onSearchResultSelected(location: any) {
     this._locationService.currentLocation = location;
+  }
+
+  public setMapMode() {
+    this.mapMode = !this.mapMode;
+    this._locationService.setMapMode(this.mapMode);
   }
 }
