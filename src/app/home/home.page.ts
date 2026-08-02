@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
   public isLocationEnabled: boolean = true;
   public splashText: string = 'Initializing...';
   public splashTextExtra: string = '';
-  public version: string = '4.5.019';
+  public version: string = '4.5.036';
   public osVersion: number = 0;
   public showingAppVersion: boolean = false;
   public showSearch: boolean = false;
